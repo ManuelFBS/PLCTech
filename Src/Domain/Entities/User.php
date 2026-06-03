@@ -2,50 +2,47 @@
 
 namespace PLCTech\Domain\Entities;
 
-use PLCTech\Domain\ValueObjects\DNI;
-use PLCTech\Domain\ValueObjects\Email;
-
 class User
 {
         private ?int $id;
-        private DNI $dni;
+        private string $dni;
         private string $user;
-        private Email $email;
+        private string $email;
         private string $role;
         private string $password;
-        private bool $isActive;
-        private ?int $employeeId;
-        private ?int $customerId;
-        private ?\DateTime $createdAt;
-        private ?\DateTime $updatedAt;
-        private ?\DateTime $lastLogin;
+        private bool $is_active;
+        private ?int $employee_id;
+        private ?int $customer_id;
+        private ?string $last_login;
+        private string $created_at;
+        private ?string $updated_at;
 
         public function __construct(
-                DNI $dni,
+                ?int $id,
+                string $dni,
                 string $user,
-                Email $email,
+                string $email,
                 string $role,
                 string $password,
-                ?int $id = null,
-                ?int $employeeId = null,
-                ?int $customerId = null,
-                bool $isActive = true,
-                ?\DateTime $createdAt = null,
-                ?\DateTime $updatedAt = null,
-                ?\DateTime $lastLogin = null
+                bool $is_active = true,
+                ?int $employee_id = null,
+                ?int $customer_id = null,
+                ?string $last_login = null,
+                string $created_at = '',
+                ?string $updated_at = null
         ) {
+                $this->id = $id;
                 $this->dni = $dni;
                 $this->user = $user;
                 $this->email = $email;
                 $this->role = $role;
                 $this->password = $password;
-                $this->id = $id;
-                $this->employeeId = $employeeId;
-                $this->customerId = $customerId;
-                $this->isActive = $isActive;
-                $this->createdAt = $createdAt ?? new \DateTime();
-                $this->updatedAt = $updatedAt ?? new \DateTime();
-                $this->lastLogin = $lastLogin;
+                $this->is_active = $is_active;
+                $this->employee_id = $employee_id;
+                $this->customer_id = $customer_id;
+                $this->last_login = $last_login;
+                $this->created_at = $created_at;
+                $this->updated_at = $updated_at;
         }
 
         // * Getters...
@@ -54,7 +51,7 @@ class User
                 return $this->id;
         }
 
-        public function getDni(): DNI
+        public function getDni(): string
         {
                 return $this->dni;
         }
@@ -64,7 +61,7 @@ class User
                 return $this->user;
         }
 
-        public function getEmail(): Email
+        public function getEmail(): string
         {
                 return $this->email;
         }
@@ -81,26 +78,47 @@ class User
 
         public function isActive(): bool
         {
-                return $this->isActive;
+                return $this->is_active;
         }
 
         public function getEmployeeId(): ?int
         {
-                return $this->employeeId;
+                return $this->employee_id;
         }
 
         public function getCustomerId(): ?int
         {
-                return $this->customerId;
+                return $this->customer_id;
         }
 
-        // * Métodos de negocio...
-        public function hasRole(string $role): bool
+        public function getLastLogin(): ?string
         {
-                return $this->role === $role;
+                return $this->last_login;
         }
 
-        public function canAccessAdminPanel(): bool
+        public function getCreatedAt(): string
+        {
+                return $this->created_at;
+        }
+
+        public function getUpdatedAt(): ?string
+        {
+                return $this->updated_at;
+        }
+
+        // * Setters...
+        public function setLastLogin(?string $last_login): void
+        {
+                $this->last_login = $last_login;
+        }
+
+        public function setIsActive(bool $is_active): void
+        {
+                $this->is_active = $is_active;
+        }
+
+        // * Métodos útiles...
+        public function isAdmin(): bool
         {
                 return $this->role === 'Admin';
         }
@@ -115,20 +133,8 @@ class User
                 return $this->role === 'Customer';
         }
 
-        public function block(): void
+        public function verifyPassword(string $plain_password): bool
         {
-                $this->isActive = false;
-        }
-
-        public function unblock(): void
-        {
-                $this->isActive = true;
-        }
-
-        public function updateLastLogin(): void
-        {
-                $this->lastLogin = new \DateTime();
+                return password_verify($plain_password, $this->password);
         }
 }
-
-?>

@@ -1,0 +1,20 @@
+{
+    "name": "plctech/app",
+    "description": "PLCTech - Sistema de gestión con Clean Architecture",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "ext-pdo": "*",
+        "ext-mysqli": "*",
+        "vlucas/phpdotenv": "^5.6",
+        "firebase/php-jwt": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PlcTech\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

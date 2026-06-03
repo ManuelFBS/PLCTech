@@ -1,0 +1,6 @@
+#Environment
+.env
+
+#Images
+img/product/*.png
+img/*.png

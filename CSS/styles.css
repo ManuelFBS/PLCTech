@@ -1,0 +1,17 @@
+/* Custom styles complementarios a Bulma */
+.navbar-brand img {
+    max-height: 3rem;
+}
+
+.main-content {
+    min-height: calc(100vh - 3.25rem);
+    padding: 2rem;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+.has-shadow {
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}

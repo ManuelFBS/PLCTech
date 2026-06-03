@@ -8,14 +8,18 @@ class Email
 
         public function __construct(string $email)
         {
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        throw new \InvalidArgumentException("Email inválido: $email");
+                if (!$this->isValid($email)) {
+                        throw new \InvalidArgumentException('Formato de email inválido');
                 }
-
                 $this->value = $email;
         }
 
-        public function value(): string
+        private function isValid(string $email): bool
+        {
+                return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+        }
+
+        public function getValue(): string
         {
                 return $this->value;
         }
@@ -25,5 +29,3 @@ class Email
                 return $this->value;
         }
 }
-
-?>

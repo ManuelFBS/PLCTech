@@ -1,5 +1,7 @@
 <?php
 
+namespace PLCTech\Application\UseCases\Auth;
+
 class LogoutUseCase
 {
         public function execute(): void

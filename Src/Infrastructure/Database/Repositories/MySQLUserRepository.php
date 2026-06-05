@@ -81,6 +81,26 @@ class MySQLUserRepository implements UserRepositoryInterface
                 return $users;
         }
 
+        public function findByEmployeeId(int $employeeId): ?User
+        {
+                $sql = 'SELECT * FROM users WHERE employee_id = ?';
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$employeeId]);
+                $data = $stmt->fetch();
+
+                return $data ? $this->mapToEntity($data) : null;
+        }
+
+        public function findByCustomerId(int $customerId): ?User
+        {
+                $sql = 'SELECT * FROM users WHERE customer_id = ?';
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$customerId]);
+                $data = $stmt->fetch();
+
+                return $data ? $this->mapToEntity($data) : null;
+        }
+
         public function save(User $user): void
         {
                 $sql =

@@ -11,6 +11,8 @@ interface UserRepositoryInterface
         public function findByUsername(string $username): ?User;
         public function findByDni(string $dni): ?User;
         public function findAll(): array;
+        public function findByEmployeeId(int $employeeId): ?User;
+        public function findByCustomerId(int $customerId): ?User;
         public function save(User $user): void;
         public function update(User $user): void;
         public function delete(int $id): void;

@@ -18,15 +18,36 @@ class UpdateEmployeesUseCase
 
         public function execute(int $id, EmployeeDTO $employeeDTO): array
         {
-                $employee = $this->employeeRepository->find($id);
+                // * Verificar si existe...
+                $existingEmployee = $this->employeeRepository->find($id);
 
-                if (!$employee) {
+                if (!$existingEmployee) {
                         throw new \Exception('Empleado no encontrado');
                 }
+                // * Validar DNI único (excluyendo el actual)...
+                $employeeDni = $this->employeeRepository->findByDni($employeeDTO->dni);
+                if ($employeeDni && $employeeDni->getId() !== $id) {
+                        throw new \Exception('Ya existe un empleado con ese DNI');
+                }
 
-                // > Actualizar propiedades...
-                $updatedEmployee = new Employee(
-                        $employee->getId(),
+                // * Validar email único (excluyendo el actual)...
+                $employeeEmail = $this->employeeRepository->findByEmail($employeeDTO->email);
+                if ($employeeEmail && $employeeEmail->getEmail() !== $id) {
+                        throw new \Exception('Ya existe un empleado con ese email');
+                }
+
+                // * Validar edad (mínimo 18 años)...
+                $birthdate = new \DateTime($employeeDTO->birthdate);
+                $today = new \DateTime();
+                $age = $today->diff($birthdate)->y;
+
+                if ($age < 18) {
+                        throw new \Exception('El empleado debe ser mayor de 18 años');
+                }
+
+                // * Crear entidad actualizada...
+                $employee = new Employee(
+                        $id,
                         $employeeDTO->dni,
                         $employeeDTO->names,
                         $employeeDTO->surnames,
@@ -34,10 +55,11 @@ class UpdateEmployeesUseCase
                         $employeeDTO->email,
                         $employeeDTO->address,
                         $employeeDTO->phone_number,
-                        $employee->getCreatedAt()
+                        $existingEmployee->getCreatedAt()
                 );
 
-                $this->employeeRepository->update($updatedEmployee);
+                // * Actualizar...
+                $this->employeeRepository->update($employee);
 
                 return [
                         'success' => true,

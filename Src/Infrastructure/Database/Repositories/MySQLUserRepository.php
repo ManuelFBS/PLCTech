@@ -1,6 +1,6 @@
 <?php
 
-namespace PLCTech\Infrastruscture\Database\Repositories;
+namespace PLCTech\Infrastructure\Database\Repositories;
 
 use PLCTech\Config\DB\Database;
 use PLCTech\Domain\Entities\User;

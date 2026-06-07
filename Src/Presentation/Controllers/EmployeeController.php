@@ -9,7 +9,7 @@ use PLCTech\Application\UseCases\Employee\GetEmployeeUseCase;
 use PLCTech\Application\UseCases\Employee\ListEmployeesUseCase;
 use PLCTech\Application\UseCases\Employee\UpdateEmployeesUseCase;
 use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;
-use PLCTech\Infrastruscture\Database\Repositories\MySQLUserRepository;
+use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
 
 class EmployeeController
 {

@@ -5,7 +5,7 @@ namespace PLCTech\Presentation\Controllers;
 use PLCTech\Application\UseCases\Auth\LoginUseCase;
 use PLCTech\Application\UseCases\Auth\LogoutUseCase;
 use PLCTech\Infrastructure\Auth\JWTHandler;
-use PLCTech\Infrastruscture\Database\Repositories\MySQLUserRepository;
+use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
 
 class AuthController
 {

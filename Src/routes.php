@@ -1,6 +1,7 @@
 <?php
 
 return [
+        // * Auth...
         '/login' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
@@ -16,12 +17,14 @@ return [
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'logout'
         ],
+        // * Home...
         '/' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\HomeController::class,
                 'action' => 'index',
                 'role' => null
         ],
+        // * Users (Solo Admin)...
         '/users' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
@@ -52,6 +55,13 @@ return [
                 'action' => 'update',
                 'role' => 'Admin'
         ],
+        '/users/delete' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\UserController::class,
+                'action' => 'delete',
+                'role' => 'Admin'
+        ],
+        // * Employees (Solo Admin)...
         '/employees' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
@@ -70,6 +80,25 @@ return [
                 'action' => 'store',
                 'role' => 'Admin'
         ],
+        '/employees/edit' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
+                'action' => 'edit',
+                'role' => 'Admin'
+        ],
+        '/employees/update' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
+                'action' => 'update',
+                'role' => 'Admin'
+        ],
+        '/employees/delete' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
+                'action' => 'delete',
+                'role' => 'Admin'
+        ],
+        // * Customers (Admin y Employee)...
         '/customers' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
@@ -87,5 +116,23 @@ return [
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'store',
                 'role' => 'Admin'
-        ]
+        ],
+        '/customers/edit' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
+                'action' => 'edit',
+                'role' => 'Admin'
+        ],
+        '/customers/update' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
+                'action' => 'update',
+                'role' => 'Admin'
+        ],
+        '/customers/delete' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
+                'action' => 'delete',
+                'role' => 'Admin'
+        ],
 ];

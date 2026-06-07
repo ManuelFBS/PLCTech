@@ -57,7 +57,7 @@ class CustomerController
         }
 
         // * Guardar nuevo cliente...
-        public function save(): void
+        public function store(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         header('Location: ' . $_ENV['APP_URL'] . '/customers');

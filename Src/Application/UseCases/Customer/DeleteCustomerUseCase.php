@@ -10,7 +10,7 @@ class DeleteCustomerUseCase
         private CustomerRepositoryInterface $customerRepository;
         private UserRepositoryInterface $userRepository;
 
-        private function __construct(
+        public function __construct(
                 customerRepositoryInterface $customerRepository,
                 UserRepositoryInterface $userRepository
         ) {

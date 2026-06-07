@@ -10,7 +10,7 @@ class DeleteEmployeeUseCase
         private EmployeeRepositoryInterface $employeeRepository;
         private UserRepositoryInterface $userRepository;
 
-        private function __construct(
+        public function __construct(
                 EmployeeRepositoryInterface $employeeRepository,
                 UserRepositoryInterface $userRepository
         ) {

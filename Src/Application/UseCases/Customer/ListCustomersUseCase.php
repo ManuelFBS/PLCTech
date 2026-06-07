@@ -5,7 +5,7 @@ namespace PLCTech\Application\UseCases\Customer;
 use PLCTech\Application\DTOs\CustomerDTO;
 use PLCTech\Domain\Repositories\CustomerRepositoryInterface;
 
-class ListCustomerUseCase
+class ListCustomersUseCase
 {
         private CustomerRepositoryInterface $customerRepository;
 

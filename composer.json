@@ -11,7 +11,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PlcTech\\": "src/"
+            "PlcTech\\": "src/",
+            "PLCTech\\Config\\": "Config/"
         }
     },
     "config": {

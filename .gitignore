@@ -4,3 +4,7 @@
 #Images
 img/product/*.png
 img/*.png
+
+#Test
+test.php
+hash_password.php

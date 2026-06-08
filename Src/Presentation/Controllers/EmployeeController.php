@@ -85,6 +85,12 @@ class EmployeeController
         {
                 $id = $_GET['id'] ?? 0;
 
+                if ($id <= 0) {
+                        $_SESSION['error_message'] = 'ID de empleado inválido';
+                        header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                        exit;
+                }
+
                 try {
                         $employee = $this->getEmployeeUseCase->execute((int) $id);
 
@@ -92,11 +98,15 @@ class EmployeeController
                                 throw new \Exception('Empleado no encontrado');
                         }
 
+                        // ? Debug: Verificar que los datos existen
+                        // ? error_log(print_r($employee, true)); // Descomentar para debug
+
                         require_once __DIR__ . '/../Views/layouts/navbar.php';
                         require_once __DIR__ . '/../Views/employees/edit.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                        exit;
                 }
         }
 

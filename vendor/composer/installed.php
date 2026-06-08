@@ -3,7 +3,7 @@
         'name' => 'plctech/app',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e1184780a85b90049ceb8bf82aa8988251f92aab',
+        'reference' => 'cd8a0f481208e8e6342e6e396fbb7e53ddeabb61',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -40,7 +40,7 @@
         'plctech/app' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e1184780a85b90049ceb8bf82aa8988251f92aab',
+            'reference' => 'cd8a0f481208e8e6342e6e396fbb7e53ddeabb61',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

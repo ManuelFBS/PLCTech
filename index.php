@@ -6,6 +6,7 @@ use Dotenv\Dotenv;
 use PLCTech\Presentation\Controllers\AuthController;
 use PLCTech\Presentation\Controllers\CustomerController;
 use PLCTech\Presentation\Controllers\EmployeeController;
+use PLCTech\Presentation\Controllers\HomeController;
 use PLCTech\Presentation\Controllers\UserController;
 use PLCTech\Presentation\Middleware\AuthMiddleware;
 use PLCTech\Presentation\Middleware\RoleMiddleware;

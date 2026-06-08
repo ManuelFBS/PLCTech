@@ -203,9 +203,3 @@
                                         ?>
                                 </div>
                         <?php endif; ?>
-
-                </div>
-        </main>
-
-</body>
-</html>

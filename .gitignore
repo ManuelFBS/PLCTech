@@ -8,3 +8,6 @@ img/*.png
 #Test
 test.php
 hash_password.php
+check_files.php
+debug_db.php
+debug_usecase.php

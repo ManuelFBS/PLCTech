@@ -39,7 +39,7 @@ class Employee
                 $this->updated_at = $updated_at;
         }
 
-        // * Getters...
+        // Getters
         public function getId(): ?int
         {
                 return $this->id;

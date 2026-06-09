@@ -18,41 +18,41 @@ class MySQLEmployeeRepository implements EmployeeRepositoryInterface
 
         public function find(int $id): ?Employee
         {
-                $sql = 'SELECT * FROM employees WHERE id = ?';
-                $stmt = $this->db->prepare($sql);
+                $stmt = $this->db->prepare('SELECT * FROM employees WHERE id = ?');
                 $stmt->execute([$id]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                return $data ? $this->mapToEntity($data) : null;
+                if (!$data) {
+                        return null;
+                }
+
+                return $this->mapToEntity($data);
         }
 
         public function findByDni(string $dni): ?Employee
         {
-                $sql = 'SELECT * FROM employees WHERE dni = ?';
-                $stmt = $this->db->prepare($sql);
+                $stmt = $this->db->prepare('SELECT * FROM employees WHERE dni = ?');
                 $stmt->execute([$dni]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
 
         public function findByEmail(string $email): ?Employee
         {
-                $sql = 'SELECT * FROM employees WHERE email = ?';
-                $stmt = $this->db->prepare($sql);
+                $stmt = $this->db->prepare('SELECT * FROM employees WHERE email = ?');
                 $stmt->execute([$email]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
 
         public function findAll(): array
         {
-                $sql = 'SELECT * FROM employees ORDER BY id DESC';
-                $stmt = $this->db->query($sql);
+                $stmt = $this->db->query('SELECT * FROM employees ORDER BY id DESC');
                 $employees = [];
 
-                while ($data = $stmt->fetch()) {
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $employees[] = $this->mapToEntity($data);
                 }
 
@@ -61,9 +61,11 @@ class MySQLEmployeeRepository implements EmployeeRepositoryInterface
 
         public function save(Employee $employee): int
         {
-                $sql = 'INSERT INTO employees (dni, names, surnames, birthdate, email, address, phone_number)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)';
-                $stmt = $this->db->prepare($sql);
+                $stmt = $this->db->prepare(
+                        'INSERT INTO employees (dni, names, surnames, birthdate, email, address, phone_number)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                '
+                );
 
                 $stmt->execute([
                         $employee->getDni(),
@@ -80,10 +82,11 @@ class MySQLEmployeeRepository implements EmployeeRepositoryInterface
 
         public function update(Employee $employee): void
         {
-                $sql = 'UPDATE employees 
-                                SET dni = ?, names = ?, surnames = ?, birthdate = ?, email = ?, address = ?, phone_number = ?
-                                WHERE id = ?';
-                $stmt = $this->db->prepare($sql);
+                $stmt = $this->db->prepare(
+                        'UPDATE employees 
+                        SET dni = ?, names = ?, surnames = ?, birthdate = ?, email = ?, address = ?, phone_number = ?
+                        WHERE id = ?'
+                );
 
                 $stmt->execute([
                         $employee->getDni(),
@@ -99,24 +102,26 @@ class MySQLEmployeeRepository implements EmployeeRepositoryInterface
 
         public function delete(int $id): void
         {
-                $sql = 'DELETE FROM employees WHERE id = ?';
-                $stmt = $this->db->prepare($sql);
+                $stmt = $this->db->prepare('DELETE FROM employees WHERE id = ?');
                 $stmt->execute([$id]);
         }
 
         private function mapToEntity(array $data): Employee
         {
+                // ? Depuración para verificar que los datos llegan correctamente..
+                error_log('Mapeando empleado ID: ' . ($data['id'] ?? 'sin id'));
+
                 return new Employee(
-                        (int) $data['id'],
-                        $data['dni'],
-                        $data['names'],
-                        $data['surnames'],
-                        $data['birthdate'],
-                        $data['email'],
-                        $data['address'],
-                        $data['phone_number'],
-                        $data['created_at'],
-                        $data['updated_at']
+                        (int) $data['id'],  // id
+                        (string) $data['dni'],  // dni
+                        (string) $data['names'],  // names
+                        (string) $data['surnames'],  // surnames
+                        (string) $data['birthdate'],  // birthdate
+                        (string) $data['email'],  // email
+                        (string) $data['address'],  // address
+                        $data['phone_number'] ?? null,  // phone_number
+                        (string) $data['created_at'],  // created_at
+                        $data['updated_at'] ?? null  // updated_at
                 );
         }
 }

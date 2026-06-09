@@ -80,7 +80,8 @@
         <footer class="footer mt-5">
                 <div class="content has-text-centered">
                         <p>
-                                <strong><?php echo $_ENV['APP_NAME']; ?></strong> &copy; <?php echo date('Y'); ?> - Sistema de Gestión
+                                <!-- <strong><?php echo $_ENV['APP_NAME']; ?></strong> &copy; <?php echo date('Y'); ?> - Sistema de Gestión -->
+                                <p>&copy; <?php echo date('Y'); ?> <strong>PLCTech - Todos los derechos reservados</strong></p>
                         </p>
                 </div>
         </footer>

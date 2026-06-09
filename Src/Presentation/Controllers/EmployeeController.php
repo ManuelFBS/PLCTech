@@ -2,21 +2,22 @@
 
 namespace PLCTech\Presentation\Controllers;
 
-use PLCTech\Application\DTOs\EmployeeDTO;
-use PLCTech\Application\UseCases\Employee\CreateEmployeeUseCase;
-use PLCTech\Application\UseCases\Employee\DeleteEmployeeUseCase;
-use PLCTech\Application\UseCases\Employee\GetEmployeeUseCase;
-use PLCTech\Application\UseCases\Employee\ListEmployeesUseCase;
-use PLCTech\Application\UseCases\Employee\UpdateEmployeesUseCase;
-use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;
-use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
+use PLCTech\Application\DTOs\EmployeeDTO;  //
+use PLCTech\Application\UseCases\Employee\CreateEmployeeUseCase;  //
+use PLCTech\Application\UseCases\Employee\DeleteEmployeeUseCase;  //
+use PLCTech\Application\UseCases\Employee\GetEmployeeUseCase;  //
+use PLCTech\Application\UseCases\Employee\ListEmployeesUseCase;  //
+use PLCTech\Application\UseCases\Employee\UpdateEmployeeUseCase;  //
+use PLCTech\Helpers\PathHelper;  //
+use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;  //
+use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;  //
 
 class EmployeeController
 {
         private CreateEmployeeUseCase $createEmployeeUseCase;
         private ListEmployeesUseCase $listEmployeesUseCase;
         private GetEmployeeUseCase $getEmployeeUseCase;
-        private UpdateEmployeesUseCase $updateEmployeeUseCase;
+        private UpdateEmployeeUseCase $updateEmployeeUseCase;
         private DeleteEmployeeUseCase $deleteEmployeeUseCase;
 
         public function __construct()
@@ -27,7 +28,7 @@ class EmployeeController
                 $this->createEmployeeUseCase = new CreateEmployeeUseCase($employeeRepository);
                 $this->listEmployeesUseCase = new ListEmployeesUseCase($employeeRepository);
                 $this->getEmployeeUseCase = new GetEmployeeUseCase($employeeRepository);
-                $this->updateEmployeeUseCase = new UpdateEmployeesUseCase($employeeRepository);
+                $this->updateEmployeeUseCase = new UpdateEmployeeUseCase($employeeRepository);
                 $this->deleteEmployeeUseCase = new DeleteEmployeeUseCase($employeeRepository, $userRepository);
         }
 
@@ -37,26 +38,30 @@ class EmployeeController
         {
                 try {
                         $employees = $this->listEmployeesUseCase->execute();
-                        require_once __DIR__ . '/../Views/layouts/navbar.php';
-                        require_once __DIR__ . '/../Views/employees/index.php';
+                        $viewsPath = PathHelper::getViewsPath();
+
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/employees/index.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL']);
+                        header('Location: ' . PathHelper::getBaseUrl());
                 }
         }
 
         // * Mostrar formulario de creación...
         public function create(): void
         {
-                require_once __DIR__ . '/../Views/layouts/navbar.php';
-                require_once __DIR__ . '/../Views/employees/create.php';
+                $viewsPath = PathHelper::getViewsPath();
+                require_once $viewsPath . '/layouts/navbar.php';
+                require_once $viewsPath . '/employees/create.php';
         }
 
         // * Guardar nuevo empleado...
         public function store(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/employees');
+                        exit();
                 }
 
                 try {
@@ -76,7 +81,7 @@ class EmployeeController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                header('Location: ' . PathHelper::getBaseUrl() . '/employees');
                 exit;
         }
 
@@ -87,7 +92,7 @@ class EmployeeController
 
                 if ($id <= 0) {
                         $_SESSION['error_message'] = 'ID de empleado inválido';
-                        header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/employees');
                         exit;
                 }
 
@@ -101,11 +106,12 @@ class EmployeeController
                         // ? Debug: Verificar que los datos existen
                         // ? error_log(print_r($employee, true)); // Descomentar para debug
 
-                        require_once __DIR__ . '/../Views/layouts/navbar.php';
-                        require_once __DIR__ . '/../Views/employees/edit.php';
+                        $viewsPath = PathHelper::getViewsPath();
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/employees/edit.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/employees');
                         exit;
                 }
         }
@@ -114,7 +120,7 @@ class EmployeeController
         public function update(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                        header('Location:' . PathHelper::getBaseUrl() . '/employees');
                         exit;
                 }
 
@@ -137,7 +143,7 @@ class EmployeeController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                header('Location: ' . PathHelper::getBaseUrl() . '/employees');
                 exit;
         }
 
@@ -153,7 +159,7 @@ class EmployeeController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/employees');
+                header('Location: ' . PathHelper::getBaseUrl() . '/employees');
                 exit;
         }
 }

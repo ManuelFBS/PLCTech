@@ -6,37 +6,36 @@ use PLCTech\Application\DTOs\EmployeeDTO;
 use PLCTech\Domain\Entities\Employee;
 use PLCTech\Domain\Repositories\EmployeeRepositoryInterface;
 
-class UpdateEmployeesUseCase
+class UpdateEmployeeUseCase
 {
         private EmployeeRepositoryInterface $employeeRepository;
 
-        public function __construct(
-                EmployeeRepositoryInterface $employeeRepository
-        ) {
+        public function __construct(EmployeeRepositoryInterface $employeeRepository)
+        {
                 $this->employeeRepository = $employeeRepository;
         }
 
         public function execute(int $id, EmployeeDTO $employeeDTO): array
         {
-                // * Verificar si existe...
+                // Verificar si existe
                 $existingEmployee = $this->employeeRepository->find($id);
-
                 if (!$existingEmployee) {
                         throw new \Exception('Empleado no encontrado');
                 }
-                // * Validar DNI único (excluyendo el actual)...
-                $employeeDni = $this->employeeRepository->findByDni($employeeDTO->dni);
-                if ($employeeDni && $employeeDni->getId() !== $id) {
+
+                // Validar DNI único
+                $employeeByDni = $this->employeeRepository->findByDni($employeeDTO->dni);
+                if ($employeeByDni && $employeeByDni->getId() !== $id) {
                         throw new \Exception('Ya existe un empleado con ese DNI');
                 }
 
-                // * Validar email único (excluyendo el actual)...
-                $employeeEmail = $this->employeeRepository->findByEmail($employeeDTO->email);
-                if ($employeeEmail && $employeeEmail->getEmail() !== $id) {
+                // Validar email único
+                $employeeByEmail = $this->employeeRepository->findByEmail($employeeDTO->email);
+                if ($employeeByEmail && $employeeByEmail->getId() !== $id) {
                         throw new \Exception('Ya existe un empleado con ese email');
                 }
 
-                // * Validar edad (mínimo 18 años)...
+                // Validar edad
                 $birthdate = new \DateTime($employeeDTO->birthdate);
                 $today = new \DateTime();
                 $age = $today->diff($birthdate)->y;
@@ -45,7 +44,7 @@ class UpdateEmployeesUseCase
                         throw new \Exception('El empleado debe ser mayor de 18 años');
                 }
 
-                // * Crear entidad actualizada...
+                // Crear entidad actualizada
                 $employee = new Employee(
                         $id,
                         $employeeDTO->dni,
@@ -58,7 +57,7 @@ class UpdateEmployeesUseCase
                         $existingEmployee->getCreatedAt()
                 );
 
-                // * Actualizar...
+                // Actualizar
                 $this->employeeRepository->update($employee);
 
                 return [

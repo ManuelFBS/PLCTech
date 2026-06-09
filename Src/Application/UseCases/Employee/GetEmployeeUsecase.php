@@ -22,7 +22,7 @@ class GetEmployeeUseCase
                         return null;
                 }
 
-                return new EmployeeDTO([
+                $data = [
                         'id' => $employee->getId(),
                         'dni' => $employee->getDni(),
                         'names' => $employee->getNames(),
@@ -32,6 +32,8 @@ class GetEmployeeUseCase
                         'address' => $employee->getAddress(),
                         'phone_number' => $employee->getPhoneNumber(),
                         'created_at' => $employee->getCreatedAt()
-                ]);
+                ];
+
+                return new EmployeeDTO($data);
         }
 }

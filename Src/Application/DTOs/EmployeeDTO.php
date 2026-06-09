@@ -14,21 +14,37 @@ class EmployeeDTO
         public ?string $phone_number;
         public ?string $created_at;
 
-        public function __construct(array $data = [])
+        public function __construct(array $data)
         {
-                $this->id = $data['id'] ?? null;
-                $this->dni = $data['dni'] ?? '';
-                $this->dni = $data['names'] ?? '';
-                $this->dni = $data['surnames'] ?? '';
-                $this->dni = $data['birthdate'] ?? '';
-                $this->dni = $data['email'] ?? '';
-                $this->dni = $data['address'] ?? '';
-                $this->dni = $data['phone_number'] ?? null;
-                $this->dni = $data['created_at'] ?? null;
+                $this->id = (int) ($data['id'] ?? 0);
+                $this->dni = (string) ($data['dni'] ?? '');
+                $this->names = (string) ($data['names'] ?? '');
+                $this->surnames = (string) ($data['surnames'] ?? '');
+                $this->birthdate = (string) ($data['birthdate'] ?? '');
+                $this->email = (string) ($data['email'] ?? '');
+                $this->address = (string) ($data['address'] ?? '');
+                $this->phone_number = $data['phone_number'] ?? null;
+                $this->created_at = (string) ($data['created_at'] ?? '');
         }
 
         public function getFullName(): string
         {
                 return $this->names . ' ' . $this->surnames;
+        }
+
+        // * Método para depuración...
+        public function toArray(): array
+        {
+                return [
+                        'id' => $this->id,
+                        'dni' => $this->dni,
+                        'names' => $this->names,
+                        'surnames' => $this->surnames,
+                        'birthdate' => $this->birthdate,
+                        'email' => $this->email,
+                        'address' => $this->address,
+                        'phone_number' => $this->phone_number,
+                        'created_at' => $this->created_at
+                ];
         }
 }

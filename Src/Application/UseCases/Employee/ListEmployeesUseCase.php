@@ -9,9 +9,8 @@ class ListEmployeesUseCase
 {
         private EmployeeRepositoryInterface $employeeRepository;
 
-        public function __construct(
-                EmployeeRepositoryInterface $employeeRepository
-        ) {
+        public function __construct(EmployeeRepositoryInterface $employeeRepository)
+        {
                 $this->employeeRepository = $employeeRepository;
         }
 
@@ -21,7 +20,8 @@ class ListEmployeesUseCase
                 $employeesDTO = [];
 
                 foreach ($employees as $employee) {
-                        $employeesDTO[] = new EmployeeDTO([
+                        // > Crear un array con los datos en el orden correcto...
+                        $data = [
                                 'id' => $employee->getId(),
                                 'dni' => $employee->getDni(),
                                 'names' => $employee->getNames(),
@@ -31,7 +31,9 @@ class ListEmployeesUseCase
                                 'address' => $employee->getAddress(),
                                 'phone_number' => $employee->getPhoneNumber(),
                                 'created_at' => $employee->getCreatedAt()
-                        ]);
+                        ];
+
+                        $employeesDTO[] = new EmployeeDTO($data);
                 }
 
                 return $employeesDTO;

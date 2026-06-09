@@ -10,15 +10,14 @@ class CreateEmployeeUseCase
 {
         private EmployeeRepositoryInterface $employeeRepository;
 
-        public function __construct(
-                EmployeeRepositoryInterface $employeeRepository
-        ) {
+        public function __construct(EmployeeRepositoryInterface $employeeRepository)
+        {
                 $this->employeeRepository = $employeeRepository;
         }
 
         public function execute(EmployeeDTO $employeeDTO): array
         {
-                // > Validaciones...
+                // Validaciones
                 if ($this->employeeRepository->findByDni($employeeDTO->dni)) {
                         throw new \Exception('Ya existe un empleado con ese DNI');
                 }
@@ -27,7 +26,7 @@ class CreateEmployeeUseCase
                         throw new \Exception('Ya existe un empleado con ese email');
                 }
 
-                // > Validar edad (mínimo 18 años)...
+                // Validar edad
                 $birthdate = new \DateTime($employeeDTO->birthdate);
                 $today = new \DateTime();
                 $age = $today->diff($birthdate)->y;
@@ -36,7 +35,7 @@ class CreateEmployeeUseCase
                         throw new \Exception('El empleado debe ser mayor de 18 años');
                 }
 
-                // > Crear entidad...
+                // Crear entidad
                 $employee = new Employee(
                         null,
                         $employeeDTO->dni,
@@ -45,10 +44,10 @@ class CreateEmployeeUseCase
                         $employeeDTO->birthdate,
                         $employeeDTO->email,
                         $employeeDTO->address,
-                        $employeeDTO->phone_number,
+                        $employeeDTO->phone_number
                 );
 
-                // > Guardar...
+                // Guardar
                 $employeeId = $this->employeeRepository->save($employee);
 
                 return [

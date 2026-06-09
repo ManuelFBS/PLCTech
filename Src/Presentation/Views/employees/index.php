@@ -10,7 +10,10 @@
                         </div>
                         <div class="level-right">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees/create" class="button is-success">
+                                        <a 
+                                                href="<?php echo $_ENV['APP_URL']; ?>/employees/create" 
+                                                class="button is-success"
+                                        >
                                                 <i class="fas fa-plus"></i> Nuevo Empleado
                                         </a>
                                 </div>
@@ -41,13 +44,19 @@
                                 <tbody>
                                         <?php foreach ($employees as $employee): ?>
                                                 <tr>
-                                                        <td><?php echo $employee->id; ?></td>
-                                                        <td><?php echo htmlspecialchars($employee->dni); ?></td>
-                                                        <td><?php echo htmlspecialchars($employee->names); ?></td>
-                                                        <td><?php echo htmlspecialchars($employee->surnames); ?></td>
-                                                        <td><?php echo htmlspecialchars($employee->email); ?></td>
+                                                        <td><?php echo htmlspecialchars((string) ($employee->id ?? '')); ?></td>
+                                                        <td><?php echo htmlspecialchars($employee->dni ?? ''); ?></td>
+                                                        <td><?php echo htmlspecialchars($employee->names ?? ''); ?></td>
+                                                        <td><?php echo htmlspecialchars($employee->surnames ?? ''); ?></td>
+                                                        <td><?php echo htmlspecialchars($employee->email ?? ''); ?></td>
                                                         <td><?php echo htmlspecialchars($employee->phone_number ?? '-'); ?></td>
-                                                        <td><?php echo date('d/m/Y H:i', strtotime($employee->created_at)); ?></td>
+                                                        <td>
+                                                                <?php
+                                                                echo $employee->created_at
+                                                                        ? date('d/m/Y H:i', strtotime($employee->created_at))
+                                                                        : '-';
+                                                                ?>
+                                                        </td>
                                                         <td>
                                                                 <div class="buttons are-small">
                                                                         <a 

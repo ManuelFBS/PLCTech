@@ -160,6 +160,7 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'PLCTech\\Domain\\Repositories\\UserRepositoryInterface' => __DIR__ . '/../..' . '/src/Domain/Repositories/UserRepositoryInterface.php',
         'PLCTech\\Domain\\ValueObjects\\DNI' => __DIR__ . '/../..' . '/src/Domain/ValueObjects/DNI.php',
         'PLCTech\\Domain\\ValueObjects\\Email' => __DIR__ . '/../..' . '/src/Domain/ValueObjects/Email.php',
+        'PLCTech\\Helpers\\PathHelper' => __DIR__ . '/../..' . '/src/Helpers/PathHelper.php',
         'PLCTech\\Infrastructure\\Auth\\JWTHandler' => __DIR__ . '/../..' . '/src/Infrastructure/Auth/JWTHandler.php',
         'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLCustomerRepository' => __DIR__ . '/../..' . '/src/Infrastructure/Database/Repositories/MySQLCustomerRepository.php',
         'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLEmployeeRepository' => __DIR__ . '/../..' . '/src/Infrastructure/Database/Repositories/MySQLEmployeeRepository.php',

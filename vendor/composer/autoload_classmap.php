@@ -87,6 +87,7 @@ return array(
     'PLCTech\\Domain\\Repositories\\UserRepositoryInterface' => $baseDir . '/src/Domain/Repositories/UserRepositoryInterface.php',
     'PLCTech\\Domain\\ValueObjects\\DNI' => $baseDir . '/src/Domain/ValueObjects/DNI.php',
     'PLCTech\\Domain\\ValueObjects\\Email' => $baseDir . '/src/Domain/ValueObjects/Email.php',
+    'PLCTech\\Helpers\\PathHelper' => $baseDir . '/src/Helpers/PathHelper.php',
     'PLCTech\\Infrastructure\\Auth\\JWTHandler' => $baseDir . '/src/Infrastructure/Auth/JWTHandler.php',
     'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLCustomerRepository' => $baseDir . '/src/Infrastructure/Database/Repositories/MySQLCustomerRepository.php',
     'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLEmployeeRepository' => $baseDir . '/src/Infrastructure/Database/Repositories/MySQLEmployeeRepository.php',

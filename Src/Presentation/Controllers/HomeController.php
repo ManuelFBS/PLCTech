@@ -2,6 +2,7 @@
 
 namespace PLCTech\Presentation\Controllers;
 
+use PLCTech\Helpers\PathHelper;
 use PLCTech\Presentation\Middleware\AuthMiddleware;
 
 class HomeController
@@ -11,7 +12,9 @@ class HomeController
                 $user = AuthMiddleware::getUser();
                 $role = $user['role'] ?? 'Guest';
 
-                require_once __DIR__ . '../Views/layouts/navbar.php';
-                require_once __DIR__ . '../Views/home/index.php';
+                $viewsPath = PathHelper::getViewsPath();
+
+                require_once $viewsPath . '/layouts/navbar.php';
+                require_once $viewsPath . '/home/index.php';
         }
 }

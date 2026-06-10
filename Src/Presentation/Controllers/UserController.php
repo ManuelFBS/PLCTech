@@ -15,8 +15,8 @@ use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
 
 class UserController
 {
-        private CreateUserUseCase $createUserUseCase;
         private ListUsersUseCase $listUsersUseCase;
+        private CreateUserUseCase $createUserUseCase;
         private GetUserUseCase $getUserUseCase;
         private UpdateUserUseCase $updateUserUseCase;
         private DeleteUserUseCase $deleteUserUseCase;
@@ -27,8 +27,8 @@ class UserController
         {
                 $userRepository = new MySQLUserRepository();
 
-                $this->createUserUseCase = new CreateUserUseCase($userRepository);
                 $this->listUsersUseCase = new ListUsersUseCase($userRepository);
+                $this->createUserUseCase = new CreateUserUseCase($userRepository);
                 $this->getUserUseCase = new GetUserUseCase($userRepository);
                 $this->updateUserUseCase = new UpdateUserUseCase($userRepository);
                 $this->deleteUserUseCase = new DeleteUserUseCase($userRepository);
@@ -36,13 +36,12 @@ class UserController
                 $this->customerRepository = new MySQLCustomerRepository();
         }
 
-        // * Listar todos los usuarios...
         public function index(): void
         {
                 try {
                         $users = $this->listUsersUseCase->execute();
                         $viewsPath = PathHelper::getViewsPath();
-                        //
+
                         require_once $viewsPath . '/layouts/navbar.php';
                         require_once $viewsPath . '/users/index.php';
                 } catch (\Exception $e) {
@@ -51,19 +50,21 @@ class UserController
                 }
         }
 
-        // * Mostrar formulario de creación...
         public function create(): void
         {
-                $employees = $this->employeeRepository->findAll();
-                $customers = $this->customerRepository->findAll();
+                try {
+                        $employees = $this->employeeRepository->findAll();
+                        $customers = $this->customerRepository->findAll();
+                        $viewsPath = PathHelper::getViewsPath();
 
-                $viewsPath = PathHelper::getViewsPath();
-
-                require_once $viewsPath . '/layouts/navbar.php';
-                require_once $viewsPath . '/users/create.php';
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/users/create.php';
+                } catch (\Exception $e) {
+                        $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
+                }
         }
 
-        // * Guardar nuevo usuario...
         public function store(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -73,20 +74,14 @@ class UserController
 
                 try {
                         $userDTO = new UserDTO([
-                                'dni' => $_POST['dni'],
-                                'user' => $_POST['user'],
-                                'email' => $_POST['email'],
-                                'role' => $_POST['role'],
-                                'password' => $_POST['password'],
-                                'is_active' => isset($_POST['is_active'])
-                                        ? (bool) $_POST['is_active']
-                                        : true,
-                                'employee_id' => !empty($_POST['employee_id'])
-                                        ? (int) $_POST['employee_id']
-                                        : null,
-                                'customer_id' => !empty($_POST['customer_id'])
-                                        ? (int) $_POST['customer_id']
-                                        : null
+                                'dni' => $_POST['dni'] ?? '',
+                                'user' => $_POST['user'] ?? '',
+                                'email' => $_POST['email'] ?? '',
+                                'role' => $_POST['role'] ?? '',
+                                'password' => $_POST['password'] ?? '',
+                                'is_active' => isset($_POST['is_active']) ? true : false,
+                                'employee_id' => !empty($_POST['employee_id']) ? (int) $_POST['employee_id'] : null,
+                                'customer_id' => !empty($_POST['customer_id']) ? (int) $_POST['customer_id'] : null
                         ]);
 
                         $result = $this->createUserUseCase->execute($userDTO);
@@ -99,16 +94,9 @@ class UserController
                 exit;
         }
 
-        // * Mostrar formulario de edición...
         public function edit(): void
         {
                 $id = $_GET['id'] ?? 0;
-
-                if ($id <= 0) {
-                        $_SESSION['error_message'] = 'ID de usuario inválido';
-                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                        exit();
-                }
 
                 try {
                         $user = $this->getUserUseCase->execute((int) $id);
@@ -119,18 +107,16 @@ class UserController
 
                         $employees = $this->employeeRepository->findAll();
                         $customers = $this->customerRepository->findAll();
-
                         $viewsPath = PathHelper::getViewsPath();
+
                         require_once $viewsPath . '/layouts/navbar.php';
                         require_once $viewsPath . '/users/edit.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                        exit;
                 }
         }
 
-        // * Actualizar usuario...
         public function update(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -142,12 +128,12 @@ class UserController
 
                 try {
                         $userDTO = new UserDTO([
-                                'dni' => $_POST['dni'],
-                                'user' => $_POST['user'],
-                                'email' => $_POST['email'],
-                                'role' => $_POST['role'],
+                                'dni' => $_POST['dni'] ?? '',
+                                'user' => $_POST['user'] ?? '',
+                                'email' => $_POST['email'] ?? '',
+                                'role' => $_POST['role'] ?? '',
                                 'password' => $_POST['password'] ?? '',
-                                'is_active' => isset($_POST['is_active']) ? (bool) $_POST['is_active'] : true,
+                                'is_active' => isset($_POST['is_active']) ? true : false,
                                 'employee_id' => !empty($_POST['employee_id']) ? (int) $_POST['employee_id'] : null,
                                 'customer_id' => !empty($_POST['customer_id']) ? (int) $_POST['customer_id'] : null
                         ]);
@@ -164,7 +150,7 @@ class UserController
 
         public function delete(): void
         {
-                $id = $_POST['id'] ?? $_GET['id'] ?? 0;
+                $id = $_GET['id'] ?? 0;
 
                 try {
                         $result = $this->deleteUserUseCase->execute((int) $id);

@@ -15,13 +15,13 @@ class DeleteUserUseCase
 
         public function execute(int $id): array
         {
-                // * Verificar si existe...
                 $user = $this->userRepository->find($id);
+
                 if (!$user) {
                         throw new \Exception('Usuario no encontrado');
                 }
 
-                // * Prevenir eliminar el último Admin (regla de negocio)...
+                // Prevenir eliminar el último Admin
                 if ($user->isAdmin()) {
                         $allUsers = $this->userRepository->findAll();
                         $adminCount = 0;
@@ -36,7 +36,6 @@ class DeleteUserUseCase
                         }
                 }
 
-                // * Eliminar...
                 $this->userRepository->delete($id);
 
                 return [

@@ -17,43 +17,87 @@ class UpdateUserUseCase
 
         public function execute(int $id, UserDTO $userDTO): array
         {
-                // > Verificar si existe...
                 $existingUser = $this->userRepository->find($id);
+
                 if (!$existingUser) {
                         throw new \Exception('Usuario no encontrado');
                 }
 
-                // > Validar DNI único...
+                // * Validar DNI único (excluyendo el actual)...
                 $userByDni = $this->userRepository->findByDni($userDTO->dni);
                 if ($userByDni && $userByDni->getId() !== $id) {
                         throw new \Exception('Ya existe un usuario con ese DNI');
                 }
 
-                // > Validar email único...
+                // * Validar username único...
+                $userByUsername = $this->userRepository->findByUsername($userDTO->user);
+                if ($userByUsername && $userByUsername->getId() !== $id) {
+                        throw new \Exception(
+                                'Ya existe un usuario con ese nombre de usuario'
+                        );
+                }
+
+                // * Validar email único...
                 $userByEmail = $this->userRepository->findByEmail($userDTO->email);
                 if ($userByEmail && $userByEmail->getId() !== $id) {
                         throw new \Exception('Ya existe un usuario con ese email');
                 }
 
-                // > Actualizar propiedades...
-                $user = new User(
+                // * Validar reglas de negocio...
+                if (
+                        $userDTO->role === 'Employee' &&
+                        !$userDTO->employee_id
+                ) {
+                        throw new \Exception(
+                                'Los usuarios con rol Employee deben tener un empleado asociado'
+                        );
+                }
+
+                if (
+                        $userDTO->role === 'Customer' &&
+                        !$userDTO->customer_id
+                ) {
+                        throw new \Exception(
+                                'Los usuarios con rol Customer deben tener un cliente asociado'
+                        );
+                }
+
+                if (
+                        $userDTO->role === 'Admin' &&
+                        ($userDTO->employee_id || $userDTO->customer_id)
+                ) {
+                        throw new \Exception(
+                                'Los usuarios Admin no deben tener empleado o cliente asociado'
+                        );
+                }
+
+                // * Determinar la contraseña a usar...
+                $passwordToUse = $existingUser->getPassword();  // > Mantener la existente por defecto...
+
+                // * Si se proporcionó una nueva contraseña (no vacía), hashearla...
+                if (!empty($userDTO->password)) {
+                        $passwordToUse =
+                                password_hash(
+                                        $userDTO->password, PASSWORD_DEFAULT
+                                );
+                }
+
+                // * Crear usuario actualizado...
+                $updatedUser = new User(
                         $id,
                         $userDTO->dni,
                         $userDTO->user,
                         $userDTO->email,
                         $userDTO->role,
-                        !empty($userDTO->password)
-                                ? password_hash($userDTO->password, PASSWORD_DEFAULT)
-                                : $existingUser->getPassword(),
+                        $passwordToUse,  // > ← Usar la variable determinada...
                         $userDTO->is_active,
                         $userDTO->employee_id,
                         $userDTO->customer_id,
                         $existingUser->getLastLogin(),
-                        $existingUser->getUpdatedAt()
+                        $existingUser->getCreatedAt()
                 );
 
-                // > Actualizar...
-                $this->userRepository->update($user);
+                $this->userRepository->update($updatedUser);
 
                 return [
                         'success' => true,

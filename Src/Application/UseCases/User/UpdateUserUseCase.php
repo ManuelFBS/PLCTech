@@ -17,28 +17,43 @@ class UpdateUserUseCase
 
         public function execute(int $id, UserDTO $userDTO): array
         {
-                $user = $this->userRepository->find($id);
-
-                if (!$user) {
+                // > Verificar si existe...
+                $existingUser = $this->userRepository->find($id);
+                if (!$existingUser) {
                         throw new \Exception('Usuario no encontrado');
                 }
 
+                // > Validar DNI único...
+                $userByDni = $this->userRepository->findByDni($userDTO->dni);
+                if ($userByDni && $userByDni->getId() !== $id) {
+                        throw new \Exception('Ya existe un usuario con ese DNI');
+                }
+
+                // > Validar email único...
+                $userByEmail = $this->userRepository->findByEmail($userDTO->email);
+                if ($userByEmail && $userByEmail->getId() !== $id) {
+                        throw new \Exception('Ya existe un usuario con ese email');
+                }
+
                 // > Actualizar propiedades...
-                $updatedUser = new User(
-                        $user->getId(),
+                $user = new User(
+                        $id,
                         $userDTO->dni,
                         $userDTO->user,
                         $userDTO->email,
                         $userDTO->role,
-                        !empty($userDTO->password) ? password_hash($userDTO->password, PASSWORD_DEFAULT) : $user->getPassword(),
+                        !empty($userDTO->password)
+                                ? password_hash($userDTO->password, PASSWORD_DEFAULT)
+                                : $existingUser->getPassword(),
                         $userDTO->is_active,
                         $userDTO->employee_id,
                         $userDTO->customer_id,
-                        $user->getLastLogin(),
-                        $user->getCreatedAt()
+                        $existingUser->getLastLogin(),
+                        $existingUser->getUpdatedAt()
                 );
 
-                $this->userRepository->update($updatedUser);
+                // > Actualizar...
+                $this->userRepository->update($user);
 
                 return [
                         'success' => true,

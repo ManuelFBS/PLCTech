@@ -21,7 +21,7 @@ class MySQLUserRepository implements UserRepositoryInterface
                 $sql = 'SELECT * FROM users WHERE id = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$id]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if (!$data)
                         return null;
@@ -34,12 +34,9 @@ class MySQLUserRepository implements UserRepositoryInterface
                 $sql = 'SELECT * FROM users WHERE email = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$email]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$data)
-                        return null;
-
-                return $this->mapToEntity($data);
+                return $data ? $this->mapToEntity($data) : null;
         }
 
         public function findByUsername(string $username): ?User
@@ -47,12 +44,9 @@ class MySQLUserRepository implements UserRepositoryInterface
                 $sql = 'SELECT * FROM users WHERE user = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$username]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$data)
-                        return null;
-
-                return $this->mapToEntity($data);
+                return $data ? $this->mapToEntity($data) : null;
         }
 
         public function findByDni(string $dni): ?User
@@ -60,21 +54,18 @@ class MySQLUserRepository implements UserRepositoryInterface
                 $sql = 'SELECT * FROM users WHERE dni = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$dni]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$data)
-                        return null;
-
-                return $this->mapToEntity($data);
+                return $data ? $this->mapToEntity($data) : null;
         }
 
         public function findAll(): array
         {
-                $sql = 'SELECT * FROM users ORDER BY id DESC';
+                $sql = 'SELECT * FROM users ORDER BY id ASC';
                 $stmt = $this->db->query($sql);
                 $users = [];
 
-                while ($data = $stmt->fetch()) {
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $users[] = $this->mapToEntity($data);
                 }
 
@@ -86,7 +77,7 @@ class MySQLUserRepository implements UserRepositoryInterface
                 $sql = 'SELECT * FROM users WHERE employee_id = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$employeeId]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
@@ -96,7 +87,7 @@ class MySQLUserRepository implements UserRepositoryInterface
                 $sql = 'SELECT * FROM users WHERE customer_id = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$customerId]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
@@ -126,8 +117,7 @@ class MySQLUserRepository implements UserRepositoryInterface
         public function update(User $user): void
         {
                 $sql = 'UPDATE users 
-                                SET dni = ?, user = ?, email = ?, role = ?, password = ?, 
-                                        is_active = ?, employee_id = ?, customer_id = ?, last_login = ?
+                                SET dni = ?, user = ?, email = ?, role = ?, password = ?, is_active = ?, employee_id = ?, customer_id = ?, last_login = ?
                                 WHERE id = ?';
                 $stmt = $this->db->prepare($sql);
 
@@ -163,17 +153,17 @@ class MySQLUserRepository implements UserRepositoryInterface
         {
                 return new User(
                         (int) $data['id'],
-                        $data['dni'],
-                        $data['user'],
-                        $data['email'],
-                        $data['role'],
-                        $data['password'],
+                        (string) $data['dni'],
+                        (string) $data['user'],
+                        (string) $data['email'],
+                        (string) $data['role'],
+                        (string) $data['password'],
                         (bool) $data['is_active'],
                         $data['employee_id'] ? (int) $data['employee_id'] : null,
                         $data['customer_id'] ? (int) $data['customer_id'] : null,
-                        $data['last_login'],
-                        $data['created_at'],
-                        $data['updated_at']
+                        (string) $data['last_login'],
+                        (string) $data['created_at'],
+                        $data['updated_at'] ?? null
                 );
         }
 }

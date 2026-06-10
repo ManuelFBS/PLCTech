@@ -1,7 +1,7 @@
 </div> <!-- Cierra .container -->
     </div> <!-- Cierra el div de contenido -->
-    
-    <footer style="background-color: #111111; padding: 0.75rem; text-align: center; margin-top: 0; border-top: 1px solid #ddd;">
+    <div style="margin-top: 100px;">
+    <footer style="background-color: transparent; padding: 0.75rem; text-align: center; margin-top: 5; border-top: 0px solid #ddd;">
         <p style="margin: 0;">
             <strong><?php echo $_ENV['APP_NAME']; ?></strong> &copy; <?php echo date('Y'); ?> - 
             <small>
@@ -10,6 +10,7 @@
             </small>
         </p>
     </footer>
+    </div>
     
     <script>
         // Cerrar mensajes automáticamente

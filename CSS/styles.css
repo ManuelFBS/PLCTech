@@ -6,7 +6,7 @@
 .footer {
     padding: 0.5rem 1rem;
     background-color: black;
-    margin-top: 0;
+    margin-top: 5;
 }
 
 /* Sin flexbox, sin altura forzada */

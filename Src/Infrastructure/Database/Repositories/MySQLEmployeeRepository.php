@@ -49,7 +49,7 @@ class MySQLEmployeeRepository implements EmployeeRepositoryInterface
 
         public function findAll(): array
         {
-                $stmt = $this->db->query('SELECT * FROM employees ORDER BY id DESC');
+                $stmt = $this->db->query('SELECT * FROM employees ORDER BY names ASC');
                 $employees = [];
 
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {

@@ -48,7 +48,7 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
 
         public function findAll(): array
         {
-                $sql = 'SELECT * FROM customers ORDER BY id DESC';
+                $sql = 'SELECT * FROM customers ORDER BY full_name ASC';
                 $stmt = $this->db->query($sql);
                 $customers = [];
 

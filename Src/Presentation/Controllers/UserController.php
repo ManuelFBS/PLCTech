@@ -62,6 +62,7 @@ class UserController
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
+                        exit;
                 }
         }
 

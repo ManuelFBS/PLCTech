@@ -28,6 +28,7 @@ class GetUserUseCase
                         'user' => $user->getUser(),
                         'email' => $user->getEmail(),
                         'role' => $user->getRole(),
+                        'password' => '',  // No devolver la contraseña por seguridad
                         'is_active' => $user->isActive(),
                         'employee_id' => $user->getEmployeeId(),
                         'customer_id' => $user->getCustomerId(),

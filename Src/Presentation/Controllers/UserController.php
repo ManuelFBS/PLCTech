@@ -53,15 +53,18 @@ class UserController
         public function create(): void
         {
                 try {
+                        // * Obtener todos los empleados y clientes...
                         $employees = $this->employeeRepository->findAll();
                         $customers = $this->customerRepository->findAll();
+
                         $viewsPath = PathHelper::getViewsPath();
 
                         require_once $viewsPath . '/layouts/navbar.php';
                         require_once $viewsPath . '/users/create.php';
                 } catch (\Exception $e) {
-                        $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
+                        echo 'ERROR: ' . $e->getMessage() . '<br>';
+                        echo 'Archivo: ' . $e->getFile() . '<br>';
+                        echo 'Línea: ' . $e->getLine() . '<br>';
                         exit;
                 }
         }
@@ -100,14 +103,20 @@ class UserController
                 $id = $_GET['id'] ?? 0;
 
                 try {
-                        $user = $this->getUserUseCase->execute((int) $id);
+                        // * Obtener el usuario...
+                        $userDTO = $this->getUserUseCase->execute((int) $id);
 
-                        if (!$user) {
+                        if (!$userDTO) {
                                 throw new \Exception('Usuario no encontrado');
                         }
 
+                        // * Obtener empleados y clientes para los selects...
                         $employees = $this->employeeRepository->findAll();
                         $customers = $this->customerRepository->findAll();
+
+                        // * Pasar las variables a la vista...
+                        $user = $userDTO;  // > Renombrar para la vista...
+
                         $viewsPath = PathHelper::getViewsPath();
 
                         require_once $viewsPath . '/layouts/navbar.php';
@@ -115,6 +124,7 @@ class UserController
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
+                        exit;
                 }
         }
 

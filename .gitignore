@@ -6,6 +6,7 @@ img/product/*.png
 img/*.png
 
 #Test
+/Test
 test.php
 hash_password.php
 check_files.php

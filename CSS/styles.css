@@ -1,17 +1,51 @@
-/* Custom styles complementarios a Bulma */
-.navbar-brand img {
-    max-height: 3rem;
-}
-
+/* Estilos básicos */
 .main-content {
-    min-height: calc(100vh - 3.25rem);
-    padding: 2rem;
+    padding: 1rem 0;
 }
 
 .footer {
-    margin-top: auto;
+    padding: 0.5rem 1rem;
+    background-color: black;
+    margin-top: 0;
+}
+
+/* Sin flexbox, sin altura forzada */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos existentes que funcionan */
+.navbar-brand img {
+    max-height: 3rem;
 }
 
 .has-shadow {
     box-shadow: 0 2px 3px rgba(0,0,0,0.1);
 }
+
+.table-container {
+    overflow-x: auto;
+}
+
+.buttons .button {
+    margin: 0 2px;
+}
+
+.notification {
+    margin-bottom: 1rem;
+}
+
+.navbar-item i, .navbar-link i {
+    margin-right: 5px;
+}
+
+/** Tarjetas del dashboard */
+/* .card.has-shadow {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card.has-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+} */

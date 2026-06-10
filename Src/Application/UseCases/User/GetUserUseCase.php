@@ -22,7 +22,7 @@ class GetUserUseCase
                         return null;
                 }
 
-                $data = [
+                return new UserDTO([
                         'id' => $user->getId(),
                         'dni' => $user->getDni(),
                         'user' => $user->getUser(),
@@ -33,8 +33,6 @@ class GetUserUseCase
                         'customer_id' => $user->getCustomerId(),
                         'last_login' => $user->getLastLogin(),
                         'created_at' => $user->getCreatedAt()
-                ];
-
-                return new UserDTO($data);
+                ]);
         }
 }

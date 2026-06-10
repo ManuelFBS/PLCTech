@@ -20,7 +20,7 @@ class ListUsersUseCase
                 $usersDTO = [];
 
                 foreach ($users as $user) {
-                        $data = [
+                        $usersDTO[] = new UserDTO([
                                 'id' => $user->getId(),
                                 'dni' => $user->getDni(),
                                 'user' => $user->getUser(),
@@ -31,9 +31,7 @@ class ListUsersUseCase
                                 'customer_id' => $user->getCustomerId(),
                                 'last_login' => $user->getLastLogin(),
                                 'created_at' => $user->getCreatedAt()
-                        ];
-
-                        $usersDTO[] = new UserDTO($data);
+                        ]);
                 }
 
                 return $usersDTO;

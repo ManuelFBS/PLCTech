@@ -8,6 +8,7 @@ use PLCTech\Application\UseCases\User\DeleteUserUseCase;
 use PLCTech\Application\UseCases\User\GetUserUseCase;
 use PLCTech\Application\UseCases\User\ListUsersUseCase;
 use PLCTech\Application\UseCases\User\UpdateUserUseCase;
+use PLCTech\Helpers\PathHelper;
 use PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
@@ -35,31 +36,38 @@ class UserController
                 $this->customerRepository = new MySQLCustomerRepository();
         }
 
+        // * Listar todos los usuarios...
         public function index(): void
         {
                 try {
                         $users = $this->listUsersUseCase->execute();
-                        require_once __DIR__ . '/../Views/layouts/navbar.php';
-                        require_once __DIR__ . '/../Views/users/index.php';
+                        $viewsPath = PathHelper::getViewsPath();
+                        //
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/users/index.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL']);
+                        header('Location: ' . PathHelper::getBaseUrl());
                 }
         }
 
+        // * Mostrar formulario de creación...
         public function create(): void
         {
                 $employees = $this->employeeRepository->findAll();
                 $customers = $this->customerRepository->findAll();
 
-                require_once __DIR__ . '/../Views/layouts/navbar.php';
-                require_once __DIR__ . '/../Views/users/create.php';
+                $viewsPath = PathHelper::getViewsPath();
+
+                require_once $viewsPath . '/layouts/navbar.php';
+                require_once $viewsPath . '/users/create.php';
         }
 
+        // * Guardar nuevo usuario...
         public function store(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/users');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
                         exit;
                 }
 
@@ -87,13 +95,20 @@ class UserController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/users');
+                header('Location: ' . PathHelper::getBaseUrl() . '/users');
                 exit;
         }
 
+        // * Mostrar formulario de edición...
         public function edit(): void
         {
                 $id = $_GET['id'] ?? 0;
+
+                if ($id <= 0) {
+                        $_SESSION['error_message'] = 'ID de usuario inválido';
+                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
+                        exit();
+                }
 
                 try {
                         $user = $this->getUserUseCase->execute((int) $id);
@@ -105,18 +120,21 @@ class UserController
                         $employees = $this->employeeRepository->findAll();
                         $customers = $this->customerRepository->findAll();
 
-                        require_once __DIR__ . '/../Views/layouts/navbar.php';
-                        require_once __DIR__ . '/../Views/users/edit.php';
+                        $viewsPath = PathHelper::getViewsPath();
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/users/edit.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL'] . '/users');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
+                        exit;
                 }
         }
 
+        // * Actualizar usuario...
         public function update(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/users');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
                         exit;
                 }
 
@@ -140,7 +158,7 @@ class UserController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/users');
+                header('Location: ' . PathHelper::getBaseUrl() . '/users');
                 exit;
         }
 
@@ -155,7 +173,7 @@ class UserController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/users');
+                header('Location: ' . PathHelper::getBaseUrl() . '/users');
                 exit;
         }
 }

@@ -16,19 +16,19 @@ class UserDTO
         public ?string $last_login;
         public ?string $created_at;
 
-        public function __construct(array $data = [])
+        public function __construct(array $data)
         {
-                $this->id = $data['id'] ?? null;
-                $this->dni = $data['dni'] ?? '';
-                $this->user = $data['user'] ?? '';
-                $this->email = $data['email'] ?? '';
-                $this->role = $data['role'] ?? '';
-                $this->password = $data['password'] ?? '';
-                $this->is_active = $data['is_active'] ?? true;
-                $this->employee_id = $data['employee_id'] ?? null;
-                $this->customer_id = $data['customer_id'] ?? null;
-                $this->last_login = $data['last_login'] ?? null;
-                $this->created_at = $data['created_at'] ?? null;
+                $this->id = (int) $data['id'] ?? null;
+                $this->dni = (string) $data['dni'] ?? '';
+                $this->user = (string) $data['user'] ?? '';
+                $this->email = (string) $data['email'] ?? '';
+                $this->role = (string) $data['role'] ?? '';
+                $this->password = (string) $data['password'] ?? '';
+                $this->is_active = (bool) $data['is_active'] ?? true;
+                $this->employee_id = (int) $data['employee_id'] ?? null;
+                $this->customer_id = (int) $data['customer_id'] ?? null;
+                $this->last_login = (string) $data['last_login'] ?? null;
+                $this->created_at = (string) $data['created_at'] ?? '';
         }
 
         public function toArray(): array

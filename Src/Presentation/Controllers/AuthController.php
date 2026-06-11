@@ -5,6 +5,8 @@ namespace PLCTech\Presentation\Controllers;
 use PLCTech\Application\UseCases\Auth\LoginUseCase;
 use PLCTech\Application\UseCases\Auth\LogoutUseCase;
 use PLCTech\Infrastructure\Auth\JWTHandler;
+use PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository;
+use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
 
 class AuthController
@@ -15,14 +17,23 @@ class AuthController
         public function __construct()
         {
                 $userRepository = new MySQLUserRepository();
+                $employeeRepository = new MySQLEmployeeRepository();
+                $customerRepository = new MySQLCustomerRepository();
                 $jwtHandler = new JWTHandler();
-                $this->loginUseCase = new LoginUseCase($userRepository, $jwtHandler);
+
+                $this->loginUseCase = new LoginUseCase(
+                        $userRepository,
+                        $employeeRepository,
+                        $customerRepository,
+                        $jwtHandler
+                );
+
                 $this->logoutUseCase = new LogoutUseCase();
         }
 
         public function showLogin(): void
         {
-                // Si ya está logueado, redirigir al home
+                // > Si ya está logueado, redirigir al home...
                 if (isset($_SESSION['user_id'])) {
                         header('Location: ' . $_ENV['APP_URL']);
                         exit;
@@ -45,7 +56,11 @@ class AuthController
                         $result = $this->loginUseCase->execute($username, $password);
 
                         if ($result) {
-                                $_SESSION['success_message'] = '¡Bienvenido ' . $result['user']['username'] . '!';
+                                // $_SESSION['success_message'] = '¡Bienvenido ' . $result['user']['username'] . '!';
+                                $_SESSION['success_message'] =
+                                        '¡Bienvenido '
+                                        . $result['user']['full_name']
+                                        . '!';
                                 header('Location: ' . $_ENV['APP_URL']);
                         } else {
                                 $_SESSION['error_message'] = 'Credenciales inválidas';

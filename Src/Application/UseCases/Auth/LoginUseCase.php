@@ -2,19 +2,27 @@
 
 namespace PLCTech\Application\UseCases\Auth;
 
+use PLCTech\Domain\Repositories\CustomerRepositoryInterface;
+use PLCTech\Domain\Repositories\EmployeeRepositoryInterface;
 use PLCTech\Domain\Repositories\UserRepositoryInterface;
 use PLCTech\Infrastructure\Auth\JWTHandler;
 
 class LoginUseCase
 {
         private UserRepositoryInterface $userRepository;
+        private EmployeeRepositoryInterface $employeeRepository;
+        private CustomerRepositoryInterface $customerRepository;
         private JWTHandler $jwtHandler;
 
         public function __construct(
                 UserRepositoryInterface $userRepository,
+                EmployeeRepositoryInterface $employeeRepository,
+                CustomerRepositoryInterface $customerRepository,
                 JWTHandler $jwtHandler
         ) {
                 $this->userRepository = $userRepository;
+                $this->employeeRepository = $employeeRepository;
+                $this->customerRepository = $customerRepository;
                 $this->jwtHandler = $jwtHandler;
         }
 
@@ -40,6 +48,41 @@ class LoginUseCase
                         return null;
                 }
 
+                // ?
+                // > Obtener el nombre completo según el rol...
+                $fullName = '';
+                if ($user->isAdmin()) {
+                        // Para Admin, buscar en employees...
+                        if ($user->getEmployeeId()) {
+                                $employee = $this->employeeRepository->find($user->getEmployeeId());
+                                if ($employee) {
+                                        $fullName = $employee->getFullName();
+                                }
+                        }
+                } elseif ($user->isEmployee()) {
+                        // Para Employee, buscar en employees...
+                        if ($user->getEmployeeId()) {
+                                $employee = $this->employeeRepository->find($user->getEmployeeId());
+                                if ($employee) {
+                                        $fullName = $employee->getFullName();
+                                }
+                        }
+                } elseif ($user->isCustomer()) {
+                        // Para Customer, buscar en customers...
+                        if ($user->getCustomerId()) {
+                                $customer = $this->customerRepository->find($user->getCustomerId());
+                                if ($customer) {
+                                        $fullName = $customer->getFullName();
+                                }
+                        }
+                }
+
+                // > Si no se encontró nombre completo, usar el username...
+                if (empty($fullName)) {
+                        $fullName = $user->getUser();
+                }
+                // ?
+
                 // > Actualizar último login...
                 $this->userRepository->updateLastLogin($user->getId(), date('Y-m-d H:i:s'));
 
@@ -47,6 +90,7 @@ class LoginUseCase
                 $token = $this->jwtHandler->generate([
                         'user_id' => $user->getId(),
                         'username' => $user->getUser(),
+                        'full_name' => $fullName,
                         'role' => $user->getRole(),
                         'email' => $user->getEmail()
                 ]);
@@ -54,6 +98,7 @@ class LoginUseCase
                 // > Guardar en sesión...
                 $_SESSION['user_id'] = $user->getId();
                 $_SESSION['username'] = $user->getUser();
+                $_SESSION['full_name'] = $fullName;
                 $_SESSION['role'] = $user->getRole();
                 $_SESSION['user_email'] = $user->getEmail();
                 $_SESSION['token'] = $token;
@@ -62,6 +107,7 @@ class LoginUseCase
                         'user' => [
                                 'id' => $user->getId(),
                                 'username' => $user->getUser(),
+                                'full_name' => $fullName,
                                 'email' => $user->getEmail(),
                                 'role' => $user->getRole()
                         ],

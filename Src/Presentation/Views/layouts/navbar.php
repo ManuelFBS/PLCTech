@@ -143,22 +143,27 @@
                                         </div>
                                 </div>
                                         
-                                        <div class="navbar-end">
-                                                <div class="navbar-item has-dropdown is-hoverable">
-                                                        <a class="navbar-link">
-                                                                <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['username']); ?>
+                                <div class="navbar-end">
+                                        <div class="navbar-item has-dropdown is-hoverable">
+                                                <a class="navbar-link">
+                                                        <i class="fas fa-user-circle"></i>
+                                                        <?php
+                                                        // > Mostrar nombre completo si existe, si no, mostrar username...
+                                                        $displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
+                                                        echo htmlspecialchars($displayName);
+                                                        ?>
+                                                </a>
+                                                <div class="navbar-dropdown is-right">
+                                                        <a class="navbar-item" href="#">
+                                                                <i class="fas fa-id-card"></i> Mi cuenta
                                                         </a>
-                                                        <div class="navbar-dropdown is-right">
-                                                                <a class="navbar-item" href="#">
-                                                                        <i class="fas fa-id-card"></i> Mi cuenta
-                                                                </a>
-                                                                <hr class="navbar-divider">
-                                                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/logout">
-                                                                        <i class="fas fa-sign-out-alt"></i> Salir
-                                                                </a>
-                                                        </div>
+                                                        <hr class="navbar-divider">
+                                                        <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/logout">
+                                                                <i class="fas fa-sign-out-alt"></i> Salir
+                                                        </a>
                                                 </div>
                                         </div>
+                                </div>
                         </div>
                 </div>
         </nav>

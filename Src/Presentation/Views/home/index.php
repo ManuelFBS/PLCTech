@@ -11,7 +11,12 @@
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </h1>
             <h2 class="subtitle">
-                Bienvenido, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+                Bienvenido, <strong>
+                    <?php
+                    $displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
+                    echo htmlspecialchars($displayName);
+                    ?>
+                </strong>
             </h2>
             <p class="mt-3">
                 Rol: <span class="tag is-primary is-medium"><?php echo htmlspecialchars($_SESSION['role']); ?></span>

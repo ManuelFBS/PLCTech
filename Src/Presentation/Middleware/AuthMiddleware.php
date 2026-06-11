@@ -43,4 +43,10 @@ class AuthMiddleware
                 $user = self::getUser();
                 return $user['role'] ?? null;
         }
+
+        public static function getFullName(): ?string
+        {
+                $user = self::getUser();
+                return $user['full_name'] ?? ($_SESSION['full_name'] ?? null);
+        }
 }

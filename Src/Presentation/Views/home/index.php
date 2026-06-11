@@ -2,8 +2,10 @@
 // ~ Continuación del layout...
 ?>
 
-<div class="hero is-light mt-5">
+<div class="hero is-light mt-5" style="border-radius: 10px;">
+<!-- <div style="width: 100%; background-color: #cccccc;  border-radius: 10px;"> -->
     <div class="hero-body">
+    <!-- <div style="padding-top: 8px; width: 100%; height: 140px;"> -->
         <div class="container has-text-centered">
             <h1 class="title">
                 <i class="fas fa-tachometer-alt"></i> Dashboard

@@ -40,6 +40,12 @@ body {
     margin-right: 5px;
 }
 
+/** Otros */
+.dashboard-esp {
+    margin-left: 0px !important;
+    background-color: #555555 !important;
+}
+
 /** Tarjetas del dashboard */
 /* .card.has-shadow {
     transition: transform 0.2s, box-shadow 0.2s;

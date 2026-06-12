@@ -69,6 +69,96 @@ class UserController
                 }
         }
 
+        public function search(): void
+        {
+                header('Content-Type: application/json');
+
+                $type = $_GET['type'] ?? '';
+                $value = $_GET['value'] ?? '';
+
+                if (empty($type) || empty($value)) {
+                        echo json_encode(
+                                [
+                                        'found' => false,
+                                        'message' => 'Faltan parámetros de búsqueda'
+                                ]
+                        );
+
+                        return;
+                }
+
+                try {
+                        if ($type === 'dni') {
+                                // > Buscar en employees...
+                                $employee = $this->employeeRepository->findByDni($value);
+                                if ($employee) {
+                                        echo json_encode([
+                                                'found' => true,
+                                                'type' => 'employee',
+                                                'id' => $employee->getId(),
+                                                'name' => $employee->getFullName(),
+                                                'dni' => $employee->getDni(),
+                                                'email' => $employee->getEmail()
+                                        ]);
+                                        return;
+                                }
+
+                                // > Buscar en customers...
+                                $customer = $this->customerRepository->findByDni($value);
+                                if ($customer) {
+                                        echo json_encode([
+                                                'found' => true,
+                                                'type' => 'customer',
+                                                'id' => $customer->getId(),
+                                                'name' => $customer->getFullName(),
+                                                'dni' => $customer->getDni(),
+                                                'email' => $customer->getEmail()
+                                        ]);
+                                        return;
+                                }
+                        } elseif ($type === 'email') {
+                                // > Buscar en employees...
+                                $employee = $this->employeeRepository->findByEmail($value);
+                                if ($employee) {
+                                        echo json_encode([
+                                                'found' => true,
+                                                'type' => 'employee',
+                                                'id' => $employee->getId(),
+                                                'name' => $employee->getFullName(),
+                                                'dni' => $employee->getDni(),
+                                                'email' => $employee->getEmail()
+                                        ]);
+                                        return;
+                                }
+
+                                // > Buscar en customers...
+                                $customer = $this->customerRepository->findByEmail($value);
+                                if ($customer) {
+                                        echo json_encode([
+                                                'found' => true,
+                                                'type' => 'customer',
+                                                'id' => $customer->getId(),
+                                                'name' => $customer->getFullName(),
+                                                'dni' => $customer->getDni(),
+                                                'email' => $customer->getEmail()
+                                        ]);
+                                        return;
+                                }
+                        }
+
+                        echo json_encode([
+                                'found' => false,
+                                'message' => 'No se encontró ningún empleado o cliente con ese '
+                                        . ($type === 'dni' ? 'DNI' : 'email')
+                        ]);
+                } catch (\Exception $e) {
+                        echo json_encode([
+                                'found' => false, 'message' => 'Error en la búsqueda: '
+                                        . $e->getMessage()
+                        ]);
+                }
+        }
+
         public function store(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

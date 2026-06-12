@@ -23,7 +23,7 @@ class GetCustomerUseCase
                         return null;
                 }
 
-                return new CustomerDTO([
+                $data = [
                         'id' => $customer->getId(),
                         'dni' => $customer->getDni(),
                         'full_name' => $customer->getFullName(),
@@ -31,6 +31,8 @@ class GetCustomerUseCase
                         'email' => $customer->getEmail(),
                         'phone_number' => $customer->getPhoneNumber(),
                         'created_at' => $customer->getCreatedAt()
-                ]);
+                ];
+
+                return new CustomerDTO($data);
         }
 }

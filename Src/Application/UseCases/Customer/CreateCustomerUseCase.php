@@ -52,7 +52,7 @@ class CreateCustomerUseCase
                 return [
                         'success' => true,
                         'message' => 'Cliente creado exitosamente',
-                        'employee_id' => $customerId
+                        'customer_id' => $customerId
                 ];
         }
 }

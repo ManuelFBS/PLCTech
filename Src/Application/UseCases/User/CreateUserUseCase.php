@@ -34,11 +34,13 @@ class CreateUserUseCase
 
                 // * Validar reglas de negocio según rol...
                 if (
-                        $userDTO->role === 'Employee' &&
-                        !$userDTO->employee_id
+                        $userDTO->role === 'Employee' ||
+                        $userDTO->role === 'Admin'
                 ) {
                         throw new \Exception(
-                                'Los usuarios con rol Employee deben tener un empleado asociado'
+                                'Los usuarios con rol '
+                                . $userDTO->role
+                                . ' deben tener un empleado asociado'
                         );
                 }
 
@@ -52,11 +54,11 @@ class CreateUserUseCase
                 }
 
                 if (
-                        $userDTO->role === 'Admin' &&
-                        ($userDTO->employee_id || $userDTO->customer_id)
+                        $userDTO->role === 'Customer' &&
+                        $userDTO->employee_id
                 ) {
                         throw new \Exception(
-                                'Los usuarios Admin no deben tener empleado o cliente asociado'
+                                'Los usuarios con rol Customer no deben tener empleado asociado'
                         );
                 }
 

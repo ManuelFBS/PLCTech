@@ -45,11 +45,16 @@ class UpdateUserUseCase
 
                 // * Validar reglas de negocio...
                 if (
-                        $userDTO->role === 'Employee' &&
+                        (
+                                $userDTO->role === 'Employee' ||
+                                $userDTO->role === 'Admin'
+                        ) &&
                         !$userDTO->employee_id
                 ) {
                         throw new \Exception(
-                                'Los usuarios con rol Employee deben tener un empleado asociado'
+                                'Los usuarios con rol '
+                                . $userDTO->role
+                                . ' deben tener un empleado asociado'
                         );
                 }
 
@@ -64,10 +69,28 @@ class UpdateUserUseCase
 
                 if (
                         $userDTO->role === 'Admin' &&
-                        ($userDTO->employee_id || $userDTO->customer_id)
+                        $userDTO->customer_id
                 ) {
                         throw new \Exception(
-                                'Los usuarios Admin no deben tener empleado o cliente asociado'
+                                'Los usuarios Admin no deben tener cliente asociado'
+                        );
+                }
+
+                if (
+                        $userDTO->role === 'Employee' &&
+                        $userDTO->customer_id
+                ) {
+                        throw new \Exception(
+                                'Los usuarios Employee no deben tener cliente asociado'
+                        );
+                }
+
+                if (
+                        $userDTO->role === 'Customer' &&
+                        $userDTO->employee_id
+                ) {
+                        throw new \Exception(
+                                'Los usuarios Customer no deben tener empleado asociado'
                         );
                 }
 

@@ -29,7 +29,7 @@
                         <div class="control">
                             <input class="input" type="text" name="dni" required>
                         </div>
-                        <p class="help">DNI del empleado o cliente</p>
+                        <p class="help is-info">El DNI debe existir en la tabla de Empleados o Clientes</p>
                     </div>
                 </div>
                 
@@ -52,6 +52,7 @@
                         <div class="control">
                             <input class="input" type="email" name="email" required>
                         </div>
+                        <p class="help is-info">El email debe coincidir con el del Empleado o Cliente</p>
                     </div>
                 </div>
                 

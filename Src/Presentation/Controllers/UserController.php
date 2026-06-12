@@ -20,20 +20,18 @@ class UserController
         private GetUserUseCase $getUserUseCase;
         private UpdateUserUseCase $updateUserUseCase;
         private DeleteUserUseCase $deleteUserUseCase;
-        private MySQLEmployeeRepository $employeeRepository;
-        private MySQLCustomerRepository $customerRepository;
 
         public function __construct()
         {
                 $userRepository = new MySQLUserRepository();
+                $employeeRepository = new MySQLEmployeeRepository();
+                $customerRepository = new MySQLCustomerRepository();
 
                 $this->listUsersUseCase = new ListUsersUseCase($userRepository);
-                $this->createUserUseCase = new CreateUserUseCase($userRepository);
+                $this->createUserUseCase = new CreateUserUseCase($userRepository, $employeeRepository, $customerRepository);
                 $this->getUserUseCase = new GetUserUseCase($userRepository);
                 $this->updateUserUseCase = new UpdateUserUseCase($userRepository);
                 $this->deleteUserUseCase = new DeleteUserUseCase($userRepository);
-                $this->employeeRepository = new MySQLEmployeeRepository();
-                $this->customerRepository = new MySQLCustomerRepository();
         }
 
         public function index(): void
@@ -53,109 +51,14 @@ class UserController
         public function create(): void
         {
                 try {
-                        // * Obtener todos los empleados y clientes...
-                        $employees = $this->employeeRepository->findAll();
-                        $customers = $this->customerRepository->findAll();
-
                         $viewsPath = PathHelper::getViewsPath();
 
                         require_once $viewsPath . '/layouts/navbar.php';
                         require_once $viewsPath . '/users/create.php';
                 } catch (\Exception $e) {
-                        echo 'ERROR: ' . $e->getMessage() . '<br>';
-                        echo 'Archivo: ' . $e->getFile() . '<br>';
-                        echo 'Línea: ' . $e->getLine() . '<br>';
+                        $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl() . '/users');
                         exit;
-                }
-        }
-
-        public function search(): void
-        {
-                header('Content-Type: application/json');
-
-                $type = $_GET['type'] ?? '';
-                $value = $_GET['value'] ?? '';
-
-                if (empty($type) || empty($value)) {
-                        echo json_encode(
-                                [
-                                        'found' => false,
-                                        'message' => 'Faltan parámetros de búsqueda'
-                                ]
-                        );
-
-                        return;
-                }
-
-                try {
-                        if ($type === 'dni') {
-                                // > Buscar en employees...
-                                $employee = $this->employeeRepository->findByDni($value);
-                                if ($employee) {
-                                        echo json_encode([
-                                                'found' => true,
-                                                'type' => 'employee',
-                                                'id' => $employee->getId(),
-                                                'name' => $employee->getFullName(),
-                                                'dni' => $employee->getDni(),
-                                                'email' => $employee->getEmail()
-                                        ]);
-                                        return;
-                                }
-
-                                // > Buscar en customers...
-                                $customer = $this->customerRepository->findByDni($value);
-                                if ($customer) {
-                                        echo json_encode([
-                                                'found' => true,
-                                                'type' => 'customer',
-                                                'id' => $customer->getId(),
-                                                'name' => $customer->getFullName(),
-                                                'dni' => $customer->getDni(),
-                                                'email' => $customer->getEmail()
-                                        ]);
-                                        return;
-                                }
-                        } elseif ($type === 'email') {
-                                // > Buscar en employees...
-                                $employee = $this->employeeRepository->findByEmail($value);
-                                if ($employee) {
-                                        echo json_encode([
-                                                'found' => true,
-                                                'type' => 'employee',
-                                                'id' => $employee->getId(),
-                                                'name' => $employee->getFullName(),
-                                                'dni' => $employee->getDni(),
-                                                'email' => $employee->getEmail()
-                                        ]);
-                                        return;
-                                }
-
-                                // > Buscar en customers...
-                                $customer = $this->customerRepository->findByEmail($value);
-                                if ($customer) {
-                                        echo json_encode([
-                                                'found' => true,
-                                                'type' => 'customer',
-                                                'id' => $customer->getId(),
-                                                'name' => $customer->getFullName(),
-                                                'dni' => $customer->getDni(),
-                                                'email' => $customer->getEmail()
-                                        ]);
-                                        return;
-                                }
-                        }
-
-                        echo json_encode([
-                                'found' => false,
-                                'message' => 'No se encontró ningún empleado o cliente con ese '
-                                        . ($type === 'dni' ? 'DNI' : 'email')
-                        ]);
-                } catch (\Exception $e) {
-                        echo json_encode([
-                                'found' => false, 'message' => 'Error en la búsqueda: '
-                                        . $e->getMessage()
-                        ]);
                 }
         }
 
@@ -174,8 +77,8 @@ class UserController
                                 'role' => $_POST['role'] ?? '',
                                 'password' => $_POST['password'] ?? '',
                                 'is_active' => isset($_POST['is_active']) ? true : false,
-                                'employee_id' => !empty($_POST['employee_id']) ? (int) $_POST['employee_id'] : null,
-                                'customer_id' => !empty($_POST['customer_id']) ? (int) $_POST['customer_id'] : null
+                                'employee_id' => null,
+                                'customer_id' => null
                         ]);
 
                         $result = $this->createUserUseCase->execute($userDTO);
@@ -193,20 +96,13 @@ class UserController
                 $id = $_GET['id'] ?? 0;
 
                 try {
-                        // * Obtener el usuario...
                         $userDTO = $this->getUserUseCase->execute((int) $id);
 
                         if (!$userDTO) {
                                 throw new \Exception('Usuario no encontrado');
                         }
 
-                        // * Obtener empleados y clientes para los selects...
-                        $employees = $this->employeeRepository->findAll();
-                        $customers = $this->customerRepository->findAll();
-
-                        // * Pasar las variables a la vista...
-                        $user = $userDTO;  // > Renombrar para la vista...
-
+                        $user = $userDTO;
                         $viewsPath = PathHelper::getViewsPath();
 
                         require_once $viewsPath . '/layouts/navbar.php';
@@ -235,8 +131,8 @@ class UserController
                                 'role' => $_POST['role'] ?? '',
                                 'password' => $_POST['password'] ?? '',
                                 'is_active' => isset($_POST['is_active']) ? true : false,
-                                'employee_id' => !empty($_POST['employee_id']) ? (int) $_POST['employee_id'] : null,
-                                'customer_id' => !empty($_POST['customer_id']) ? (int) $_POST['customer_id'] : null
+                                'employee_id' => null,
+                                'customer_id' => null
                         ]);
 
                         $result = $this->updateUserUseCase->execute((int) $id, $userDTO);

@@ -37,6 +37,12 @@ return [
                 'action' => 'create',
                 'role' => 'Admin'
         ],
+        '/users/search' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\UserController::class,
+                'action' => 'search',
+                'role' => 'Admin'
+        ],
         '/users/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,

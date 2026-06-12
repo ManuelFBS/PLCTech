@@ -17,59 +17,26 @@ class CreateUserUseCase
 
         public function execute(UserDTO $userDTO): array
         {
-                // * Validaciones...
-                if ($this->userRepository->findByDni($userDTO->dni)) {
-                        throw new \Exception('Ya existe un usuario con ese DNI');
-                }
-
+                // > Validaciones básicas...
                 if ($this->userRepository->findByUsername($userDTO->user)) {
-                        throw new \Exception(
-                                'Ya existe un usuario con ese nombre de usuario'
-                        );
+                        throw new \Exception('Ya existe un usuario con ese nombre de usuario');
                 }
 
-                if ($this->userRepository->findByEmail($userDTO->email)) {
-                        throw new \Exception('Ya existe un usuario con ese email');
+                // > Validar según el rol...
+                if ($userDTO->role === 'Admin' || $userDTO->role === 'Employee') {
+                        if (!$userDTO->employee_id) {
+                                throw new \Exception('No se encontró un empleado válido con los datos proporcionados');
+                        }
+                } elseif ($userDTO->role === 'Customer') {
+                        if (!$userDTO->customer_id) {
+                                throw new \Exception('No se encontró un cliente válido con los datos proporcionados');
+                        }
                 }
 
-                // * Validar reglas de negocio según rol...
-                if (
-                        $userDTO->role === 'Employee' ||
-                        $userDTO->role === 'Admin'
-                ) {
-                        throw new \Exception(
-                                'Los usuarios con rol '
-                                . $userDTO->role
-                                . ' deben tener un empleado asociado'
-                        );
-                }
+                // > Encriptar contraseña...
+                $hashedPassword = password_hash($userDTO->password, PASSWORD_DEFAULT);
 
-                if (
-                        $userDTO->role === 'Customer' &&
-                        !$userDTO->customer_id
-                ) {
-                        throw new \Exception(
-                                'Los usuarios con rol Customer deben tener un cliente asociado'
-                        );
-                }
-
-                if (
-                        $userDTO->role === 'Customer' &&
-                        $userDTO->employee_id
-                ) {
-                        throw new \Exception(
-                                'Los usuarios con rol Customer no deben tener empleado asociado'
-                        );
-                }
-
-                // * Encriptar contraseña...
-                $hashedPassword =
-                        password_hash(
-                                $userDTO->password ?? 'temporal123',
-                                PASSWORD_DEFAULT
-                        );
-
-                // * Crear entidad...
+                // > Crear entidad...
                 $user = new User(
                         null,
                         $userDTO->dni,
@@ -82,7 +49,6 @@ class CreateUserUseCase
                         $userDTO->customer_id
                 );
 
-                // * Guardar...
                 $this->userRepository->save($user);
 
                 return [

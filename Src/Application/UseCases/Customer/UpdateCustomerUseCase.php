@@ -20,10 +20,10 @@ class UpdateCustomerUseCase
         {
                 // * Verificar si existe...
                 $existingCustomer = $this->customerRepository->find($id);
-
                 if (!$existingCustomer) {
                         throw new \Exception('Cliente no encontrado');
                 }
+
                 // * Validar DNI único (excluyendo el actual)...
                 $customerDni = $this->customerRepository->findByDni($customerDTO->dni);
                 if ($customerDni && $customerDni->getId() !== $id) {

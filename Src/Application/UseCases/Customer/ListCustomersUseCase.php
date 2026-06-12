@@ -21,7 +21,7 @@ class ListCustomersUseCase
                 $customersDTO = [];
 
                 foreach ($customers as $customer) {
-                        $customersDTO[] = new CustomerDTO([
+                        $data = [
                                 'id' => $customer->getId(),
                                 'dni' => $customer->getDni(),
                                 'full_name' => $customer->getFullName(),
@@ -29,7 +29,9 @@ class ListCustomersUseCase
                                 'email' => $customer->getEmail(),
                                 'phone_number' => $customer->getPhoneNumber(),
                                 'created_at' => $customer->getCreatedAt()
-                        ]);
+                        ];
+
+                        $customersDTO[] = new CustomerDTO($data);
                 }
 
                 return $customersDTO;

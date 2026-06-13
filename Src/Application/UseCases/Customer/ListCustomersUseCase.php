@@ -9,9 +9,8 @@ class ListCustomersUseCase
 {
         private CustomerRepositoryInterface $customerRepository;
 
-        public function __construct(
-                CustomerRepositoryInterface $customerRepository
-        ) {
+        public function __construct(CustomerRepositoryInterface $customerRepository)
+        {
                 $this->customerRepository = $customerRepository;
         }
 
@@ -21,7 +20,7 @@ class ListCustomersUseCase
                 $customersDTO = [];
 
                 foreach ($customers as $customer) {
-                        $data = [
+                        $customersDTO[] = new CustomerDTO([
                                 'id' => $customer->getId(),
                                 'dni' => $customer->getDni(),
                                 'full_name' => $customer->getFullName(),
@@ -29,9 +28,7 @@ class ListCustomersUseCase
                                 'email' => $customer->getEmail(),
                                 'phone_number' => $customer->getPhoneNumber(),
                                 'created_at' => $customer->getCreatedAt()
-                        ];
-
-                        $customersDTO[] = new CustomerDTO($data);
+                        ]);
                 }
 
                 return $customersDTO;

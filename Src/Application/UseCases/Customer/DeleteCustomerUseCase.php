@@ -11,7 +11,7 @@ class DeleteCustomerUseCase
         private UserRepositoryInterface $userRepository;
 
         public function __construct(
-                customerRepositoryInterface $customerRepository,
+                CustomerRepositoryInterface $customerRepository,
                 UserRepositoryInterface $userRepository
         ) {
                 $this->customerRepository = $customerRepository;
@@ -20,21 +20,18 @@ class DeleteCustomerUseCase
 
         public function execute(int $id): array
         {
-                // * Verificar si existe...
                 $customer = $this->customerRepository->find($id);
+
                 if (!$customer) {
                         throw new \Exception('Cliente no encontrado');
                 }
 
                 // * Verificar si tiene un usuario asociado...
-                $user = $this->userRepository->find($id);
+                $user = $this->userRepository->findByCustomerId($id);
                 if ($user) {
-                        throw new \Exception(
-                                'No se puede eliminar el cliente porque tiene un usuario asociado. Primero elimine o reasigne el usuario.'
-                        );
+                        throw new \Exception('No se puede eliminar el cliente porque tiene un usuario asociado. Primero elimine el usuario.');
                 }
 
-                // * Eliminar...
                 $this->customerRepository->delete($id);
 
                 return [

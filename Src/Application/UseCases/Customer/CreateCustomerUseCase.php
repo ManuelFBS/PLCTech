@@ -10,31 +10,24 @@ class CreateCustomerUseCase
 {
         private CustomerRepositoryInterface $customerRepository;
 
-        public function __construct(
-                CustomerRepositoryInterface $customerRepository
-        ) {
+        public function __construct(CustomerRepositoryInterface $customerRepository)
+        {
                 $this->customerRepository = $customerRepository;
         }
 
         public function execute(CustomerDTO $customerDTO): array
         {
-                // * Validaciones...
+                // * Validar DNI único...
                 if ($this->customerRepository->findByDni($customerDTO->dni)) {
                         throw new \Exception('Ya existe un cliente con ese DNI');
                 }
 
+                // * Validar email único...
                 if ($this->customerRepository->findByEmail($customerDTO->email)) {
                         throw new \Exception('Ya existe un cliente con ese email');
                 }
 
-                // * Validar edad (mínimo 18 años)...
-                $birthdate = new \DateTime($customerDTO->birthdate);
-                $today = new \DateTime();
-                $age = $today->diff($birthdate)->y;
-
-                if ($age < 18) {
-                        throw new \Exception('El cliente debe ser mayor de 18 años');
-                }
+                // * La validación de fecha de nacimiento la hace el TRIGGER de la BD...
 
                 // * Crear entidad...
                 $customer = new Customer(

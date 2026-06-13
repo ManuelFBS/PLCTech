@@ -9,9 +9,8 @@ class GetCustomerUseCase
 {
         private CustomerRepositoryInterface $customerRepository;
 
-        public function __construct(
-                CustomerRepositoryInterface $customerRepository
-        ) {
+        public function __construct(CustomerRepositoryInterface $customerRepository)
+        {
                 $this->customerRepository = $customerRepository;
         }
 
@@ -23,7 +22,7 @@ class GetCustomerUseCase
                         return null;
                 }
 
-                $data = [
+                return new CustomerDTO([
                         'id' => $customer->getId(),
                         'dni' => $customer->getDni(),
                         'full_name' => $customer->getFullName(),
@@ -31,8 +30,6 @@ class GetCustomerUseCase
                         'email' => $customer->getEmail(),
                         'phone_number' => $customer->getPhoneNumber(),
                         'created_at' => $customer->getCreatedAt()
-                ];
-
-                return new CustomerDTO($data);
+                ]);
         }
 }

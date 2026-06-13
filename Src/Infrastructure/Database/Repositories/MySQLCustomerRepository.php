@@ -21,7 +21,7 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
                 $sql = 'SELECT * FROM customers WHERE id = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$id]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
@@ -31,7 +31,7 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
                 $sql = 'SELECT * FROM customers WHERE dni = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$dni]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
@@ -41,7 +41,7 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
                 $sql = 'SELECT * FROM customers WHERE email = ?';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$email]);
-                $data = $stmt->fetch();
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 return $data ? $this->mapToEntity($data) : null;
         }
@@ -52,7 +52,7 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
                 $stmt = $this->db->query($sql);
                 $customers = [];
 
-                while ($data = $stmt->fetch()) {
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $customers[] = $this->mapToEntity($data);
                 }
 
@@ -61,7 +61,8 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
 
         public function save(Customer $customer): int
         {
-                $sql = 'INSERT INTO customers (dni, full_name, birthdate, email, phone_number)
+                $sql =
+                        'INSERT INTO customers (dni, full_name, birthdate, email, phone_number)
                                 VALUES (?, ?, ?, ?, ?)';
                 $stmt = $this->db->prepare($sql);
 
@@ -78,9 +79,10 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
 
         public function update(Customer $customer): void
         {
-                $sql = 'UPDATE customers 
-                                SET dni = ?, full_name = ?, birthdate = ?, email = ?, phone_number = ?
-                                WHERE id = ?';
+                $sql =
+                        'UPDATE customers 
+                        SET dni = ?, full_name = ?, birthdate = ?, email = ?, phone_number = ?
+                        WHERE id = ?';
                 $stmt = $this->db->prepare($sql);
 
                 $stmt->execute([
@@ -103,14 +105,14 @@ class MySQLCustomerRepository implements CustomerRepositoryInterface
         private function mapToEntity(array $data): Customer
         {
                 return new Customer(
-                        (int) $data['id'],
-                        $data['dni'],
-                        $data['full_name'],
-                        $data['birthdate'],
-                        $data['email'],
-                        $data['phone_number'],
-                        $data['created_at'],
-                        $data['updated_at']
+                        (int) ($data['id'] ?? 0),
+                        (string) ($data['dni'] ?? ''),
+                        (string) ($data['full_name'] ?? ''),
+                        (string) ($data['birthdate'] ?? ''),
+                        (string) ($data['email'] ?? ''),
+                        $data['phone_number'] ?? null,
+                        (string) ($data['created_at'] ?? ''),
+                        $data['updated_at'] ?? null
                 );
         }
 }

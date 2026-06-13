@@ -4,13 +4,13 @@ namespace PLCTech\Application\DTOs;
 
 class CustomerDTO
 {
-        public ?int $id;
+        public int $id;
         public string $dni;
         public string $full_name;
         public string $birthdate;
         public string $email;
         public ?string $phone_number;
-        public ?string $created_at;
+        public string $created_at;
 
         public function __construct(array $data)
         {

@@ -8,13 +8,14 @@ use PLCTech\Application\UseCases\Customer\DeleteCustomerUseCase;
 use PLCTech\Application\UseCases\Customer\GetCustomerUseCase;
 use PLCTech\Application\UseCases\Customer\ListCustomersUseCase;
 use PLCTech\Application\UseCases\Customer\UpdateCustomerUseCase;
+use PLCTech\Helpers\PathHelper;
 use PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
 
 class CustomerController
 {
+        private ListCustomersUseCase $listCustomersUseCase;
         private CreateCustomerUseCase $createCustomerUseCase;
-        private ListCustomersUseCase $listCustomerUseCase;
         private GetCustomerUseCase $getCustomerUseCase;
         private UpdateCustomerUseCase $updateCustomerUseCase;
         private DeleteCustomerUseCase $deleteCustomerUseCase;
@@ -24,51 +25,54 @@ class CustomerController
                 $customerRepository = new MySQLCustomerRepository();
                 $userRepository = new MySQLUserRepository();
 
-                $this->createCustomerUseCase =
-                        new CreateCustomerUseCase($customerRepository);
-                $this->listCustomerUseCase =
-                        new ListCustomersUseCase($customerRepository);
-                $this->getCustomerUseCase =
-                        new GetCustomerUseCase($customerRepository);
-                $this->updateCustomerUseCase =
-                        new UpdateCustomerUseCase($customerRepository);
-                $this->deleteCustomerUseCase =
-                        new DeleteCustomerUseCase($customerRepository, $userRepository);
+                $this->listCustomersUseCase = new ListCustomersUseCase($customerRepository);
+                $this->createCustomerUseCase = new CreateCustomerUseCase($customerRepository);
+                $this->getCustomerUseCase = new GetCustomerUseCase($customerRepository);
+                $this->updateCustomerUseCase = new UpdateCustomerUseCase($customerRepository);
+                $this->deleteCustomerUseCase = new DeleteCustomerUseCase($customerRepository, $userRepository);
         }
 
-        // * Listar todos los clientes...
         public function index(): void
         {
                 try {
-                        $users = $this->listCustomerUseCase->execute();
-                        require_once __DIR__ . '/../Views/layouts/navbar.php';
-                        require_once __DIR__ . '/../Views/customers/index.php';
+                        $customers = $this->listCustomersUseCase->execute();
+                        $viewsPath = PathHelper::getViewsPath();
+
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/customers/index.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL']);
+                        header('Location: ' . PathHelper::getBaseUrl());
                 }
         }
 
-        // * Mostrar formulario de creación...
         public function create(): void
         {
-                require_once __DIR__ . '/../Views/layouts/navbar.php';
-                require_once __DIR__ . '/../Views/customers/index.php';
+                try {
+                        $viewsPath = PathHelper::getViewsPath();
+
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/customers/create.php';
+                } catch (\Exception $e) {
+                        $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl() . '/customers');
+                        exit;
+                }
         }
 
-        // * Guardar nuevo cliente...
         public function store(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/customers');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/customers');
+                        exit;
                 }
 
                 try {
                         $customerDTO = new CustomerDTO([
-                                'dni' => $_POST['dni'],
-                                'full_name' => $_POST['full_name'],
-                                'birthdate' => $_POST['birthdate'],
-                                'email' => $_POST['email'],
+                                'dni' => $_POST['dni'] ?? '',
+                                'full_name' => $_POST['full_name'] ?? '',
+                                'birthdate' => $_POST['birthdate'] ?? '',
+                                'email' => $_POST['email'] ?? '',
                                 'phone_number' => $_POST['phone_number'] ?? null
                         ]);
 
@@ -78,35 +82,37 @@ class CustomerController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/customers');
+                header('Location: ' . PathHelper::getBaseUrl() . '/customers');
                 exit;
         }
 
-        // * Mostrar formulario de edición...
         public function edit(): void
         {
                 $id = $_GET['id'] ?? 0;
 
                 try {
-                        $customer = $this->getCustomerUseCase->execute((int) $id);
+                        $customerDTO = $this->getCustomerUseCase->execute((int) $id);
 
-                        if (!$customer) {
+                        if (!$customerDTO) {
                                 throw new \Exception('Cliente no encontrado');
                         }
 
-                        require_once __DIR__ . '/../Views/layouts/navbar.php';
-                        require_once __DIR__ . '/../Views/customers/edit.php';
+                        $customer = $customerDTO;
+                        $viewsPath = PathHelper::getViewsPath();
+
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/customers/edit.php';
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL'] . '/customers');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/customers');
+                        exit;
                 }
         }
 
-        // * Actualizar cliente...
         public function update(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/customers');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/customers');
                         exit;
                 }
 
@@ -114,10 +120,10 @@ class CustomerController
 
                 try {
                         $customerDTO = new CustomerDTO([
-                                'dni' => $_POST['dni'],
-                                'full_name' => $_POST['full_name'],
-                                'birthdate' => $_POST['birthdate'],
-                                'email' => $_POST['email'],
+                                'dni' => $_POST['dni'] ?? '',
+                                'full_name' => $_POST['full_name'] ?? '',
+                                'birthdate' => $_POST['birthdate'] ?? '',
+                                'email' => $_POST['email'] ?? '',
                                 'phone_number' => $_POST['phone_number'] ?? null
                         ]);
 
@@ -127,14 +133,13 @@ class CustomerController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/customers');
+                header('Location: ' . PathHelper::getBaseUrl() . '/customers');
                 exit;
         }
 
-        // * Eliminar cliente...
         public function delete(): void
         {
-                $id = $_POST['id'] ?? $_GET['id'] ?? 0;
+                $id = $_GET['id'] ?? 0;
 
                 try {
                         $result = $this->deleteCustomerUseCase->execute((int) $id);
@@ -143,7 +148,7 @@ class CustomerController
                         $_SESSION['error_message'] = $e->getMessage();
                 }
 
-                header('Location: ' . $_ENV['APP_URL'] . '/customers');
+                header('Location: ' . PathHelper::getBaseUrl() . '/customers');
                 exit;
         }
 }

@@ -80,6 +80,7 @@ return array(
     'PLCTech\\Application\\UseCases\\User\\GetUserUseCase' => $baseDir . '/src/Application/UseCases/User/GetUserUseCase.php',
     'PLCTech\\Application\\UseCases\\User\\ListUsersUseCase' => $baseDir . '/src/Application/UseCases/User/ListUsersUseCase.php',
     'PLCTech\\Application\\UseCases\\User\\UpdateUserUseCase' => $baseDir . '/src/Application/UseCases/User/UpdateUserUseCase.php',
+    'PLCTech\\Config\\DB\\Database' => $baseDir . '/Config/DB/Database.php',
     'PLCTech\\Domain\\Entities\\Customer' => $baseDir . '/src/Domain/Entities/Customer.php',
     'PLCTech\\Domain\\Entities\\Employee' => $baseDir . '/src/Domain/Entities/Employee.php',
     'PLCTech\\Domain\\Entities\\User' => $baseDir . '/src/Domain/Entities/User.php',

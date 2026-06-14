@@ -153,6 +153,7 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'PLCTech\\Application\\UseCases\\User\\GetUserUseCase' => __DIR__ . '/../..' . '/src/Application/UseCases/User/GetUserUseCase.php',
         'PLCTech\\Application\\UseCases\\User\\ListUsersUseCase' => __DIR__ . '/../..' . '/src/Application/UseCases/User/ListUsersUseCase.php',
         'PLCTech\\Application\\UseCases\\User\\UpdateUserUseCase' => __DIR__ . '/../..' . '/src/Application/UseCases/User/UpdateUserUseCase.php',
+        'PLCTech\\Config\\DB\\Database' => __DIR__ . '/../..' . '/Config/DB/Database.php',
         'PLCTech\\Domain\\Entities\\Customer' => __DIR__ . '/../..' . '/src/Domain/Entities/Customer.php',
         'PLCTech\\Domain\\Entities\\Employee' => __DIR__ . '/../..' . '/src/Domain/Entities/Employee.php',
         'PLCTech\\Domain\\Entities\\User' => __DIR__ . '/../..' . '/src/Domain/Entities/User.php',

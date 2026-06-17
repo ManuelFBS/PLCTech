@@ -182,6 +182,7 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'PLCTech\\Presentation\\Controllers\\CustomerController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/CustomerController.php',
         'PLCTech\\Presentation\\Controllers\\EmployeeController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/EmployeeController.php',
         'PLCTech\\Presentation\\Controllers\\HomeController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/HomeController.php',
+        'PLCTech\\Presentation\\Controllers\\ProductController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/ProductController.php',
         'PLCTech\\Presentation\\Controllers\\UserController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/UserController.php',
         'PLCTech\\Presentation\\Middleware\\AuthMiddleware' => __DIR__ . '/../..' . '/src/Presentation/Middleware/AuthMiddleware.php',
         'PLCTech\\Presentation\\Middleware\\RoleMiddleware' => __DIR__ . '/../..' . '/src/Presentation/Middleware/RoleMiddleware.php',

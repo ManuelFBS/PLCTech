@@ -109,6 +109,7 @@ return array(
     'PLCTech\\Presentation\\Controllers\\CustomerController' => $baseDir . '/src/Presentation/Controllers/CustomerController.php',
     'PLCTech\\Presentation\\Controllers\\EmployeeController' => $baseDir . '/src/Presentation/Controllers/EmployeeController.php',
     'PLCTech\\Presentation\\Controllers\\HomeController' => $baseDir . '/src/Presentation/Controllers/HomeController.php',
+    'PLCTech\\Presentation\\Controllers\\ProductController' => $baseDir . '/src/Presentation/Controllers/ProductController.php',
     'PLCTech\\Presentation\\Controllers\\UserController' => $baseDir . '/src/Presentation/Controllers/UserController.php',
     'PLCTech\\Presentation\\Middleware\\AuthMiddleware' => $baseDir . '/src/Presentation/Middleware/AuthMiddleware.php',
     'PLCTech\\Presentation\\Middleware\\RoleMiddleware' => $baseDir . '/src/Presentation/Middleware/RoleMiddleware.php',

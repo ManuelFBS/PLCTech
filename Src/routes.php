@@ -141,4 +141,48 @@ return [
                 'action' => 'delete',
                 'role' => 'Admin'
         ],
+        // * Products (Admin, Employee, Customers)...
+        '/products' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'index',
+                'role' => 'Admin|Employee|Customer'
+        ],
+        '/products/show' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'show',
+                'role' => 'Admin|Employee|Customer'
+        ],
+        // * Products (Admin)...
+        '/products/create' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'create',
+                'role' => 'Admin'
+        ],
+        '/products/store' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'store',
+                'role' => 'Admin'
+        ],
+        '/products/edit' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'edit',
+                'role' => 'Admin'
+        ],
+        '/products/update' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'update',
+                'role' => 'Admin'
+        ],
+        '/products/delete' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'delete',
+                'role' => 'Admin'
+        ],
 ];

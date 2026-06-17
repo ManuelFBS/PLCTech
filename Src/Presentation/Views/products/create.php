@@ -19,7 +19,12 @@
     </div>
     
     <div class="card-content">
-        <form action="<?php echo $_ENV['APP_URL']; ?>/products/store" method="POST" enctype="multipart/form-data" id="productForm">
+        <form 
+            action="<?php echo $_ENV['APP_URL']; ?>/products/store" 
+            method="POST" 
+            enctype="multipart/form-data" 
+            id="productForm"
+        >
             <div class="columns is-multiline">
                 <!-- Nombre del producto -->
                 <div class="column is-12">

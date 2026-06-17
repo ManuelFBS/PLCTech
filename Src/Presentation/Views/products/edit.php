@@ -1,8 +1,8 @@
 <?php
 if (!isset($product)) {
-        $_SESSION['error_message'] = 'No se encontraron datos del producto';
-        header('Location: ' . $_ENV['APP_URL'] . '/products');
-        exit;
+    $_SESSION['error_message'] = 'No se encontraron datos del producto';
+    header('Location: ' . $_ENV['APP_URL'] . '/products');
+    exit;
 }
 ?>
 
@@ -27,7 +27,12 @@ if (!isset($product)) {
     </div>
     
     <div class="card-content">
-        <form action="<?php echo $_ENV['APP_URL']; ?>/products/update" method="POST" enctype="multipart/form-data" id="productForm">
+        <form 
+            action="<?php echo $_ENV['APP_URL']; ?>/products/update" 
+            method="POST" 
+            enctype="multipart/form-data" 
+            id="productForm"
+        >
             <input type="hidden" name="id" value="<?php echo $product->id; ?>">
             
             <div class="columns is-multiline">

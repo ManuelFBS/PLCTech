@@ -32,8 +32,8 @@
                                                 <th>Imagen</th>
                                                 <th>Nombre</th>
                                                 <th>Estado</th>
-                                                <th>Precio</th>
-                                                <th>Stock</th>
+                                                <th class="has-text-left">Precio</th>
+                                                <th class="has-text-left">Stock</th>
                                                 <th>Acciones</th>
                                         </thead>
                                         <tbody>
@@ -41,42 +41,51 @@
                                                 <tr>
                                                         <td><?php echo $product->id; ?></td>
                                                         <td class="has-text-centered">
-                                                        <?php if ($product->image_prod): ?>
-                                                                <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
-                                                                alt="<?php echo htmlspecialchars($product->name); ?>"
-                                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
-                                                        <?php else: ?>
-                                                                <div style="width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                                                <i class="fas fa-image has-text-grey-light"></i>
-                                                                </div>
-                                                        <?php endif; ?>
+                                                                <?php if ($product->image_prod): ?>
+                                                                        <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
+                                                                        alt="<?php echo htmlspecialchars($product->name); ?>"
+                                                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                                                <?php else: ?>
+                                                                        <div style="width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                                        <i class="fas fa-image has-text-grey-light"></i>
+                                                                        </div>
+                                                                <?php endif; ?>
                                                         </td>
                                                         <td>
-                                                        <strong><?php echo htmlspecialchars($product->name); ?></strong>
-                                                        <?php if ($product->description): ?>
-                                                                <br><small class="has-text-grey"><?php echo htmlspecialchars(substr($product->description, 0, 50)); ?>...</small>
-                                                        <?php endif; ?>
+                                                                <strong><?php echo htmlspecialchars($product->name); ?></strong>
+                                                                <?php if ($product->description): ?>
+                                                                        <br><small class="has-text-grey"><?php echo htmlspecialchars(substr($product->description, 0, 50)); ?>...</small>
+                                                                <?php endif; ?>
+                                                                </td>
+                                                                <td>
+                                                                <?php if ($product->is_active): ?>
+                                                                        <span class="tag is-success">Activo</span>
+                                                                <?php else: ?>
+                                                                        <span class="tag is-danger">Descontinuado</span>
+                                                                <?php endif; ?>
                                                         </td>
-                                                        <td>
-                                                        <?php if ($product->is_active): ?>
-                                                                <span class="tag is-success">Activo</span>
-                                                        <?php else: ?>
-                                                                <span class="tag is-danger">Descontinuado</span>
-                                                        <?php endif; ?>
+                                                        <td class="has-text-left">
+                                                                <strong class="has-text-primary">$<?php echo number_format($product->price, 2); ?></strong>
                                                         </td>
-                                                        <td class="has-text-right">
-                                                        <strong class="has-text-primary">$<?php echo number_format($product->price, 2); ?></strong>
-                                                        </td>
-                                                        <td class="has-text-right">
-                                                        <?php if ($product->stock <= 0): ?>
-                                                                <span class="tag is-danger">Agotado</span>
-                                                        <?php elseif ($product->stock <= 5): ?>
-                                                                <span class="tag is-warning" style="color: red; font-weight: bold;">
-                                                                <?php echo $product->stock; ?> unidades
-                                                                </span>
-                                                        <?php else: ?>
-                                                                <span class="tag is-light"><?php echo $product->stock; ?> unidades</span>
-                                                        <?php endif; ?>
+                                                        <td class="has-text-left">
+                                                                <?php if ($product->stock <= 0): ?>
+                                                                        <!-- 1. Agotado: Fondo gris oscuro, texto gris claro (Estilo deshabilitado legible) -->
+                                                                        <span class="tag" style="background-color: #2d3748; color: #e2e8f0; font-weight: bold;">
+                                                                        Agotado
+                                                                        </span>
+
+                                                                <?php elseif ($product->stock <= 5): ?>
+                                                                        <!-- 2. Stock bajo: Fondo amarillo vibrante, texto negro (Máximo contraste y alerta) -->
+                                                                        <span class="tag" style="background-color: #ffd700; color: #000000; font-weight: bold;">
+                                                                        <?php echo $product->stock; ?> uds
+                                                                        </span>
+
+                                                                <?php else: ?>
+                                                                        <!-- 3. Contraste normal: Fondo verde, texto blanco (Estado seguro/informativo) -->
+                                                                        <span class="tag" style="background-color: #2f855a; color: #ffffff; font-weight: bold;">
+                                                                        <?php echo $product->stock; ?> uds
+                                                                        </span>
+                                                                <?php endif; ?>
                                                         </td>
                                                         <td>
                                                         <div class="buttons are-small">

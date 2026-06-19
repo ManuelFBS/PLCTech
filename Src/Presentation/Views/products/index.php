@@ -1,22 +1,24 @@
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
-                        <div class="level-left">
+                        <div class="level-left" style="margin-left: 10px;">
                                 <div class="level-item">
                                         <h2 class="title is-4">
                                                 <i class="fas fa-boxes"></i> Listado de Productos
                                         </h2>
                                 </div>
                         </div>
-                        <div class="level-right">
+                        <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products/create" class="button is-success">
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products/create" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Producto
                                         </a>
                                 </div>
                         </div>
                 </div>
         </div>
+
+        <hr style="border: none; height:2px; background-color:rgb(64, 62, 62); margin: 5px 25px 5px 25px;">
     
         <div class="card-content">
                 <?php if (empty($products)): ?>
@@ -39,14 +41,14 @@
                                         <tbody>
                                                 <?php foreach ($products as $product): ?>
                                                 <tr>
-                                                        <td><?php echo $product->id; ?></td>
+                                                        <td style="padding-top: 22px;"><?php echo $product->id; ?></td>
                                                         <td class="has-text-centered">
                                                                 <?php if ($product->image_prod): ?>
                                                                         <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
                                                                         alt="<?php echo htmlspecialchars($product->name); ?>"
-                                                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                                                        class="imageFix">
                                                                 <?php else: ?>
-                                                                        <div style="width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                                        <div class="no-Image">
                                                                         <i class="fas fa-image has-text-grey-light"></i>
                                                                         </div>
                                                                 <?php endif; ?>
@@ -59,30 +61,30 @@
                                                                 </td>
                                                                 <td>
                                                                 <?php if ($product->is_active): ?>
-                                                                        <span class="tag is-success">Activo</span>
+                                                                        <span class="tag is-success centered-row">Activo</span>
                                                                 <?php else: ?>
-                                                                        <span class="tag is-danger">Descontinuado</span>
+                                                                        <span class="tag is-danger centered-row">Descontinuado</span>
                                                                 <?php endif; ?>
                                                         </td>
                                                         <td class="has-text-left">
-                                                                <strong class="has-text-primary">$<?php echo number_format($product->price, 2); ?></strong>
+                                                                <span class="tag is-success price-column">$<?php echo number_format($product->price, 2); ?></span>
                                                         </td>
                                                         <td class="has-text-left">
                                                                 <?php if ($product->stock <= 0): ?>
                                                                         <!-- 1. Agotado: Fondo gris oscuro, texto gris claro (Estilo deshabilitado legible) -->
-                                                                        <span class="tag" style="background-color: #2d3748; color: #e2e8f0; font-weight: bold;">
+                                                                        <span class="tag out-of-stock-column centered-row">
                                                                         Agotado
                                                                         </span>
 
                                                                 <?php elseif ($product->stock <= 5): ?>
                                                                         <!-- 2. Stock bajo: Fondo amarillo vibrante, texto negro (Máximo contraste y alerta) -->
-                                                                        <span class="tag" style="background-color: #ffd700; color: #000000; font-weight: bold;">
-                                                                        <?php echo $product->stock; ?> uds
+                                                                        <span class="tag stock-column-low centered-row">
+                                                                                <?php echo $product->stock; ?> uds
                                                                         </span>
 
                                                                 <?php else: ?>
                                                                         <!-- 3. Contraste normal: Fondo verde, texto blanco (Estado seguro/informativo) -->
-                                                                        <span class="tag" style="background-color: #2f855a; color: #ffffff; font-weight: bold;">
+                                                                        <span class="tag stock-column-normal centered-row">
                                                                         <?php echo $product->stock; ?> uds
                                                                         </span>
                                                                 <?php endif; ?>
@@ -90,16 +92,16 @@
                                                         <td>
                                                         <div class="buttons are-small">
                                                                 <a href="<?php echo $_ENV['APP_URL']; ?>/products/show?id=<?php echo $product->id; ?>" 
-                                                                class="button is-info" title="Ver detalles">
+                                                                class="button is-info centered-row" title="Ver detalles">
                                                                 <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <?php if ($_SESSION['role'] === 'Admin'): ?>
                                                                 <a href="<?php echo $_ENV['APP_URL']; ?>/products/edit?id=<?php echo $product->id; ?>" 
-                                                                class="button is-warning" title="Editar">
+                                                                class="button is-warning centered-row" title="Editar">
                                                                         <i class="fas fa-edit"></i>
                                                                 </a>
                                                                 <button onclick="confirmDelete(<?php echo $product->id; ?>)" 
-                                                                        class="button is-danger" title="Eliminar">
+                                                                        class="button is-danger centered-row" title="Eliminar">
                                                                         <i class="fas fa-trash"></i>
                                                                 </button>
                                                                 <?php endif; ?>

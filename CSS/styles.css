@@ -55,3 +55,72 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 } */
+
+/** Card Headers */
+.anchor-a {
+    background-color: transparent !important; 
+    color: rgb(204, 201, 197) !important;
+    height: 34px;
+    width: 170px;
+    border-radius: 6px;
+    padding-top: 5px;
+    padding-left: 17px;
+    margin-top: 5px;
+}
+
+.anchor-a:hover {
+    background-color: #49b375 !important; 
+    color: #ffffff !important;
+}
+
+/* 
+* Márgen superior para aplicar a los valores de 
+* las columnas en las tablas de los listados.
+*/
+.imageFix {
+    width: 50px !important; 
+    height: 50px !important; 
+    object-fit: cover !important; 
+    border-radius: 6px !important;
+}
+
+.no-Image {
+    width: 50px !important; 
+    height: 50px !important; 
+    background-color: #f0f0f0 !important; 
+    border-radius: 6px !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+}
+
+.centered-row {
+    margin-top: 15px !important;
+}
+
+.price-column {
+    background-color: transparent !important;
+    font-size: medium;
+    font-weight: 700;
+    margin-top: 10px !important;
+    padding-left: 0px;
+    color: #48bb78 !important;
+}
+
+.out-of-stock-column {
+    background-color: #2d3748; 
+    color: #e2e8f0; 
+    font-weight: bold;
+}
+
+.stock-column-low {
+    background-color: #ffd700;
+    color: #000000; 
+    font-weight: bold;
+
+}
+.stock-column-normal {
+    background-color: #2f855a !important;
+    color: #ffffff !important; 
+    font-weight: bold !important;
+}

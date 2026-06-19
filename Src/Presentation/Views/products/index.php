@@ -18,7 +18,7 @@
                 </div>
         </div>
 
-        <hr style="border: none; height:2px; background-color:rgb(64, 62, 62); margin: 5px 25px 5px 25px;">
+        <hr class="hr-div">
     
         <div class="card-content">
                 <?php if (empty($products)): ?>

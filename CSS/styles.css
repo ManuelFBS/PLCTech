@@ -73,6 +73,13 @@ body {
     color: #ffffff !important;
 }
 
+.hr-div {
+    border: none !important; 
+    height:2px !important; 
+    background-color:rgb(64, 62, 62) !important; 
+    margin: 5px 25px 5px 25px !important;
+}
+
 /* 
 * Márgen superior para aplicar a los valores de 
 * las columnas en las tablas de los listados.

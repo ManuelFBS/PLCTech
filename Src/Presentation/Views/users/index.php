@@ -8,7 +8,7 @@
                                         </h2>
                                 </div>
                         </div>
-                        <div class="level-right">
+                        <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
                                         <a href="<?php echo $_ENV['APP_URL']; ?>/users/create" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Usuario

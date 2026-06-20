@@ -1,22 +1,24 @@
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
-                        <div class="level-left">
+                        <div class="level-left" style="margin-left: 10px;">
                                 <div class="level-item">
                                         <h2 class="title is-4">
                                                 <i class="fas fa-user-friends"></i> Listado de Clientes
                                         </h2>
                                 </div>
                         </div>
-                        <div class="level-right">
+                        <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers/create" class="button is-success">
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers/create" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Cliente
                                         </a>
                                 </div>
                         </div>
                 </div>
         </div>
+        
+        <hr class="hr-div">
         
         <div class="card-content">
                 <?php if (empty($customers)): ?>

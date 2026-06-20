@@ -1,7 +1,7 @@
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
-                        <div class="level-left">
+                        <div class="level-left" style="margin-left: 10px;">
                                 <div class="level-item">
                                         <h2 class="title is-4">
                                                 <i class="fas fa-user-lock"></i> Listado de Usuarios
@@ -10,14 +10,16 @@
                         </div>
                         <div class="level-right">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/users/create" class="button is-success">
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/users/create" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Usuario
                                         </a>
                                 </div>
                         </div>
                 </div>
         </div>
-    
+   
+        <hr class="hr-div">
+        
         <div class="card-content">
                 <?php if (empty($users)): ?>
                         <div class="notification is-warning is-light has-text-centered">

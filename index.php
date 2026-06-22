@@ -25,7 +25,7 @@ $path = strtok($path, '?');
 $method = $_SERVER['REQUEST_METHOD'];
 
 // * Enrutamiento básico...
-$routes = require __DIR__ . '/Src/routes.php';
+$routes = require __DIR__ . '/src/routes.php';
 $route_found = false;
 
 // * Verificar autenticación para rutas protegidas...

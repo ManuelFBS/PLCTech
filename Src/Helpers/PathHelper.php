@@ -13,7 +13,7 @@ class PathHelper
         // * Obtiene la ruta de las vistas...
         public static function getViewsPath(): string
         {
-                return self::getBasePath() . '/Src/Presentation/Views';
+                return self::getBasePath() . '/src/Presentation/Views';
         }
 
         // * Obtiene la URL base de la aplicación...

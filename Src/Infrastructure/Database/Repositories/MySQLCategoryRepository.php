@@ -5,9 +5,7 @@ namespace PLCTech\Infrastructure\Database\Repositories;
 use PLCTech\Config\DB\Database;
 use PLCTech\Domain\Entities\Category;
 use PLCTech\Domain\Repositories\CategoryRepositoryInterface;
-use Override;
 use PDO;
-use Stringable;
 
 class MySQLCategoryRepository implements CategoryRepositoryInterface
 {

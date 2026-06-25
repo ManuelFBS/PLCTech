@@ -23,27 +23,28 @@ class UpdateProductUseCase
                         throw new \Exception('Producto no encontrado');
                 }
 
-                // > Validar nombre único (excluyendo el actual)...
+                // Validar nombre único (excluyendo el actual)
                 $productByName = $this->productRepository->findByName($productDTO->name);
                 if ($productByName && $productByName->getId() !== $id) {
                         throw new \Exception('Ya existe un producto con ese nombre');
                 }
 
-                // > Validar precio positivo...
+                // Validar precio positivo
                 if ($productDTO->price < 0) {
                         throw new \Exception('El precio no puede ser negativo');
                 }
 
-                // > Validar stock no negativo...
+                // Validar stock no negativo
                 if ($productDTO->stock < 0) {
                         throw new \Exception('El stock no puede ser negativo');
                 }
 
-                // > Crear producto actualizado...
+                // Crear producto actualizado
                 $updatedProduct = new Product(
                         $id,
                         $productDTO->name,
                         $productDTO->description,
+                        $productDTO->category_id,  // ← int o null
                         $productDTO->image_prod,
                         $productDTO->price,
                         $productDTO->stock,

@@ -2,6 +2,7 @@
 
 namespace PLCTech\Presentation\Controllers;
 
+use PLCTech\Application\DTOs\ProductCatalogDTO;
 use PLCTech\Application\DTOs\ProductDTO;
 use PLCTech\Application\UseCases\Product\CreateProductUseCase;
 use PLCTech\Application\UseCases\Product\DeleteProductUseCase;
@@ -9,6 +10,7 @@ use PLCTech\Application\UseCases\Product\GetProductUseCase;
 use PLCTech\Application\UseCases\Product\ListProductsUseCase;
 use PLCTech\Application\UseCases\Product\UpdateProductUseCase;
 use PLCTech\Helpers\PathHelper;
+use PLCTech\Infrastructure\Database\Repositories\MySQLCategoryRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLProductRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLPurchaseItemRepository;
 
@@ -19,17 +21,23 @@ class ProductController
         private GetProductUseCase $getProductUseCase;
         private UpdateProductUseCase $updateProductUseCase;
         private DeleteProductUseCase $deleteProductUseCase;
+        private MySQLCategoryRepository $categoryRepository;
+        private MySQLProductRepository $productRepository;
 
         public function __construct()
         {
-                $productRepository = new MySQLProductRepository();
+                $this->productRepository = new MySQLProductRepository();
                 $purchaseItemRepository = new MySQLPurchaseItemRepository();
+                $this->categoryRepository = new MySQLCategoryRepository();
 
-                $this->listProductsUseCase = new ListProductsUseCase($productRepository);
-                $this->createProductUseCase = new CreateProductUseCase($productRepository);
-                $this->getProductUseCase = new GetProductUseCase($productRepository);
-                $this->updateProductUseCase = new UpdateProductUseCase($productRepository);
-                $this->deleteProductUseCase = new DeleteProductUseCase($productRepository, $purchaseItemRepository);
+                $this->listProductsUseCase = new ListProductsUseCase($this->productRepository);
+                $this->createProductUseCase = new CreateProductUseCase($this->productRepository);
+                $this->getProductUseCase = new GetProductUseCase($this->productRepository);
+                $this->updateProductUseCase = new UpdateProductUseCase($this->productRepository);
+                $this->deleteProductUseCase = new DeleteProductUseCase(
+                        $this->productRepository,
+                        $purchaseItemRepository
+                );
         }
 
         public function index(): void
@@ -43,6 +51,62 @@ class ProductController
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl());
+                }
+        }
+
+        public function catalog(): void
+        {
+                try {
+                        $categoryId = $_GET['category_id'] ?? 0;
+                        $searchTerm = $_GET['search'] ?? '';
+
+                        // > Obtener todas las categorías para el menú lateral...
+                        $categories = $this->categoryRepository->findAll();
+
+                        // > Obtener productos según filtros
+                        if (!empty($searchTerm)) {
+                                $products = $this->productRepository->findByNameLike($searchTerm);
+                        } elseif ($categoryId > 0) {
+                                $products = $this->productRepository->findByCategory((int) $categoryId);
+                        } else {
+                                $products = $this->productRepository->findActive();
+                        }
+
+                        // > Convertir a DTO de catálogo (incluye category_name)...
+                        $productsDTO = [];
+                        foreach ($products as $product) {
+                                // ? Obtener el nombre de la categoría (si existe)...
+                                $categoryName = null;
+                                if ($product->getCategoryId()) {
+                                        $category = $this->categoryRepository->find($product->getCategoryId());
+                                        if ($category) {
+                                                $categoryName = $category->getName();
+                                        }
+                                }
+
+                                $productsDTO[] = new \PLCTech\Application\DTOs\ProductCatalogDTO([
+                                        'id' => $product->getId(),
+                                        'name' => $product->getName(),
+                                        'description' => $product->getDescription(),
+                                        'category_id' => $product->getCategoryId(),
+                                        'category_name' => $categoryName,  // ← Asignar el nombre de la categoría
+                                        'image_prod' => $product->getImageProd(),
+                                        'price' => $product->getPrice(),
+                                        'stock' => $product->getStock(),
+                                        'is_active' => $product->isActive(),
+                                        'created_at' => $product->getCreatedAt(),
+                                        'updated_at' => $product->getUpdatedAt()
+                                ]);
+                        }
+
+                        $products = $productsDTO;
+                        $viewsPath = PathHelper::getViewsPath();
+
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/products/catalog.php';
+                } catch (\Exception $e) {
+                        $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl() . '/products');
                 }
         }
 
@@ -72,8 +136,10 @@ class ProductController
         public function create(): void
         {
                 try {
-                        $viewsPath = PathHelper::getViewsPath();
+                        // > Obtener categorías para el select del formulario...
+                        $categories = $this->categoryRepository->findAll();
 
+                        $viewsPath = PathHelper::getViewsPath();
                         require_once $viewsPath . '/layouts/navbar.php';
                         require_once $viewsPath . '/products/create.php';
                 } catch (\Exception $e) {
@@ -97,15 +163,20 @@ class ProductController
                                 $imageName = $this->uploadImage($_FILES['image']);
                         }
 
+                        // > Asegurar que category_id sea int o null...
+                        $categoryId = null;
+                        if (isset($_POST['category_id']) && $_POST['category_id'] !== '' && $_POST['category_id'] !== '0') {
+                                $categoryId = (int) $_POST['category_id'];
+                        }
+
                         $productDTO = new ProductDTO([
                                 'name' => $_POST['name'] ?? '',
                                 'description' => $_POST['description'] ?? null,
+                                'category_id' => $categoryId,  // ← Ahora es int o null
                                 'image_prod' => $imageName,
                                 'price' => (float) ($_POST['price'] ?? 0),
                                 'stock' => (int) ($_POST['stock'] ?? 0),
-                                'is_active' => isset($_POST['is_active'])
-                                        ? (bool) $_POST['is_active']
-                                        : true
+                                'is_active' => isset($_POST['is_active']) ? true : false
                         ]);
 
                         $result = $this->createProductUseCase->execute($productDTO);
@@ -130,6 +201,8 @@ class ProductController
                         }
 
                         $product = $productDTO;
+                        $categories = $this->categoryRepository->findAll();  // > ← Para el select de categorías...
+
                         $viewsPath = PathHelper::getViewsPath();
 
                         require_once $viewsPath . '/layouts/navbar.php';
@@ -151,11 +224,11 @@ class ProductController
                 $id = $_POST['id'] ?? 0;
 
                 try {
-                        // > Obtener el producto actual para verificar si tiene imagen...
+                        // Obtener el producto actual para verificar si tiene imagen
                         $currentProduct = $this->getProductUseCase->execute((int) $id);
                         $currentImage = $currentProduct ? $currentProduct->image_prod : null;
 
-                        // > Procesar nueva imagen si se subió...
+                        // Procesar nueva imagen si se subió
                         $imageName = $currentImage;  // Mantener la imagen actual por defecto
                         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                                 // Si hay una imagen nueva, eliminar la anterior
@@ -165,13 +238,20 @@ class ProductController
                                 $imageName = $this->uploadImage($_FILES['image']);
                         }
 
+                        // Asegurar que category_id sea int o null
+                        $categoryId = null;
+                        if (isset($_POST['category_id']) && $_POST['category_id'] !== '' && $_POST['category_id'] !== '0') {
+                                $categoryId = (int) $_POST['category_id'];
+                        }
+
                         $productDTO = new ProductDTO([
                                 'name' => $_POST['name'] ?? '',
                                 'description' => $_POST['description'] ?? null,
+                                'category_id' => $categoryId,  // ← Ahora es int o null
                                 'image_prod' => $imageName,
                                 'price' => (float) ($_POST['price'] ?? 0),
                                 'stock' => (int) ($_POST['stock'] ?? 0),
-                                'is_active' => isset($_POST['is_active']) ? (bool) $_POST['is_active'] : true
+                                'is_active' => isset($_POST['is_active']) ? true : false
                         ]);
 
                         $result = $this->updateProductUseCase->execute((int) $id, $productDTO);
@@ -205,6 +285,47 @@ class ProductController
                 exit;
         }
 
+        public function byCategory(): void
+        {
+                $categoryId = $_GET['category_id'] ?? 0;
+
+                try {
+                        if ($categoryId > 0) {
+                                $products = $this->productRepository->findByCategory((int) $categoryId);
+                        } else {
+                                $products = $this->productRepository->findActive();
+                        }
+
+                        // > Convertir a DTOs...
+                        $productsDTO = [];
+                        foreach ($products as $product) {
+                                $productsDTO[] = new ProductDTO([
+                                        'id' => $product->getId(),
+                                        'name' => $product->getName(),
+                                        'description' => $product->getDescription(),
+                                        'image_prod' => $product->getImageProd(),
+                                        'price' => $product->getPrice(),
+                                        'stock' => $product->getStock(),
+                                        'is_active' => $product->isActive(),
+                                        'created_at' => $product->getCreatedAt(),
+                                        'updated_at' => $product->getUpdatedAt()
+                                ]);
+                        }
+
+                        $products = $productsDTO;
+
+                        // > Obtener todas las categorías para el menú...
+                        $categories = $this->categoryRepository->findAll();
+
+                        $viewsPath = PathHelper::getViewsPath();
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/products/catalog.php';
+                } catch (\Exception $e) {
+                        $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl() . '/products');
+                }
+        }
+
         /**
          * * Sube una imagen al servidor
          *
@@ -218,7 +339,8 @@ class ProductController
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $mimeType = finfo_file($finfo, $file['tmp_name']);
-                finfo_close($finfo);
+                // finfo_close($finfo); --> Esta es obsoleta...
+                $finfo = null;
 
                 if (!in_array($mimeType, $allowedTypes)) {
                         throw new \Exception('Tipo de archivo no permitido. Use: JPG, PNG, GIF o WEBP');

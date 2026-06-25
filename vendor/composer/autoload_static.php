@@ -135,6 +135,7 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'GrahamCampbell\\ResultType\\Success' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Success.php',
         'PLCTech\\Application\\DTOs\\CustomerDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/CustomerDTO.php',
         'PLCTech\\Application\\DTOs\\EmployeeDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/EmployeeDTO.php',
+        'PLCTech\\Application\\DTOs\\ProductCatalogDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/ProductCatalogDTO.php',
         'PLCTech\\Application\\DTOs\\ProductDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/ProductDTO.php',
         'PLCTech\\Application\\DTOs\\UserDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/UserDTO.php',
         'PLCTech\\Application\\UseCases\\Auth\\LoginUseCase' => __DIR__ . '/../..' . '/src/Application/UseCases/Auth/LoginUseCase.php',

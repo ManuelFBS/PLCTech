@@ -26,6 +26,7 @@ class GetProductUseCase
                         'id' => $product->getId(),
                         'name' => $product->getName(),
                         'description' => $product->getDescription(),
+                        'category_id' => $product->getCategoryId(),
                         'image_prod' => $product->getImageProd(),
                         'price' => $product->getPrice(),
                         'stock' => $product->getStock(),

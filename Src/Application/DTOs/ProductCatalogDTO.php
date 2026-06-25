@@ -2,13 +2,13 @@
 
 namespace PLCTech\Application\DTOs;
 
-class ProductDTO
+class ProductCatalogDTO
 {
         public int $id;
         public string $name;
         public ?string $description;
         public ?int $category_id;
-        public ?string $category_name;
+        public ?string $category_name;  // ← Este campo solo existe en el DTO, no en la entidad
         public ?string $image_prod;
         public float $price;
         public int $stock;
@@ -21,15 +21,8 @@ class ProductDTO
                 $this->id = (int) ($data['id'] ?? 0);
                 $this->name = (string) ($data['name'] ?? '');
                 $this->description = $data['description'] ?? null;
-
-                // > Asegurar que category_id sea int o null...
-                if (isset($data['category_id']) && $data['category_id'] !== '' && $data['category_id'] !== null) {
-                        $this->category_id = (int) $data['category_id'];
-                } else {
-                        $this->category_id = null;
-                }
-
-                $this->category_name = $data['category_name'] ?? null;
+                $this->category_id = $data['category_id'] ? (int) $data['category_id'] : null;
+                $this->category_name = $data['category_name'] ?? null;  // ← Viene del JOIN
                 $this->image_prod = $data['image_prod'] ?? null;
                 $this->price = (float) ($data['price'] ?? 0);
                 $this->stock = (int) ($data['stock'] ?? 0);

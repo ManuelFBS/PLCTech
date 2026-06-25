@@ -38,8 +38,8 @@ class MySQLCategoryRepository implements CategoryRepositoryInterface
 
         public function findAll(): array
         {
-                $sql = 'SELECT * FROM categories ORDER BY name ASC';
-                $stmt = $this->db->prepare($sql);
+                $query = 'SELECT * FROM categories ORDER BY name ASC';
+                $stmt = $this->db->query($query);
                 $categories = [];
 
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {

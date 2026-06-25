@@ -7,6 +7,7 @@ class Product
         private ?int $id;
         private string $name;
         private ?string $description;
+        private ?int $category_id;
         private ?string $image_prod;
         private float $price;
         private int $stock;
@@ -18,6 +19,7 @@ class Product
                 ?int $id,
                 string $name,
                 ?string $description,
+                ?int $category_id,
                 ?string $image_prod,
                 float $price,
                 int $stock,
@@ -28,6 +30,7 @@ class Product
                 $this->id = $id;
                 $this->name = $name;
                 $this->description = $description;
+                $this->category_id = $category_id;
                 $this->image_prod = $image_prod;
                 $this->price = $price;
                 $this->stock = $stock;
@@ -50,6 +53,11 @@ class Product
         public function getDescription(): ?string
         {
                 return $this->description;
+        }
+
+        public function getCategoryId(): ?int
+        {
+                return $this->category_id;
         }
 
         public function getImageProd(): ?string

@@ -17,6 +17,10 @@ class CreateProductUseCase
 
         public function execute(ProductDTO $productDTO): array
         {
+                // > Debug...
+                error_log('=== CreateProductUseCase ===');
+                error_log('category_id en DTO: ' . ($productDTO->category_id ?? 'null'));
+
                 // > Validar nombre único...
                 if ($this->productRepository->findByName($productDTO->name)) {
                         throw new \Exception('Ya existe un producto con ese nombre');
@@ -32,16 +36,19 @@ class CreateProductUseCase
                         throw new \Exception('El stock no puede ser negativo');
                 }
 
-                // > Crear entidad...
+                // > Crear entidad con los tipos correctos...
                 $product = new Product(
-                        null,
-                        $productDTO->name,
-                        $productDTO->description,
-                        $productDTO->image_prod,
-                        $productDTO->price,
-                        $productDTO->stock,
-                        $productDTO->is_active
+                        null,  // id
+                        $productDTO->name,  // name
+                        $productDTO->description,  // description
+                        $productDTO->category_id,  // category_id (int o null)
+                        $productDTO->image_prod,  // image_prod
+                        $productDTO->price,  // price
+                        $productDTO->stock,  // stock
+                        $productDTO->is_active  // is_active
                 );
+
+                error_log('category_id en Product: ' . ($product->getCategoryId() ?? 'null'));
 
                 $productId = $this->productRepository->save($product);
 

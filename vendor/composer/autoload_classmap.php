@@ -62,6 +62,7 @@ return array(
     'GrahamCampbell\\ResultType\\Success' => $vendorDir . '/graham-campbell/result-type/src/Success.php',
     'PLCTech\\Application\\DTOs\\CustomerDTO' => $baseDir . '/src/Application/DTOs/CustomerDTO.php',
     'PLCTech\\Application\\DTOs\\EmployeeDTO' => $baseDir . '/src/Application/DTOs/EmployeeDTO.php',
+    'PLCTech\\Application\\DTOs\\ProductCatalogDTO' => $baseDir . '/src/Application/DTOs/ProductCatalogDTO.php',
     'PLCTech\\Application\\DTOs\\ProductDTO' => $baseDir . '/src/Application/DTOs/ProductDTO.php',
     'PLCTech\\Application\\DTOs\\UserDTO' => $baseDir . '/src/Application/DTOs/UserDTO.php',
     'PLCTech\\Application\\UseCases\\Auth\\LoginUseCase' => $baseDir . '/src/Application/UseCases/Auth/LoginUseCase.php',

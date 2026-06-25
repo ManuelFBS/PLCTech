@@ -18,7 +18,12 @@ class MySQLProductRepository implements ProductRepositoryInterface
 
         public function find(int $id): ?Product
         {
-                $stmt = $this->db->prepare('SELECT * FROM products WHERE id = ?');
+                $sql =
+                        'SELECT p.*, c.name AS category_name, c.id as category_id 
+                        FROM products p 
+                        LEFT JOIN categories c ON p.category_id = c.id 
+                        WHERE p.id = ?';
+                $stmt = $this->db->prepare($sql);
                 $stmt->execute([$id]);
                 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -36,7 +41,49 @@ class MySQLProductRepository implements ProductRepositoryInterface
 
         public function findAll(): array
         {
-                $stmt = $this->db->query('SELECT * FROM products ORDER BY id DESC');
+                $sql = 'SELECT p.*, c.name AS category_name, c.id AS category_id 
+                        FROM products p 
+                        LEFT JOIN categories c ON p.category_id = c.id 
+                        ORDER BY p.id DESC';
+                $stmt = $this->db->query($sql);
+                $products = [];
+
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $products[] = $this->mapToEntity($data);
+                }
+
+                return $products;
+        }
+
+        public function findByNameLike(string $search): array
+        {
+                $sql = 'SELECT p.*, c.name AS category_name, c.id as category_id 
+                        FROM products p 
+                        LEFT JOIN categories c ON p.category_id = c.id 
+                        WHERE p.is_active = 1 
+                        AND (p.name LIKE ? OR p.description LIKE ?) 
+                        ORDER BY p.name ASC';
+                $stmt = $this->db->prepare($sql);
+                $searchPattern = '%' . $search . '%';
+                $stmt->execute([$searchPattern, $searchPattern]);
+                $products = [];
+
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $products[] = $this->mapToEntity($data);
+                }
+
+                return $products;
+        }
+
+        public function findByCategory(int $categoryId): array
+        {
+                $sql = 'SELECT p.*, c.name AS category_name, c.id as category_id 
+                        FROM products p 
+                        LEFT JOIN categories c ON p.category_id = c.id 
+                        WHERE p.category_id = ? AND p.is_active = 1 
+                        ORDER BY p.name DESC';
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$categoryId]);
                 $products = [];
 
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -48,8 +95,13 @@ class MySQLProductRepository implements ProductRepositoryInterface
 
         public function findActive(): array
         {
-                $stmt = $this->db->prepare('SELECT * FROM products WHERE is_active = 1 ORDER BY name ASC');
-                $stmt->execute();
+                $query =
+                        'SELECT p.*, c.name AS category_name, c.id as category_id 
+                        FROM products p
+                        LEFT JOIN categories c ON p.category_id = c.id
+                        WHERE p.is_active = 1 
+                        ORDER BY p.name ASC';
+                $stmt = $this->db->query($query);
                 $products = [];
 
                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -61,13 +113,15 @@ class MySQLProductRepository implements ProductRepositoryInterface
 
         public function save(Product $product): int
         {
-                $sql = 'INSERT INTO products (name, description, image_prod, price, stock, is_active)
-                        VALUES (?, ?, ?, ?, ?, ?)';
+                $sql =
+                        'INSERT INTO products (name, description, category_id, image_prod, price, stock, is_active)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)';
                 $stmt = $this->db->prepare($sql);
 
                 $stmt->execute([
                         $product->getName(),
                         $product->getDescription(),
+                        $product->getCategoryId(),
                         $product->getImageProd(),
                         $product->getPrice(),
                         $product->getStock(),
@@ -80,13 +134,14 @@ class MySQLProductRepository implements ProductRepositoryInterface
         public function update(Product $product): void
         {
                 $sql = 'UPDATE products 
-                        SET name = ?, description = ?, image_prod = ?, price = ?, stock = ?, is_active = ?
+                        SET name = ?, description = ?, category_id = ?, image_prod = ?, price = ?, stock = ?, is_active = ?
                         WHERE id = ?';
                 $stmt = $this->db->prepare($sql);
 
                 $stmt->execute([
                         $product->getName(),
                         $product->getDescription(),
+                        $product->getCategoryId(),
                         $product->getImageProd(),
                         $product->getPrice(),
                         $product->getStock(),
@@ -115,6 +170,10 @@ class MySQLProductRepository implements ProductRepositoryInterface
                         (int) ($data['id'] ?? 0),
                         (string) ($data['name'] ?? ''),
                         $data['description'] ?? null,
+                        isset($data['category_id']) &&
+                                $data['category_id'] !== null
+                                        ? (int) $data['category_id']
+                                        : null,
                         $data['image_prod'] ?? null,
                         (float) ($data['price'] ?? 0),
                         (int) ($data['stock'] ?? 0),
@@ -122,5 +181,19 @@ class MySQLProductRepository implements ProductRepositoryInterface
                         (string) ($data['created_at'] ?? ''),
                         $data['updated_at'] ?? null
                 );
+        }
+
+        // * Método adicional para obtener productos con su categoría...
+        public function findWithCategory(int $id): ?array
+        {
+                $sql = 'SELECT p.*, c.name AS category_name, c.id AS category_id
+                        FROM products p
+                        LEFT JOIN categories c ON p.category_id = c.id
+                        WHERE p.id = ?';
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$id]);
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                return $data ? $data : null;
         }
 }

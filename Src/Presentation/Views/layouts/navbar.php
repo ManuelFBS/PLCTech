@@ -56,6 +56,23 @@
                                                         </div>
                                                 </div>
                                         <?php endif; ?>
+
+                                        <!-- Usuarios (Solo Admin) -->
+                                        <?php if ($_SESSION['role'] === 'Admin'): ?>
+                                                <div class="navbar-item has-dropdown is-hoverable">
+                                                        <a class="navbar-link">
+                                                                <i class="fas fa-user-lock"></i> Usuarios
+                                                        </a>
+                                                        <div class="navbar-dropdown">
+                                                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/users/create">
+                                                                        <i class="fas fa-plus"></i> Nuevo
+                                                                </a>
+                                                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/users">
+                                                                        <i class="fas fa-list"></i> Listado de usuarios
+                                                                </a>
+                                                        </div>
+                                                </div>
+                                        <?php endif; ?>
                                         
                                         <!-- Clientes -->
                                         <div class="navbar-item has-dropdown is-hoverable">
@@ -73,23 +90,15 @@
                                                         </a>
                                                 </div>
                                         </div>
-                                
-                                        <!-- Usuarios (Solo Admin) -->
-                                        <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                                <div class="navbar-item has-dropdown is-hoverable">
-                                                        <a class="navbar-link">
-                                                                <i class="fas fa-user-lock"></i> Usuarios
-                                                        </a>
-                                                        <div class="navbar-dropdown">
-                                                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/users/create">
-                                                                        <i class="fas fa-plus"></i> Nuevo
-                                                                </a>
-                                                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/users">
-                                                                        <i class="fas fa-list"></i> Listado de usuarios
-                                                                </a>
-                                                        </div>
-                                                </div>
-                                        <?php endif; ?>
+
+                                        <!-- ================================================ -->
+                                        <!-- ============ CATÁLOGO (NUEVO) ================== -->
+                                        <!-- ================================================ -->
+                                        <div class="navbar-item">
+                                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" style="font-weight: 500;">
+                                                        <i class="fas fa-store"></i> Catálogo
+                                                </a>
+                                        </div>
                                         
                                         <!-- Productos -->
                                         <div class="navbar-item has-dropdown is-hoverable">

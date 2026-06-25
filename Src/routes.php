@@ -185,4 +185,11 @@ return [
                 'action' => 'delete',
                 'role' => 'Admin'
         ],
+        // * Catalog (acceso público para todos los roles)...
+        '/products/catalog' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
+                'action' => 'catalog',
+                'role' => 'Admin|Employee|Customer'
+        ],
 ];

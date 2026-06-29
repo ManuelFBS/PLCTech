@@ -1,5 +1,5 @@
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
                         <div class="level-left">
                                 <div class="level-item">
@@ -9,8 +9,8 @@
                                 </div>
                         </div>
                         <div class="level-right">
-                                <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="button is-light">
+                                <div class="level-item" style="margin-left: 300px;">
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>
@@ -19,7 +19,11 @@
         </div>
     
         <div class="card-content">
-                <form action="<?php echo $_ENV['APP_URL']; ?>/employees/store" method="POST" id="employeeForm">
+                <form 
+                        action="<?php echo $_ENV['APP_URL']; ?>/employees/store" 
+                        method="POST" 
+                        id="employeeForm"
+                >
                         <div class="columns is-multiline">
                                 <div class="column is-6">
                                         <div class="field">

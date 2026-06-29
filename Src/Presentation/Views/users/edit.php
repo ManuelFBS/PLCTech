@@ -1,14 +1,14 @@
 <?php
 // * Verificar que las variables existen...
 if (!isset($user)) {
-    $_SESSION['error_message'] = 'No se encontraron datos del usuario';
-    header('Location: ' . $_ENV['APP_URL'] . '/users');
-    exit;
+        $_SESSION['error_message'] = 'No se encontraron datos del usuario';
+        header('Location: ' . $_ENV['APP_URL'] . '/users');
+        exit;
 }
 ?>
 
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
                         <div class="level-left">
                                 <div class="level-item">
@@ -18,8 +18,11 @@ if (!isset($user)) {
                                 </div>
                         </div>
                         <div class="level-right">
-                                <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/users" class="button is-light">
+                                <div class="level-item" style="margin-left: 300px;">
+                                        <a 
+                                                href="<?php echo $_ENV['APP_URL']; ?>/users" 
+                                                class="customLink-a"
+                                        >
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>

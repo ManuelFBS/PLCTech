@@ -9,7 +9,7 @@ if (!isset($categories) || empty($categories)) {
 ?>
 
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
                         <div class="level-left">
                                 <div class="level-item">
@@ -19,8 +19,8 @@ if (!isset($categories) || empty($categories)) {
                                 </div>
                         </div>
                         <div class="level-right">
-                                <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-light">
+                                <div class="level-item" style="margin-left: 300px;">
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>

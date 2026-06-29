@@ -131,3 +131,23 @@ body {
     color: #ffffff !important; 
     font-weight: bold !important;
 }
+
+/*
+* Para los headers de los formularios...
+*/
+/*> Estado normal del enlace */
+.customLink-a {
+    margin-top: 2px !important;
+    color: azure !important;
+    text-decoration: none;
+    padding: 4px 12px; /* Espacio interno para que el borde no quede pegado al texto */
+    border: 1px solid transparent; /* Borde invisible para evitar que el texto salte */
+    border-radius: 4px; /* Bordes ligeramente suavizados */
+    transition: border-color 0.2s ease; /* Transición suave solo para el color del borde */
+}
+
+/*> Estado al pasar el mouse (Hover) */
+.customLink-a:hover {
+    border-color: #4a5568 !important; /* El borde se vuelve gris medio */
+    background-color: transparent !important; /* Asegura que el fondo se mantenga transparente */
+}

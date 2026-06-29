@@ -200,9 +200,11 @@ class ProductController
                                 throw new \Exception('Producto no encontrado');
                         }
 
-                        $product = $productDTO;
+                        // > Obtener todas las categorías para el selector...
                         $categories = $this->categoryRepository->findAll();  // > ← Para el select de categorías...
 
+                        // > Pasar variables a la vista...
+                        $product = $productDTO;
                         $viewsPath = PathHelper::getViewsPath();
 
                         require_once $viewsPath . '/layouts/navbar.php';
@@ -224,14 +226,14 @@ class ProductController
                 $id = $_POST['id'] ?? 0;
 
                 try {
-                        // Obtener el producto actual para verificar si tiene imagen
+                        // > Obtener el producto actual para verificar si tiene imagen...
                         $currentProduct = $this->getProductUseCase->execute((int) $id);
                         $currentImage = $currentProduct ? $currentProduct->image_prod : null;
 
-                        // Procesar nueva imagen si se subió
-                        $imageName = $currentImage;  // Mantener la imagen actual por defecto
+                        // > Procesar nueva imagen si se subió...
+                        $imageName = $currentImage;  // Mantener la imagen actual por defecto...
                         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                                // Si hay una imagen nueva, eliminar la anterior
+                                // ? Si hay una imagen nueva, eliminar la anterior...
                                 if ($currentImage) {
                                         $this->deleteImage($currentImage);
                                 }
@@ -240,7 +242,11 @@ class ProductController
 
                         // Asegurar que category_id sea int o null
                         $categoryId = null;
-                        if (isset($_POST['category_id']) && $_POST['category_id'] !== '' && $_POST['category_id'] !== '0') {
+                        if (
+                                isset($_POST['category_id']) &&
+                                $_POST['category_id'] !== '' &&
+                                $_POST['category_id'] !== '0'
+                        ) {
                                 $categoryId = (int) $_POST['category_id'];
                         }
 

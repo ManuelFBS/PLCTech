@@ -1,9 +1,9 @@
 <?php
 // * Verificar que la variable $product existe...
 if (!isset($product)) {
-        $_SESSION['error_message'] = 'No se encontraron datos del producto';
-        header('Location: ' . $_ENV['APP_URL'] . '/products');
-        exit;
+    $_SESSION['error_message'] = 'No se encontraron datos del producto';
+    header('Location: ' . $_ENV['APP_URL'] . '/products');
+    exit;
 }
 
 // * Determinar si el producto está disponible...
@@ -17,13 +17,13 @@ $isLowStock = $product->is_active && $product->stock > 0 && $product->stock <= 5
     <div class="column is-8">
         <div class="card">
             <!-- Cabecera de la card -->
-            <div class="card-header" style="background-color: #f5f5f5;">
+            <div class="card-header" style="background-color: dark;">
                 <div class="card-header-title">
                     <i class="fas fa-box"></i> 
                     <span class="ml-2">Detalles del Producto</span>
                 </div>
                 <div class="card-header-icon">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-light is-small">
+                    <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-small">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>

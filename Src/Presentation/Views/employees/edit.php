@@ -10,7 +10,7 @@ if (!isset($employee) || !$employee) {
 ?>
 
 <div class="card mt-4">
-        <div class="card-header p-4" style="background-color: #f5f5f5;">
+        <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
                         <div class="level-left">
                                 <div class="level-item">
@@ -21,7 +21,7 @@ if (!isset($employee) || !$employee) {
                         </div>
                         <div class="level-right">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="button is-light">
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>

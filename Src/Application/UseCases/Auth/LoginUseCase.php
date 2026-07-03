@@ -101,6 +101,7 @@ class LoginUseCase
                 $_SESSION['full_name'] = $fullName;
                 $_SESSION['role'] = $user->getRole();
                 $_SESSION['user_email'] = $user->getEmail();
+                $_SESSION['customer_id'] = $user->getCustomerId();
                 $_SESSION['token'] = $token;
 
                 return [

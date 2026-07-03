@@ -231,4 +231,13 @@ return [
                 'action' => 'invoice',
                 'role' => 'Admin|Employee|Customer'
         ],
+        // * ============================================================
+        // * CHECKOUT (Clientes)...
+        // * ============================================================
+        '/purchases/checkout' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'checkout',
+                'role' => 'Customer'
+        ],
 ];

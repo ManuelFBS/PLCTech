@@ -192,4 +192,43 @@ return [
                 'action' => 'catalog',
                 'role' => 'Admin|Employee|Customer'
         ],
+        // * ============================================================
+        // * VENTAS (Purchases)...
+        // * ============================================================
+        '/purchases' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'index',
+                'role' => 'Admin|Employee'
+        ],
+        '/purchases/show' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'show',
+                'role' => 'Admin|Employee|Customer'
+        ],
+        '/purchases/create' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'create',
+                'role' => 'Admin|Employee'
+        ],
+        '/purchases/store' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'store',
+                'role' => 'Admin|Employee'
+        ],
+        '/purchases/cancel' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'cancel',
+                'role' => 'Admin'
+        ],
+        '/purchases/invoice' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'invoice',
+                'role' => 'Admin|Employee|Customer'
+        ],
 ];

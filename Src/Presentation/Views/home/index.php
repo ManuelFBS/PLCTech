@@ -10,9 +10,9 @@
                         </h1>
                         <h2 class="subtitle">Bienvenido, <strong>
                                     <?php
-                                    $displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
-                                    echo htmlspecialchars($displayName);
-                                    ?>
+$displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
+echo htmlspecialchars($displayName);
+?>
                                 </strong>
                         </h2>
                         <p class="mt-3">
@@ -38,19 +38,21 @@
                 </div>
         </div>
         <?php endif; ?>
-    
-        <div class="column is-3">
-                <div class="card has-shadow">
-                        <div class="card-content has-text-centered">
-                                <i class="fas fa-user-friends fa-3x has-text-info"></i>
-                                <h3 class="title is-5 mt-3">Clientes</h3>
-                                <p class="subtitle is-6">Base de datos</p>
-                                <a href="<?php echo $_ENV['APP_URL']; ?>/customers" class="button is-info is-small">
-                                        Ver clientes
-                                </a>
+        
+        <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
+                <div class="column is-3">
+                        <div class="card has-shadow">
+                                <div class="card-content has-text-centered">
+                                        <i class="fas fa-user-friends fa-3x has-text-info"></i>
+                                        <h3 class="title is-5 mt-3">Clientes</h3>
+                                        <p class="subtitle is-6">Base de datos</p>
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers" class="button is-info is-small">
+                                                Ver clientes
+                                        </a>
+                                </div>
                         </div>
                 </div>
-        </div>
+        <?php endif; ?>
     
         <div class="column is-3">
                 <div class="card has-shadow">
@@ -58,25 +60,27 @@
                             <i class="fas fa-boxes fa-3x has-text-success"></i>
                             <h3 class="title is-5 mt-3">Productos</h3>
                             <p class="subtitle is-6">Catálogo</p>
-                            <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-success is-small">
+                            <a href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" class="button is-success is-small">
                                     Ver productos
                             </a>
                         </div>
                 </div>
         </div>
-    
-        <div class="column is-3">
-                    <div class="card has-shadow">
-                            <div class="card-content has-text-centered">
-                                    <i class="fas fa-shopping-cart fa-3x has-text-warning"></i>
-                                    <h3 class="title is-5 mt-3">Ventas</h3>
-                                    <p class="subtitle is-6">Registros</p>
-                                    <a href="#" class="button is-warning is-small">
-                                            Ver ventas
-                                    </a>
-                            </div>
-                    </div>
-        </div>
+        
+        <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
+                <div class="column is-3">
+                        <div class="card has-shadow">
+                                <div class="card-content has-text-centered">
+                                        <i class="fas fa-shopping-cart fa-3x has-text-warning"></i>
+                                        <h3 class="title is-5 mt-3">Ventas</h3>
+                                        <p class="subtitle is-6">Registros</p>
+                                        <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="button is-warning is-small">
+                                                Ver ventas
+                                        </a>
+                                </div>
+                        </div>
+                </div>
+        <?php endif; ?>
 </div>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

@@ -125,6 +125,7 @@ return array(
     'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLPurchaseRepository' => $baseDir . '/src/Infrastructure/Database/Repositories/MySQLPurchaseRepository.php',
     'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLUserRepository' => $baseDir . '/src/Infrastructure/Database/Repositories/MySQLUserRepository.php',
     'PLCTech\\Presentation\\Controllers\\AuthController' => $baseDir . '/src/Presentation/Controllers/AuthController.php',
+    'PLCTech\\Presentation\\Controllers\\CartController' => $baseDir . '/src/Presentation/Controllers/CartController.php',
     'PLCTech\\Presentation\\Controllers\\CustomerController' => $baseDir . '/src/Presentation/Controllers/CustomerController.php',
     'PLCTech\\Presentation\\Controllers\\EmployeeController' => $baseDir . '/src/Presentation/Controllers/EmployeeController.php',
     'PLCTech\\Presentation\\Controllers\\HomeController' => $baseDir . '/src/Presentation/Controllers/HomeController.php',

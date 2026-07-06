@@ -172,17 +172,40 @@ if (!isset($products)) {
                                                                 >
                                                                         <i class="fas fa-eye"></i> Ver detalles
                                                                 </a>
-                                                                <?php if ($product->stock > 0): ?>
-                                                                        <button onclick="addToCart(<?php echo $product->id; ?>)" 
-                                                                                class="button is-success is-fullwidth"
+                                                                <div class="buttons">
+                                                                        <a 
+                                                                                href="<?php echo $_ENV['APP_URL']; ?>/products/show?id=<?php echo $product->id; ?>" 
+                                                                                class="button is-info is-fullwidth"
                                                                         >
-                                                                                <i class="fas fa-shopping-cart"></i> Agregar al carrito
-                                                                        </button>
-                                                                <?php else: ?>
-                                                                        <button class="button is-light is-fullwidth" disabled>
-                                                                                <i class="fas fa-times"></i> No disponible
-                                                                        </button>
-                                                                <?php endif; ?>
+                                                                                <i class="fas fa-eye"></i> Ver detalles
+                                                                        </a>
+                                                                        
+                                                                        <?php if ($product->stock > 0): ?>
+                                                                                <form 
+                                                                                        action="<?php echo $_ENV['APP_URL']; ?>/cart/add" 
+                                                                                        method="POST" 
+                                                                                        style="display: inline; width: 100%;"
+                                                                                >
+                                                                                        <input 
+                                                                                                type="hidden" 
+                                                                                                name="product_id" 
+                                                                                                value="<?php echo $product->id; ?>"
+                                                                                        >
+                                                                                        <input 
+                                                                                                type="hidden" 
+                                                                                                name="quantity" 
+                                                                                                value="1"
+                                                                                        >
+                                                                                        <button type="submit" class="button is-success is-fullwidth">
+                                                                                                <i class="fas fa-shopping-cart"></i> Agregar al carrito
+                                                                                        </button>
+                                                                                </form>
+                                                                        <?php else: ?>
+                                                                                <button class="button is-light is-fullwidth" disabled>
+                                                                                        <i class="fas fa-times"></i> No disponible
+                                                                                </button>
+                                                                        <?php endif; ?>
+                                                                </div>
                                                         </div>
                                                 </div>
                                                 </div>

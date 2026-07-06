@@ -3,6 +3,7 @@
 namespace PLCTech\Application\UseCases\Purchase;
 
 use PLCTech\Application\DTOs\PurchaseDTO;
+use PLCTech\Config\DB\Database;
 use PLCTech\Domain\Entities\Purchase;
 use PLCTech\Domain\Entities\PurchaseItem;
 use PLCTech\Domain\Repositories\CustomerRepositoryInterface;
@@ -16,17 +17,19 @@ class CreatePurchaseUseCase
         private PurchaseItemRepositoryInterface $purchaseItemRepository;
         private ProductRepositoryInterface $productRepository;
         private CustomerRepositoryInterface $customerRepository;
+        private \PDO $db;
 
         public function __construct(
                 PurchaseRepositoryInterface $purchaseRepository,
                 PurchaseItemRepositoryInterface $purchaseItemRepository,
                 ProductRepositoryInterface $productRepository,
-                CustomerRepositoryInterface $customerRepository,
+                CustomerRepositoryInterface $customerRepository
         ) {
                 $this->purchaseRepository = $purchaseRepository;
                 $this->purchaseItemRepository = $purchaseItemRepository;
                 $this->productRepository = $productRepository;
                 $this->customerRepository = $customerRepository;
+                $this->db = Database::getConnection();  // ← Obtener conexión PDO
         }
 
         public function execute(PurchaseDTO $purchaseDTO): array
@@ -74,7 +77,7 @@ class CreatePurchaseUseCase
                 }
 
                 // > 4. Calcular impuestos y total...
-                $tax = $subtotal * 0.16;  // ? IVA 16% (ajustable)...
+                $tax = $subtotal * 0.16;
                 $total = $subtotal + $tax;
 
                 // > 5. Generar número de factura...
@@ -97,42 +100,57 @@ class CreatePurchaseUseCase
                         $purchaseDTO->notes ?? null
                 );
 
-                // > 7. Guardar la compra...
-                $purchaseId = $this->purchaseRepository->save($purchase);
+                // > ============================================================
+                // > INICIAR TRANSACCIÓN (USANDO PDO DIRECTAMENTE)
+                // > ============================================================
+                $this->db->beginTransaction();
 
-                // > 8. Guardar los items...
-                $purchaseItems = [];
-                foreach ($items as $item) {
-                        $purchaseItem = new PurchaseItem(
-                                null,
-                                $purchaseId,
-                                $item['product']->getId(),
-                                $item['quantity'],
-                                $item['unit_price'],
-                                $item['subtotal']
-                        );
-                        $this->purchaseItemRepository->save($purchaseItem);
-                        $purchaseItems[] = $purchaseItem;
+                try {
+                        // > 7. Guardar la compra...
+                        $purchaseId = $this->purchaseRepository->save($purchase);
 
-                        // ? 9. Actualizar stock del producto...
-                        $item['product']->setStock(
-                                $item['product']->getStock() - $item['quantity']
-                        );
-                        $this->productRepository->update($item['product']);
+                        // > 8. Guardar los items (SIN subtotal)...
+                        foreach ($items as $item) {
+                                $purchaseItem = new PurchaseItem(
+                                        null,
+                                        $purchaseId,
+                                        $item['product']->getId(),
+                                        $item['quantity'],
+                                        $item['unit_price'],
+                                        $item['subtotal']
+                                );
+                                $this->purchaseItemRepository->save($purchaseItem);
+
+                                // > 9. Actualizar stock del producto...
+                                $item['product']->setStock(
+                                        $item['product']->getStock() - $item['quantity']
+                                );
+                                $this->productRepository->update($item['product']);
+                        }
+
+                        // > ============================================================
+                        // > CONFIRMAR TRANSACCIÓN
+                        // > ============================================================
+                        $this->db->commit();
+
+                        return [
+                                'success' => true,
+                                'message' => 'Venta creada exitosamente',
+                                'purchase_id' => $purchaseId,
+                                'invoice_number' => $invoiceNumber,
+                                'total' => $total
+                        ];
+                } catch (\Exception $e) {
+                        // > ============================================================
+                        // > REVERTIR TRANSACCIÓN EN CASO DE ERROR
+                        // > ============================================================
+                        $this->db->rollBack();
+                        throw $e;
                 }
-
-                return [
-                        'success' => true,
-                        'message' => 'Venta creada exitosamente',
-                        'purchase_id' => $purchaseId,
-                        'invoice_number' => $invoiceNumber,
-                        'total' => $total
-                ];
         }
 
         private function generateInvoiceNumber(): string
         {
-                // > Formato: PLC-{YYYY}-{MM}-{DD}-{NNNNN}...
                 $prefix = 'PLC';
                 $date = date('Y-m-d');
                 $lastInvoice = $this->purchaseRepository->findAll();
@@ -146,7 +164,6 @@ class CreatePurchaseUseCase
                 }
 
                 $nextNumber = str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
-
                 return "{$prefix}-{$date}-{$nextNumber}";
         }
 }

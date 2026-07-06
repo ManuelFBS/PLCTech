@@ -70,23 +70,25 @@
                     <?php endif; ?>
                     
                     <!-- ========================================================== -->
-                    <!-- CLIENTES (ADMIN y EMPLOYEE)                                -->
+                    <!-- CLIENTES (SOLO ADMIN y EMPLOYEE) - NO para Customer        -->
                     <!-- ========================================================== -->
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            <i class="fas fa-user-friends"></i> Clientes
-                        </a>
-                        <div class="navbar-dropdown">
-                            <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers/create">
-                                    <i class="fas fa-plus"></i> Nuevo
-                                </a>
-                            <?php endif; ?>
-                            <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers">
-                                <i class="fas fa-list"></i> Listado de clientes
+                    <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                <i class="fas fa-user-friends"></i> Clientes
                             </a>
+                            <div class="navbar-dropdown">
+                                <?php if ($_SESSION['role'] === 'Admin'): ?>
+                                    <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers/create">
+                                        <i class="fas fa-plus"></i> Nuevo
+                                    </a>
+                                <?php endif; ?>
+                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers">
+                                    <i class="fas fa-list"></i> Listado de clientes
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                     
                     <!-- ========================================================== -->
                     <!-- USUARIOS (SOLO ADMIN)                                      -->
@@ -108,7 +110,7 @@
                     <?php endif; ?>
                     
                     <!-- ========================================================== -->
-                    <!-- PRODUCTOS (ADMIN y EMPLOYEE)                               -->
+                    <!-- PRODUCTOS (ADMIN y EMPLOYEE) - NO para Customer            -->
                     <!-- ========================================================== -->
                     <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
                         <div class="navbar-item has-dropdown is-hoverable">
@@ -142,7 +144,7 @@
                     <?php endif; ?>
                     
                     <!-- ========================================================== -->
-                    <!-- VENTAS (ADMIN y EMPLOYEE)                                  -->
+                    <!-- VENTAS (ADMIN y EMPLOYEE) - NO para Customer               -->
                     <!-- ========================================================== -->
                     <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
                         <div class="navbar-item has-dropdown is-hoverable">
@@ -163,7 +165,7 @@
                     <?php endif; ?>
                     
                     <!-- ========================================================== -->
-                    <!-- MIS COMPRAS (SOLO CLIENTE)                                 -->
+                    <!-- MIS COMPRAS (SOLO CUSTOMER)                                -->
                     <!-- ========================================================== -->
                     <?php if ($_SESSION['role'] === 'Customer'): ?>
                         <div class="navbar-item">
@@ -182,9 +184,9 @@
                         <a class="navbar-link">
                             <i class="fas fa-user-circle"></i>
                             <?php
-$displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
-echo htmlspecialchars($displayName);
-?>
+                            $displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
+                            echo htmlspecialchars($displayName);
+                            ?>
                         </a>
                         <div class="navbar-dropdown is-right">
                             <a class="navbar-item" href="#">
@@ -195,7 +197,7 @@ echo htmlspecialchars($displayName);
                             <?php if ($_SESSION['role'] === 'Customer'): ?>
                                 <hr class="navbar-divider">
                                 <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/cart">
-                                    <i class="fas fa-shopping-cart"></i> Carrito
+                                    <i class="fas fa-shopping-cart"></i> Mi carrito
                                     <span class="tag is-info is-small ml-2" id="cartBadge">0</span>
                                 </a>
                             <?php endif; ?>
@@ -219,7 +221,7 @@ echo htmlspecialchars($displayName);
                     <div class="notification is-success is-light">
                         <button class="delete" onclick="this.parentElement.remove()"></button>
                         <i class="fas fa-check-circle"></i> <?php echo $_SESSION['success_message'];
-        unset($_SESSION['success_message']); ?>
+    unset($_SESSION['success_message']); ?>
                     </div>
                 <?php endif; ?>
                 
@@ -227,7 +229,7 @@ echo htmlspecialchars($displayName);
                     <div class="notification is-danger is-light">
                         <button class="delete" onclick="this.parentElement.remove()"></button>
                         <i class="fas fa-exclamation-triangle"></i> <?php echo $_SESSION['error_message'];
-        unset($_SESSION['error_message']); ?>
+    unset($_SESSION['error_message']); ?>
                     </div>
                 <?php endif; ?>
                 
@@ -235,6 +237,6 @@ echo htmlspecialchars($displayName);
                     <div class="notification is-info is-light">
                         <button class="delete" onclick="this.parentElement.remove()"></button>
                         <i class="fas fa-info-circle"></i> <?php echo $_SESSION['info_message'];
-        unset($_SESSION['info_message']); ?>
+    unset($_SESSION['info_message']); ?>
                     </div>
                 <?php endif; ?>

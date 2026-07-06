@@ -5,7 +5,6 @@ namespace PLCTech\Infrastructure\Database\Repositories;
 use PLCTech\Config\DB\Database;
 use PLCTech\Domain\Entities\PurchaseItem;
 use PLCTech\Domain\Repositories\PurchaseItemRepositoryInterface;
-use Override;
 use PDO;
 
 class MySQLPurchaseItemRepository implements PurchaseItemRepositoryInterface
@@ -17,7 +16,6 @@ class MySQLPurchaseItemRepository implements PurchaseItemRepositoryInterface
                 $this->db = Database::getConnection();
         }
 
-        #[Override]
         public function find(int $id): ?PurchaseItem
         {
                 $sql = 'SELECT * FROM purchase_items WHERE id = ?';
@@ -47,16 +45,15 @@ class MySQLPurchaseItemRepository implements PurchaseItemRepositoryInterface
         public function save(PurchaseItem $item): int
         {
                 $stmt = $this->db->prepare(
-                        'INSERT INTO purchase_items (purchase_id, product_id, quantity, unit_price, subtotal)
-                        VALUES (?, ?, ?, ?, ?)'
+                        'INSERT INTO purchase_items (purchase_id, product_id, quantity, unit_price)
+                        VALUES (?, ?, ?, ?)'
                 );
 
                 $stmt->execute([
                         $item->getPurchaseId(),
                         $item->getProductId(),
                         $item->getQuantity(),
-                        $item->getUnitPrice(),
-                        $item->getSubtotal()
+                        $item->getUnitPrice()
                 ]);
 
                 return (int) $this->db->lastInsertId();

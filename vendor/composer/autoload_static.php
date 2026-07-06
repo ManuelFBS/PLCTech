@@ -198,6 +198,7 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLPurchaseRepository' => __DIR__ . '/../..' . '/src/Infrastructure/Database/Repositories/MySQLPurchaseRepository.php',
         'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLUserRepository' => __DIR__ . '/../..' . '/src/Infrastructure/Database/Repositories/MySQLUserRepository.php',
         'PLCTech\\Presentation\\Controllers\\AuthController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/AuthController.php',
+        'PLCTech\\Presentation\\Controllers\\CartController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/CartController.php',
         'PLCTech\\Presentation\\Controllers\\CustomerController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/CustomerController.php',
         'PLCTech\\Presentation\\Controllers\\EmployeeController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/EmployeeController.php',
         'PLCTech\\Presentation\\Controllers\\HomeController' => __DIR__ . '/../..' . '/src/Presentation/Controllers/HomeController.php',

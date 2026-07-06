@@ -24,7 +24,8 @@ class PurchaseController
         private GenerateInvoiceUseCase $generateInvoiceUseCase;
         private MySQLProductRepository $productRepository;
         private MySQLCustomerRepository $customerRepository;
-        private MySQLCartRepository $cartRepository;  // ✅ Ya declarado
+        private MySQLCartRepository $cartRepository;
+        private MySQLPurchaseRepository $purchaseRepository;
 
         public function __construct()
         {
@@ -32,11 +33,12 @@ class PurchaseController
                 $purchaseItemRepository = new MySQLPurchaseItemRepository();
                 $productRepository = new MySQLProductRepository();
                 $customerRepository = new MySQLCustomerRepository();
-                $cartRepository = new MySQLCartRepository();  // ✅ NUEVO
+                $cartRepository = new MySQLCartRepository();
 
                 $this->productRepository = $productRepository;
                 $this->customerRepository = $customerRepository;
-                $this->cartRepository = $cartRepository;  // ✅ NUEVO
+                $this->cartRepository = $cartRepository;
+                $this->purchaseRepository = $purchaseRepository;
 
                 $this->createPurchaseUseCase = new CreatePurchaseUseCase(
                         $purchaseRepository,
@@ -268,10 +270,16 @@ class PurchaseController
 
                         $result = $this->createPurchaseUseCase->execute($purchaseDTO);
 
-                        // > Vaciar carrito...
-                        $this->cartRepository->clearByCustomer((int) $customerId);
+                        // > ═══════════════════════════════════════════════════════════════
+                        // > VACIAR CARRITO SOLO DESPUÉS DE QUE LA VENTA SEA EXITOSA
+                        // > ═══════════════════════════════════════════════════════════════
+                        if ($result['success']) {
+                                $this->cartRepository->clearByCustomer((int) $customerId);
+                        }
 
-                        $_SESSION['success_message'] = '¡Compra realizada exitosamente! Factura: ' . $result['invoice_number'];
+                        $_SESSION['success_message'] =
+                                '¡Compra realizada exitosamente! Factura: '
+                                . $result['invoice_number'];
 
                         header('Location: ' . PathHelper::getBaseUrl() . '/purchases/invoice?id=' . $result['purchase_id']);
                 } catch (\Exception $e) {
@@ -279,5 +287,55 @@ class PurchaseController
                         header('Location: ' . PathHelper::getBaseUrl() . '/cart');
                 }
                 exit;
+        }
+
+        // * ============================================================
+        // * MIS COMPRAS (Historial de compras del cliente)
+        // * ============================================================
+        public function customerPurchases(): void
+        {
+                try {
+                        $customerId = $_SESSION['customer_id'] ?? null;
+
+                        if (!$customerId) {
+                                throw new \Exception('No se encontró información del cliente');
+                        }
+
+                        // > Obtener compras del cliente usando el repositorio...
+                        $purchasesEntities = $this->purchaseRepository->findByCustomer((int) $customerId);
+
+                        // > Convertir a DTOs...
+                        $purchasesDTO = [];
+                        foreach ($purchasesEntities as $purchase) {
+                                $purchasesDTO[] = new PurchaseDTO([
+                                        'id' => $purchase->getId(),
+                                        'invoice_number' => $purchase->getInvoiceNumber(),
+                                        'customer_id' => $purchase->getCustomerId(),
+                                        'user_id' => $purchase->getUserId(),
+                                        'purchase_date' => $purchase->getPurchaseDate(),
+                                        'subtotal' => $purchase->getSubtotal(),
+                                        'tax' => $purchase->getTax(),
+                                        'total_amount' => $purchase->getTotalAmount(),
+                                        'payment_method' => $purchase->getPaymentMethod(),
+                                        'payment_status' => $purchase->getPaymentStatus(),
+                                        'is_online' => $purchase->isOnline(),
+                                        'status' => $purchase->getStatus(),
+                                        'notes' => $purchase->getNotes(),
+                                        'created_at' => $purchase->getCreatedAt(),
+                                        'updated_at' => $purchase->getUpdatedAt()
+                                ]);
+                        }
+
+                        // > Pasar variable a la vista...
+                        $purchases = $purchasesDTO;
+                        $viewsPath = PathHelper::getViewsPath();
+
+                        require_once $viewsPath . '/layouts/navbar.php';
+                        require_once $viewsPath . '/purchases/customer.php';
+                } catch (\Exception $e) {
+                        $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl());
+                        exit;
+                }
         }
 }

@@ -232,12 +232,54 @@ return [
                 'role' => 'Admin|Employee|Customer'
         ],
         // * ============================================================
+        // * MIS COMPRAS (Solo para clientes)
+        // * ============================================================
+        '/purchases/customer' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
+                'action' => 'customerPurchases',
+                'role' => 'Customer'
+        ],
+        // * ============================================================
         // * CHECKOUT (Clientes)...
         // * ============================================================
         '/purchases/checkout' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'checkout',
+                'role' => 'Customer'
+        ],
+        // * ============================================================
+        // * CARRITO (Solo para clientes)
+        // * ============================================================
+        '/cart' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CartController::class,
+                'action' => 'index',
+                'role' => 'Customer'
+        ],
+        '/cart/add' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\CartController::class,
+                'action' => 'add',
+                'role' => 'Customer'
+        ],
+        '/cart/update' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\CartController::class,
+                'action' => 'update',
+                'role' => 'Customer'
+        ],
+        '/cart/remove' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CartController::class,
+                'action' => 'remove',
+                'role' => 'Customer'
+        ],
+        '/cart/clear' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CartController::class,
+                'action' => 'clear',
                 'role' => 'Customer'
         ],
 ];

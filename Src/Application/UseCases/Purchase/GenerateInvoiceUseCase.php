@@ -54,7 +54,7 @@ class GenerateInvoiceUseCase
                         ];
                 }
 
-                // * Datos de la empresa (configurables)...
+                // > Datos de la empresa...
                 $company = [
                         'name' => 'PLC Tech Pulse',
                         'ruc' => 'J-12345678-9',
@@ -74,7 +74,8 @@ class GenerateInvoiceUseCase
                                 'payment_method' => $purchase->getPaymentMethod(),
                                 'payment_status' => $purchase->getPaymentStatus(),
                                 'is_online' => $purchase->isOnline(),
-                                'status' => $purchase->getStatus()
+                                'status' => $purchase->getStatus(),
+                                'notes' => $purchase->getNotes()
                         ],
                         'customer' => [
                                 'name' => $customer->getFullName(),

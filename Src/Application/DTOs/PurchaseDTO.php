@@ -32,7 +32,7 @@ class PurchaseDTO
                 $this->tax = (float) ($data['tax'] ?? 0);
                 $this->total_amount = (float) ($data['total_amount'] ?? 0);
                 $this->payment_method = $data['payment_method'] ?? '';
-                $this->payment_status = $data['payment_status'] ?? 'pending';
+                $this->payment_status = $data['payment_status'] ?? 'pending';  // ← Puede ser 'paid'
                 $this->is_online = (bool) ($data['is_online'] ?? false);
                 $this->status = $data['status'] ?? 'active';
                 $this->notes = $data['notes'] ?? null;

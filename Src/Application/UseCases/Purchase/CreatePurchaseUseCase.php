@@ -94,7 +94,7 @@ class CreatePurchaseUseCase
                         $tax,
                         $total,
                         $purchaseDTO->payment_method ?? 'cash',
-                        'pending',
+                        $purchaseDTO->payment_status ?? 'pending',
                         $purchaseDTO->is_online ?? false,
                         'active',
                         $purchaseDTO->notes ?? null

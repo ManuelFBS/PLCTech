@@ -142,6 +142,12 @@ class PurchaseController
                 }
 
                 try {
+                        $customerId = $_POST['customer_id'] ?? 0;
+
+                        if ($customerId <= 0) {
+                                throw new \Exception('Debe seleccionar un cliente válido');
+                        }
+
                         $items = [];
                         $productIds = $_POST['product_id'] ?? [];
                         $quantities = $_POST['quantity'] ?? [];
@@ -160,10 +166,11 @@ class PurchaseController
                         }
 
                         $purchaseDTO = new PurchaseDTO([
-                                'customer_id' => (int) $_POST['customer_id'],
+                                'customer_id' => (int) $customerId,
                                 'user_id' => $_SESSION['user_id'] ?? null,
                                 'payment_method' => $_POST['payment_method'] ?? 'cash',
-                                'is_online' => false,
+                                'is_online' => 0,  // ? ← VENTA PRESENCIAL
+                                'payment_status' => 'paid',  // ? ← PAGADO INMEDIATAMENTE
                                 'notes' => $_POST['notes'] ?? null,
                                 'items' => $items
                         ]);

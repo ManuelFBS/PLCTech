@@ -102,7 +102,7 @@ class MySQLPurchaseRepository implements PurchaseRepositoryInterface
                         $purchase->getTotalAmount(),
                         $purchase->getPaymentMethod(),
                         $purchase->getPaymentStatus(),
-                        $purchase->isOnline(),
+                        $purchase->isOnline() ? 1 : 0,
                         $purchase->getStatus(),
                         $purchase->getNotes()
                 ]);

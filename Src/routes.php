@@ -1,7 +1,9 @@
 <?php
 
 return [
-        // * Auth...
+        // * ============================================================
+        // * AUTH...
+        // * ============================================================
         '/login' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
@@ -17,14 +19,18 @@ return [
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'logout'
         ],
-        // * Home...
+        // * ============================================================
+        // * HOME
+        // * ============================================================
         '/' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\HomeController::class,
                 'action' => 'index',
                 'role' => null
         ],
-        // * Users (Solo Admin)...
+        // * ============================================================
+        // * USERS (Solo Admin)
+        // * ============================================================
         '/users' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
@@ -67,7 +73,9 @@ return [
                 'action' => 'delete',
                 'role' => 'Admin'
         ],
-        // * Employees (Solo Admin)...
+        // * ============================================================
+        // * EMPLOYEES (Solo Admin)
+        // * ============================================================
         '/employees' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
@@ -104,7 +112,9 @@ return [
                 'action' => 'delete',
                 'role' => 'Admin'
         ],
-        // * Customers (Admin y Employee)...
+        // * ============================================================
+        // * CUSTOMERS (Admin y Employee)
+        // * ============================================================
         '/customers' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
@@ -141,7 +151,15 @@ return [
                 'action' => 'delete',
                 'role' => 'Admin'
         ],
-        // * Products (Admin, Employee, Customers)...
+        '/customers/search' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
+                'action' => 'searchByDni',
+                'role' => 'Admin|Employee'
+        ],
+        // * ============================================================
+        // * PRODUCTS (Admin, Employee, Customers)
+        // * ============================================================
         '/products' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
@@ -154,7 +172,9 @@ return [
                 'action' => 'show',
                 'role' => 'Admin|Employee|Customer'
         ],
-        // * Products (Admin)...
+        // * ============================================================
+        // * PRODUCTS (Admin)
+        // * ============================================================
         '/products/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
@@ -185,7 +205,9 @@ return [
                 'action' => 'delete',
                 'role' => 'Admin'
         ],
-        // * Catalog (acceso público para todos los roles)...
+        // * ============================================================
+        // * CATALOG (acceso público para todos los roles)
+        // * ============================================================
         '/products/catalog' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,

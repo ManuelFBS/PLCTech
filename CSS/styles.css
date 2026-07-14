@@ -151,3 +151,24 @@ body {
     border-color: #4a5568 !important; /* El borde se vuelve gris medio */
     background-color: transparent !important; /* Asegura que el fondo se mantenga transparente */
 }
+
+/*> Ajuste para el campo de búsqueda y la lupa */
+.field.has-addons .control .input.is-medium {
+    height: 40px;
+}
+
+.field.has-addons .control .button.is-medium {
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+}
+
+/*> Asegurar que la lupa tenga la misma altura que el input */
+.field.has-addons .control:last-child .button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.field.has-addons .control:first-child .input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

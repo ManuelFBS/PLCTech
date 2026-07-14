@@ -19,11 +19,15 @@ class CustomerController
         private GetCustomerUseCase $getCustomerUseCase;
         private UpdateCustomerUseCase $updateCustomerUseCase;
         private DeleteCustomerUseCase $deleteCustomerUseCase;
+        private MySQLCustomerRepository $customerRepository;
 
         public function __construct()
         {
                 $customerRepository = new MySQLCustomerRepository();
                 $userRepository = new MySQLUserRepository();
+
+                // > Asignar repositorio a propiedad...
+                $this->customerRepository = $customerRepository;
 
                 $this->listCustomersUseCase = new ListCustomersUseCase($customerRepository);
                 $this->createCustomerUseCase = new CreateCustomerUseCase($customerRepository);
@@ -150,5 +154,47 @@ class CustomerController
 
                 header('Location: ' . PathHelper::getBaseUrl() . '/customers');
                 exit;
+        }
+
+        public function searchByDni(): void
+        {
+                header('Content-Type: application/json');
+
+                try {
+                        $dni = $_GET['dni'] ?? '';
+
+                        // ! DEPURACIÓN...
+                        error_log('🔍 Buscando cliente con DNI: ' . $dni);
+
+                        if (empty($dni)) {
+                                echo json_encode(['found' => false, 'message' => 'Ingrese un DNI']);
+                                return;
+                        }
+
+                        $customer = $this->customerRepository->findByDni($dni);
+
+                        // ! DEPURACIÓN...
+                        error_log('📦 Cliente encontrado: ' . ($customer ? 'Sí (ID: ' . $customer->getId() . ')' : 'No'));
+
+                        if ($customer) {
+                                echo json_encode([
+                                        'found' => true,
+                                        'id' => $customer->getId(),
+                                        'dni' => $customer->getDni(),
+                                        'full_name' => $customer->getFullName(),
+                                        'email' => $customer->getEmail(),
+                                        'phone_number' => $customer->getPhoneNumber()
+                                ]);
+                        } else {
+                                echo json_encode([
+                                        'found' => false,
+                                        'message' => 'Cliente no encontrado. ¿Desea registrarlo?',
+                                        'dni' => $dni
+                                ]);
+                        }
+                } catch (\Exception $e) {
+                        error_log('❌ Error en searchByDni: ' . $e->getMessage());
+                        echo json_encode(['found' => false, 'message' => 'Error: ' . $e->getMessage()]);
+                }
         }
 }

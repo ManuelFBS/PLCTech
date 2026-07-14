@@ -1,5 +1,5 @@
 <div class="card mt-4">
-    <div class="card-header p-4" style="background-color: #f5f5f5;">
+    <div class="card-header p-4" style="background-color: dark;">
         <div class="level">
             <div class="level-left">
                 <div class="level-item">
@@ -8,9 +8,9 @@
                     </h2>
                 </div>
             </div>
-            <div class="level-right">
+            <div class="level-right" style="margin-left: 300px;">
                 <div class="level-item">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/create" class="button is-success">
+                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/create" class="anchor-a">
                         <i class="fas fa-plus"></i> Nueva Venta
                     </a>
                 </div>
@@ -47,9 +47,9 @@
                                 </td>
                                 <td>
                                     <?php
-                // Obtener nombre del cliente (opcional - se puede mejorar con JOIN)
-                echo 'Cliente ID: ' . $purchase->customer_id;
-                ?>
+                                    // > Obtener nombre del cliente (opcional - se puede mejorar con JOIN)...
+                                    echo 'Cliente ID: ' . $purchase->customer_id;
+                                    ?>
                                 </td>
                                 <td>
                                     <?php echo date('d/m/Y H:i', strtotime($purchase->purchase_date)); ?>
@@ -65,14 +65,14 @@
                                 </td>
                                 <td>
                                     <?php
-                $methodLabels = [
-                        'cash' => 'Efectivo',
-                        'card' => 'Tarjeta',
-                        'transfer' => 'Transferencia',
-                        'online' => 'Online'
-                ];
-                echo $methodLabels[$purchase->payment_method] ?? $purchase->payment_method;
-                ?>
+                                    $methodLabels = [
+                                        'cash' => 'Efectivo',
+                                        'card' => 'Tarjeta',
+                                        'transfer' => 'Transferencia',
+                                        'online' => 'Online'
+                                    ];
+                                    echo $methodLabels[$purchase->payment_method] ?? $purchase->payment_method;
+                                    ?>
                                 </td>
                                 <td>
                                     <?php if ($purchase->status === 'cancelled'): ?>

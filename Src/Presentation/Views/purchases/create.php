@@ -1,20 +1,20 @@
 <?php
 // * Verificar que las variables existan...
 if (!isset($customers) || empty($customers)) {
-        require_once __DIR__ . '/../../Infrastructure/Database/Repositories/MySQLCustomerRepository.php';
-        $customerRepo = new \PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository();
-        $customers = $customerRepo->findAll();
+    require_once __DIR__ . '/../../Infrastructure/Database/Repositories/MySQLCustomerRepository.php';
+    $customerRepo = new \PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository();
+    $customers = $customerRepo->findAll();
 }
 
 if (!isset($products) || empty($products)) {
-        require_once __DIR__ . '/../../Infrastructure/Database/Repositories/MySQLProductRepository.php';
-        $productRepo = new \PLCTech\Infrastructure\Database\Repositories\MySQLProductRepository();
-        $products = $productRepo->findActive();
+    require_once __DIR__ . '/../../Infrastructure/Database/Repositories/MySQLProductRepository.php';
+    $productRepo = new \PLCTech\Infrastructure\Database\Repositories\MySQLProductRepository();
+    $products = $productRepo->findActive();
 }
 ?>
 
 <div class="card mt-4">
-    <div class="card-header p-4" style="background-color: #f5f5f5;">
+    <div class="card-header p-4" style="background-color: dark;">
         <div class="level">
             <div class="level-left">
                 <div class="level-item">
@@ -24,8 +24,8 @@ if (!isset($products) || empty($products)) {
                 </div>
             </div>
             <div class="level-right">
-                <div class="level-item">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="button is-light">
+                <div class="level-item" style="margin-left: 300px;">
+                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="customLink-a">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
@@ -35,28 +35,42 @@ if (!isset($products) || empty($products)) {
     
     <div class="card-content">
         <form action="<?php echo $_ENV['APP_URL']; ?>/purchases/store" method="POST" id="purchaseForm">
-            <!-- Datos de la venta -->
-            <div class="columns is-multiline">
-                <div class="column is-6">
-                    <div class="field">
-                        <label class="label">
-                            <i class="fas fa-user"></i> Cliente <span class="has-text-danger">*</span>
-                        </label>
-                        <div class="control">
-                            <div class="select is-fullwidth">
-                                <select name="customer_id" required>
-                                    <option value="">Seleccione un cliente...</option>
-                                    <?php foreach ($customers as $customer): ?>
-                                        <option value="<?php echo $customer->getId(); ?>">
-                                            <?php echo htmlspecialchars($customer->getFullName()); ?> - <?php echo $customer->getDni(); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+            
+            <!-- ========================================================== -->
+            <!-- SECCIÓN: BUSCAR CLIENTE POR DNI                            -->
+            <!-- ========================================================== -->
+            <div class="box" style="background-color: dark;">
+                <h4 class="title is-6">
+                    <i class="fas fa-user"></i> Buscar Cliente
+                </h4>
+                <div class="columns is-multiline">
+                    <div class="column is-4">
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" type="text" id="dniSearch" 
+                                       placeholder="Ingrese DNI del cliente..." 
+                                       onkeyup="searchCustomer()">
+                            </div>
+                            <div class="control">
+                                <button type="button" class="button is-info is-medium" onclick="searchCustomer()">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
+                    <div class="column is-8">
+                        <!-- Contenedor de resultados (VACÍO) -->
+                        <div id="customerResultContainer" class="column is-8" style="margin-top: -12px">
+                            <!-- Los resultados se mostrarán aquí mediante JavaScript -->
+                        </div>
+                    </div>
                 </div>
-                
+            </div>
+            
+            <!-- ========================================================== -->
+            <!-- SECCIÓN: DATOS DE LA VENTA                                 -->
+            <!-- ========================================================== -->
+            <div class="columns is-multiline mt-3">
                 <div class="column is-6">
                     <div class="field">
                         <label class="label">
@@ -64,18 +78,17 @@ if (!isset($products) || empty($products)) {
                         </label>
                         <div class="control">
                             <div class="select is-fullwidth">
-                                <select name="payment_method" required>
+                                <select name="payment_method" id="paymentMethod" required>
                                     <option value="cash">Efectivo</option>
                                     <option value="card">Tarjeta de Crédito/Débito</option>
                                     <option value="transfer">Transferencia Bancaria</option>
-                                    <option value="online">Pago Online</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="column is-12">
+                <div class="column is-6">
                     <div class="field">
                         <label class="label">
                             <i class="fas fa-sticky-note"></i> Observaciones
@@ -90,7 +103,9 @@ if (!isset($products) || empty($products)) {
             
             <hr>
             
-            <!-- Productos -->
+            <!-- ========================================================== -->
+            <!-- SECCIÓN: PRODUCTOS                                         -->
+            <!-- ========================================================== -->
             <h4 class="title is-5">
                 <i class="fas fa-boxes"></i> Productos
                 <button type="button" class="button is-small is-info" onclick="addProductRow()">
@@ -152,7 +167,9 @@ if (!isset($products) || empty($products)) {
             
             <hr>
             
-            <!-- Totales -->
+            <!-- ========================================================== -->
+            <!-- SECCIÓN: TOTALES                                           -->
+            <!-- ========================================================== -->
             <div class="columns">
                 <div class="column is-6 is-offset-6">
                     <table class="table is-fullwidth">
@@ -178,10 +195,12 @@ if (!isset($products) || empty($products)) {
                 </div>
             </div>
             
-            <!-- Botones -->
+            <!-- ========================================================== -->
+            <!-- SECCIÓN: BOTONES                                           -->
+            <!-- ========================================================== -->
             <div class="field is-grouped">
                 <div class="control">
-                    <button type="submit" class="button is-success">
+                    <button type="submit" class="button is-success" id="submitBtn" disabled>
                         <i class="fas fa-save"></i> Guardar Venta
                     </button>
                 </div>
@@ -196,13 +215,131 @@ if (!isset($products) || empty($products)) {
 </div>
 
 <script>
-    // Agregar fila de producto
+    // * ============================================================
+    // * VARIABLES GLOBALES
+    // * ============================================================
+    var customerFound = false;
+    var customerId = null;
+    
+    // * ============================================================
+    // * BUSCAR CLIENTE POR DNI
+    // * ============================================================
+    function searchCustomer() {
+        const dni = document.getElementById('dniSearch').value.trim();
+        const container = document.getElementById('customerResultContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // > Limpiar contenedor...
+        container.innerHTML = '';
+        submitBtn.disabled = true;
+        
+        if (dni.length < 5) {
+            return;
+        }
+        
+        // > Mostrar "Buscando..."
+        container.innerHTML = `
+            <div class="notification is-info is-light" style="padding: 10px 10px;">
+                <i class="fas fa-spinner fa-pulse"></i> Buscando cliente...
+            </div>
+        `;
+        
+        const url = '<?php echo $_ENV['APP_URL']; ?>/customers/search?dni=' + encodeURIComponent(dni);
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.found) {
+                    // CLIENTE ENCONTRADO
+                    customerFound = true;
+                    customerId = data.id;
+                    
+                    container.innerHTML = `
+                        <div class="notification is-success is-light" style="padding: 10px 15px;">
+                            <i class="fas fa-check-circle has-text-success"></i>
+                            <strong>${data.full_name}</strong> 
+                            (DNI: <span class="tag is-light">${data.dni}</span>)
+                            <span class="tag is-success is-small">Registrado</span>
+                            <input type="hidden" name="customer_id" id="customerId" value="${data.id}">
+                        </div>
+                    `;
+                    
+                    submitBtn.disabled = false;
+                    
+                } else {
+                    // CLIENTE NO ENCONTRADO
+                    customerFound = false;
+                    customerId = null;
+                    
+                    container.innerHTML = `
+                        <div class="notification is-warning is-light" style="padding: 10px 15px;">
+                            <i class="fas fa-exclamation-triangle has-text-warning"></i>
+                            No se encontró cliente con DNI: <strong>${dni}</strong>
+                            <a href="<?php echo $_ENV['APP_URL']; ?>/customers/create" 
+                               class="button is-primary is-small ml-2">
+                                <i class="fas fa-plus"></i> Registrar Cliente
+                            </a>
+                        </div>
+                    `;
+                    
+                    submitBtn.disabled = true;
+                }
+            })
+            .catch(error => {
+                container.innerHTML = `
+                    <div class="notification is-danger is-light" style="padding: 10px 15px;">
+                        <i class="fas fa-exclamation-triangle has-text-danger"></i>
+                        Error: ${error.message}
+                    </div>
+                `;
+                submitBtn.disabled = true;
+            });
+    }
+    
+    // Buscar al presionar Enter
+    document.getElementById('dniSearch').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchCustomer();
+        }
+    });
+    
+    // ============================================================
+    // VALIDAR ANTES DE ENVIAR
+    // ============================================================
+    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+        if (!customerFound || !customerId) {
+            e.preventDefault();
+            alert('Debe buscar y seleccionar un cliente válido');
+            return false;
+        }
+        
+        // Verificar productos
+        const rows = document.querySelectorAll('.product-row');
+        let hasProducts = false;
+        
+        rows.forEach(row => {
+            const select = row.querySelector('.product-select');
+            if (select && select.value) {
+                hasProducts = true;
+            }
+        });
+        
+        if (!hasProducts) {
+            e.preventDefault();
+            alert('Debe agregar al menos un producto a la venta');
+            return false;
+        }
+    });
+    
+    // ============================================================
+    // AGREGAR FILA DE PRODUCTO
+    // ============================================================
     function addProductRow() {
         const container = document.getElementById('productsContainer');
         const firstRow = container.querySelector('.product-row');
         const newRow = firstRow.cloneNode(true);
         
-        // Limpiar valores
         newRow.querySelector('.product-select').value = '';
         newRow.querySelector('.quantity-input').value = '1';
         newRow.querySelector('.subtotal-input').value = '$0.00';
@@ -211,7 +348,9 @@ if (!isset($products) || empty($products)) {
         updateTotals();
     }
     
-    // Eliminar fila de producto
+    // ============================================================
+    // ELIMINAR FILA DE PRODUCTO
+    // ============================================================
     function removeProductRow(button) {
         const row = button.closest('.product-row');
         if (document.querySelectorAll('.product-row').length > 1) {
@@ -222,7 +361,9 @@ if (!isset($products) || empty($products)) {
         }
     }
     
-    // Calcular subtotal de una fila
+    // ============================================================
+    // CALCULAR SUBTOTAL
+    // ============================================================
     function calculateRowSubtotal(row) {
         const select = row.querySelector('.product-select');
         const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;
@@ -233,7 +374,9 @@ if (!isset($products) || empty($products)) {
         return subtotal;
     }
     
-    // Actualizar totales
+    // ============================================================
+    // ACTUALIZAR TOTALES
+    // ============================================================
     function updateTotals() {
         const rows = document.querySelectorAll('.product-row');
         let subtotal = 0;
@@ -250,7 +393,9 @@ if (!isset($products) || empty($products)) {
         document.getElementById('totalDisplay').textContent = '$' + total.toFixed(2);
     }
     
-    // Event listeners
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
     document.addEventListener('change', function(e) {
         if (e.target.classList.contains('product-select') || 
             e.target.classList.contains('quantity-input')) {
@@ -261,25 +406,6 @@ if (!isset($products) || empty($products)) {
     document.addEventListener('input', function(e) {
         if (e.target.classList.contains('quantity-input')) {
             updateTotals();
-        }
-    });
-    
-    // Validar antes de enviar
-    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
-        const rows = document.querySelectorAll('.product-row');
-        let hasProducts = false;
-        
-        rows.forEach(row => {
-            const select = row.querySelector('.product-select');
-            if (select.value) {
-                hasProducts = true;
-            }
-        });
-        
-        if (!hasProducts) {
-            e.preventDefault();
-            alert('Debe agregar al menos un producto a la venta');
-            return false;
         }
     });
 </script>

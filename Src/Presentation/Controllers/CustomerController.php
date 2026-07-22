@@ -30,7 +30,11 @@ class CustomerController
                 $this->customerRepository = $customerRepository;
 
                 $this->listCustomersUseCase = new ListCustomersUseCase($customerRepository);
-                $this->createCustomerUseCase = new CreateCustomerUseCase($customerRepository);
+                $this->createCustomerUseCase =
+                        new CreateCustomerUseCase(
+                                $customerRepository,
+                                $userRepository
+                        );
                 $this->getCustomerUseCase = new GetCustomerUseCase($customerRepository);
                 $this->updateCustomerUseCase = new UpdateCustomerUseCase($customerRepository);
                 $this->deleteCustomerUseCase = new DeleteCustomerUseCase($customerRepository, $userRepository);
@@ -57,6 +61,11 @@ class CustomerController
 
                         require_once $viewsPath . '/layouts/navbar.php';
                         require_once $viewsPath . '/customers/create.php';
+
+                        // > Limpiar mensajes flash después de mostrar...
+                        if (isset($_SESSION['customer_created']) && $_SESSION['customer_created'] === true) {
+                                // ? NO LIMPIAR AQUÍ - Se limpia cuando el usuario hace clic en "Registrar otro cliente"...
+                        }
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl() . '/customers');
@@ -81,13 +90,25 @@ class CustomerController
                         ]);
 
                         $result = $this->createCustomerUseCase->execute($customerDTO);
+
+                        // > Guardar datos del usuario creado en SESIÓN (no en mensaje flash)...
+                        $_SESSION['customer_created'] = true;
+                        $_SESSION['customer_username'] = $result['username'] ?? '';
+                        $_SESSION['customer_password'] = $result['password'] ?? '';
+                        $_SESSION['customer_full_name'] = $customerDTO->full_name;
+                        $_SESSION['customer_dni'] = $customerDTO->dni;
+                        $_SESSION['customer_email'] = $customerDTO->email;
+
                         $_SESSION['success_message'] = $result['message'];
+
+                        $this->create();  // > ← Volver a cargar el formulario con los datos en sesión...
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
+                        header('Location: ' . PathHelper::getBaseUrl() . '/customers/create');
                 }
 
-                header('Location: ' . PathHelper::getBaseUrl() . '/customers');
-                exit;
+                // ! header('Location: ' . PathHelper::getBaseUrl() . '/customers');
+                // ! exit;
         }
 
         public function edit(): void
@@ -163,18 +184,7 @@ class CustomerController
                 try {
                         $dni = $_GET['dni'] ?? '';
 
-                        // ! DEPURACIÓN...
-                        error_log('🔍 Buscando cliente con DNI: ' . $dni);
-
-                        if (empty($dni)) {
-                                echo json_encode(['found' => false, 'message' => 'Ingrese un DNI']);
-                                return;
-                        }
-
                         $customer = $this->customerRepository->findByDni($dni);
-
-                        // ! DEPURACIÓN...
-                        error_log('📦 Cliente encontrado: ' . ($customer ? 'Sí (ID: ' . $customer->getId() . ')' : 'No'));
 
                         if ($customer) {
                                 echo json_encode([
@@ -196,5 +206,21 @@ class CustomerController
                         error_log('❌ Error en searchByDni: ' . $e->getMessage());
                         echo json_encode(['found' => false, 'message' => 'Error: ' . $e->getMessage()]);
                 }
+        }
+
+        // * ============================================================
+        // * LIMPIAR DATOS DE USUARIO CREADO (AJAX)
+        // * ============================================================
+        public function clearUserData(): void
+        {
+                unset($_SESSION['customer_created']);
+                unset($_SESSION['customer_username']);
+                unset($_SESSION['customer_password']);
+                unset($_SESSION['customer_full_name']);
+                unset($_SESSION['customer_dni']);
+                unset($_SESSION['customer_email']);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true]);
         }
 }

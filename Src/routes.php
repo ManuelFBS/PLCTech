@@ -29,31 +29,31 @@ return [
                 'role' => null
         ],
         // * ============================================================
-        // * USERS (Solo Admin)
+        // * USERS (Solo Admin y Employee)
         // * ============================================================
         '/users' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'index',
-                'role' => 'Admin'
+                'role' => 'Admin|Employee'  // ← Debe ser 'Admin' (o 'Admin|Employee')
         ],
         '/users/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'create',
-                'role' => 'Admin'
+                'role' => 'Admin|Employee'
         ],
         '/users/search' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'search',
-                'role' => 'Admin'
+                'role' => 'Admin|Employee'
         ],
         '/users/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'store',
-                'role' => 'Admin'
+                'role' => 'Admin|Employee'
         ],
         '/users/edit' => [
                 'method' => 'GET',
@@ -125,13 +125,13 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'create',
-                'role' => 'Admin'
+                'role' => 'Admin|Employee'
         ],
         '/customers/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'store',
-                'role' => 'Admin'
+                'role' => 'Admin|Employee'
         ],
         '/customers/edit' => [
                 'method' => 'GET',
@@ -155,6 +155,12 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'searchByDni',
+                'role' => 'Admin|Employee'
+        ],
+        '/customers/clear-user-data' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
+                'action' => 'clearUserData',
                 'role' => 'Admin|Employee'
         ],
         // * ============================================================

@@ -78,11 +78,11 @@
                                 <i class="fas fa-user-friends"></i> Clientes
                             </a>
                             <div class="navbar-dropdown">
-                                <?php if ($_SESSION['role'] === 'Admin'): ?>
+                                
                                     <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers/create">
                                         <i class="fas fa-plus"></i> Nuevo
                                     </a>
-                                <?php endif; ?>
+                                
                                 <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers">
                                     <i class="fas fa-list"></i> Listado de clientes
                                 </a>

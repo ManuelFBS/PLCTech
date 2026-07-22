@@ -95,7 +95,7 @@ class CreatePurchaseUseCase
                         $total,
                         $purchaseDTO->payment_method ?? 'cash',
                         $purchaseDTO->payment_status ?? 'pending',
-                        $purchaseDTO->is_online ?? false,
+                        (bool) ($purchaseDTO->is_online ?? false),
                         'active',
                         $purchaseDTO->notes ?? null
                 );

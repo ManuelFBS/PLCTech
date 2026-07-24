@@ -28,8 +28,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 $routes = require __DIR__ . '/src/routes.php';
 $route_found = false;
 
+// * ============================================================
+// * RUTAS PÚBLICAS (NO requieren autenticación)
+// * ============================================================
+$publicRoutes = ['/', '/login', '/do-login'];
+
 // * Verificar autenticación para rutas protegidas...
-if (!in_array($path, ['/login', '/do-login'])) {
+if (!in_array($path, $publicRoutes)) {
         if (!AuthMiddleware::check()) {
                 header('Location: ' . $base_path . '/login');
                 exit;

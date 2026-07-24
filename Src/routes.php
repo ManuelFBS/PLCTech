@@ -20,13 +20,20 @@ return [
                 'action' => 'logout'
         ],
         // * ============================================================
-        // * HOME
+        // * HOME -- LANDING PAGE (Pública - Sin autenticación)
         // * ============================================================
         '/' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\HomeController::class,
-                'action' => 'index',
+                'action' => 'landing',
                 'role' => null
+        ],
+        // * Dashboard (Usuario logueado)...
+        '/dashboard' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\HomeController::class,
+                'action' => 'index',
+                'role' => 'Admin|Employee|Customer'
         ],
         // * ============================================================
         // * USERS (Solo Admin y Employee)
@@ -309,5 +316,26 @@ return [
                 'controller' => \PLCTech\Presentation\Controllers\CartController::class,
                 'action' => 'clear',
                 'role' => 'Customer'
+        ],
+        // * ============================================================
+        // * Profile (Mi Cuenta)
+        // * ============================================================
+        '/profile' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\UserController::class,
+                'action' => 'profile',
+                'role' => 'Admin|Employee|Customer'
+        ],
+        '/users/update-username' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\UserController::class,
+                'action' => 'updateUsername',
+                'role' => 'Admin|Employee|Customer'
+        ],
+        '/users/update-password' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\UserController::class,
+                'action' => 'updatePassword',
+                'role' => 'Admin|Employee|Customer'
         ],
 ];

@@ -182,6 +182,12 @@
                                                                 method: 'POST',
                                                                 headers: { 'Content-Type': 'application/json' }
                                                         }).then(() => {
+                                                                // > Limpiar campos del formulario...
+                                                                document.querySelector('input[name="dni"]').value = '';
+                                                                document.querySelector('input[name="full_name"]').value = '';
+                                                                document.querySelector('input[name="birthdate"]').value = '';
+                                                                document.querySelector('input[name="email"]').value = '';
+                                                                document.querySelector('input[name="phone_number"]').value = '';
                                                                 location.reload();
                                                         });
                                                 }

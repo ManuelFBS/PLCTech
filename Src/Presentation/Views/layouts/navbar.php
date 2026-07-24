@@ -28,6 +28,15 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <!-- ========================================================== -->
+                    <!-- INICIO / DASHBOARD (Visible para usuarios logueados)                               -->
+                    <!-- ========================================================== -->
+                    <div class="navbar-item">
+                        <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/dashboard">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </div>
+
+                    <!-- ========================================================== -->
                     <!-- CATÁLOGO (Visible para TODOS los roles)                    -->
                     <!-- ========================================================== -->
                     <div class="navbar-item">
@@ -189,7 +198,7 @@
                             ?>
                         </a>
                         <div class="navbar-dropdown is-right">
-                            <a class="navbar-item" href="#">
+                            <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/profile">
                                 <i class="fas fa-id-card"></i> Mi cuenta
                             </a>
                             

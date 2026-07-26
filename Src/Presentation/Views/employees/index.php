@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -11,7 +17,7 @@
                         <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
                                         <a 
-                                                href="<?php echo $_ENV['APP_URL']; ?>/employees/create" class="anchor-a">
+                                                href="<?php echo UrlHelper::url('/employees/create'); ?>" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Empleado
                                         </a>
                                 </div>
@@ -60,7 +66,7 @@
                                                         <td>
                                                                 <div class="buttons are-small">
                                                                         <a 
-                                                                                href="<?php echo $_ENV['APP_URL']; ?>/employees/edit?id=<?php echo $employee->id; ?>" 
+                                                                                href="<?php echo UrlHelper::url('/employees/edit', ['id' => $employee->id]); ?>" 
                                                                                 class="button is-info" 
                                                                                 title="Editar"
                                                                         >
@@ -112,6 +118,7 @@
 </div>
 
 <script>
+        const baseDeleteUrl = "<?= UrlHelper::url('/employees/delete') ?>";
         let deleteId = null;
     
         function confirmDelete(id) {
@@ -126,7 +133,7 @@
     
         function executeDelete() {
                 if (deleteId) {
-                        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/employees/delete?id=' + deleteId;
+                        window.location.href = `${baseDeleteUrl}?id=${deleteId}`;
                 }
         }
 </script>

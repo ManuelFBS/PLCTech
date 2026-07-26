@@ -19,7 +19,22 @@ class PathHelper
         // * Obtiene la URL base de la aplicación...
         public static function getBaseUrl(): string
         {
-                return $_ENV['APP_URL'] ?? 'http://localhost/Projects/PLCTech';
+                // > Usar APP_URL del .env o detectar automáticamente...
+                if (isset($_ENV['APP_URL']) && !empty($_ENV['APP_URL'])) {
+                        return rtrim($_ENV['APP_URL'], '/');
+                }
+
+                // > Detectar automáticamente...
+                $protocol =
+                        isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
+                                ? 'https'
+                                : 'http';
+                $host = $_SERVER['HTTP_HOST'];
+                $scriptName = $_SERVER['SCRIPT_NAME'];
+                $scriptDir = dirname($scriptName);
+                $basePath = ($scriptDir === '/' || $scriptDir === '\\') ? '' : $scriptDir;
+
+                return $protocol . '://' . $host . $basePath;
         }
 }
 

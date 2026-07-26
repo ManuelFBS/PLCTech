@@ -1,8 +1,11 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 // * Verificar que las variables existen...
 if (!isset($user)) {
         $_SESSION['error_message'] = 'No se encontraron datos del usuario';
-        header('Location: ' . $_ENV['APP_URL'] . '/users');
+        header('Location: ' . UrlHelper::url('/users'));
         exit;
 }
 ?>
@@ -20,7 +23,7 @@ if (!isset($user)) {
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
                                         <a 
-                                                href="<?php echo $_ENV['APP_URL']; ?>/users" 
+                                                href="<?php echo UrlHelper::url('/users'); ?>" 
                                                 class="customLink-a"
                                         >
                                                 <i class="fas fa-arrow-left"></i> Volver
@@ -32,7 +35,7 @@ if (!isset($user)) {
         
         <div class="card-content">
                 <form 
-                        action="<?php echo $_ENV['APP_URL']; ?>/users/update" 
+                        action="<?php echo UrlHelper::url('/users/update'); ?>" 
                         method="POST"
                 >
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
@@ -177,7 +180,7 @@ if (!isset($user)) {
                                                         </button>
                                                 </div>
                                                 <div class="control">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/users" class="button is-light">
+                                                        <a href="<?php echo UrlHelper::url('/users'); ?>" class="button is-light">
                                                                 Cancelar
                                                         </a>
                                                 </div>

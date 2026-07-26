@@ -1,5 +1,7 @@
 <?php
 
+use \PLCTech\Helpers\UrlHelper;
+
 // * Si alguien abre catalog.php directamente, evitamos el error...
 if (!isset($categories)) {
         $categories = [];
@@ -23,14 +25,14 @@ if (!isset($products)) {
                                 <aside class="menu">
                                         <ul class="menu-list">
                                                 <li>
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" 
+                                                        <a href="<?php echo UrlHelper::url('/products/catalog'); ?>" 
                                                         class="<?php echo !isset($_GET['category_id']) ? 'is-active' : ''; ?>">
                                                                 <i class="fas fa-th-list"></i> Todos los productos
                                                         </a>
                                                 </li>
                                                 <?php foreach ($categories as $category): ?>
                                                         <li>
-                                                                <a href="<?php echo $_ENV['APP_URL']; ?>/products/catalog?category_id=<?php echo $category->getId(); ?>"
+                                                                <a href="<?php echo UrlHelper::url('/products/catalog', ['category_id' => $category->getId()]); ?>"
                                                                         class="<?php echo (isset($_GET['category_id']) && $_GET['category_id'] == $category->getId()) ? 'is-active' : ''; ?>">
                                                                         <i class="fas fa-folder"></i> <?php echo htmlspecialchars($category->getName()); ?>
                                                                 </a>
@@ -123,8 +125,8 @@ if (!isset($products)) {
                                                 <div class="card-image">
                                                         <figure class="image is-4by3">
                                                                 <?php if ($product->image_prod): ?>
-                                                                        <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
-                                                                                alt="<?php echo htmlspecialchars($product->name); ?>"
+                                                                        <img src="<?= UrlHelper::url('/uploads/products/') . urlencode($product->image_prod) ?>" 
+                                                                                alt="<?= htmlspecialchars($product->name) ?? 'Producto', ENT_QUOTES, 'UTF-8' ?>"
                                                                                 style="object-fit: cover; width: 100%; height: 100%;">
                                                                 <?php else: ?>
                                                                         <div style="width: 100%; height: 100%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-direction: column;">
@@ -167,14 +169,14 @@ if (!isset($products)) {
                                                         </div>
                                                         
                                                         <div class="buttons">
-                                                                <a href="<?php echo $_ENV['APP_URL']; ?>/products/show?id=<?php echo $product->id; ?>" 
+                                                                <a href="<?php echo UrlHelper::url('/products/show', ['id' => $product->id]); ?>" 
                                                                         class="button is-info is-fullwidth"
                                                                 >
                                                                         <i class="fas fa-eye"></i> Ver detalles
                                                                 </a>
                                                                 <div class="buttons">
                                                                         <a 
-                                                                                href="<?php echo $_ENV['APP_URL']; ?>/products/show?id=<?php echo $product->id; ?>" 
+                                                                                href="<?php echo UrlHelper::url('/products/show', ['id' => $product->id]); ?>" 
                                                                                 class="button is-info is-fullwidth"
                                                                         >
                                                                                 <i class="fas fa-eye"></i> Ver detalles
@@ -182,7 +184,7 @@ if (!isset($products)) {
                                                                         
                                                                         <?php if ($product->stock > 0): ?>
                                                                                 <form 
-                                                                                        action="<?php echo $_ENV['APP_URL']; ?>/cart/add" 
+                                                                                        action="<?php echo UrlHelper::url('/cart/add'); ?>" 
                                                                                         method="POST" 
                                                                                         style="display: inline; width: 100%;"
                                                                                 >
@@ -217,12 +219,15 @@ if (!isset($products)) {
 </div>
 
 <script>
+        // * Definir URLs base al inicio del script...
+        const baseUrl = "<?= UrlHelper::url('/products/catalog') ?>";
+
         function searchProducts() {
                 const searchTerm = document.getElementById('searchProduct').value;
                 if (searchTerm) {
-                        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/products/catalog?search=' + encodeURIComponent(searchTerm);
+                        window.location.href = baseUrl + '?search=' + encodeURIComponent(searchTerm);
                 } else {
-                        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/products/catalog';
+                        window.location.href = baseUrl;
                 }
         }
         

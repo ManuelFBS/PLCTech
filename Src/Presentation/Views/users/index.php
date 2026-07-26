@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -10,7 +16,7 @@
                         </div>
                         <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/users/create" class="anchor-a">
+                                        <a href="<?php echo UrlHelper::url('/users/create'); ?>" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Usuario
                                         </a>
                                 </div>
@@ -73,7 +79,7 @@
                                                                 <td>
                                                                         <div class="buttons are-small">
                                                                                 <a 
-                                                                                        href="<?php echo $_ENV['APP_URL']; ?>/users/edit?id=<?php echo $user->id; ?>" 
+                                                                                        href="<?php echo UrlHelper::url('/users/edit', ['id' => $user->id]); ?>" 
                                                                                         class="button is-info" 
                                                                                         title="Editar"
                                                                                 >
@@ -98,9 +104,10 @@
 </div>
 
 <script>
+        const baseDeleteUrl = <?= UrlHelper::url('/users/delete') ?>
         function confirmDelete(id) {
                 if (confirm('¿Está seguro que desea eliminar este usuario?')) {
-                        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/users/delete?id=' + id;
+                        window.location.href = `${baseDeleteUrl}?id=${id}`;
                 }
         }
 </script>

@@ -1,8 +1,11 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 // * Verificar que la variable $product existe...
 if (!isset($product)) {
     $_SESSION['error_message'] = 'No se encontraron datos del producto';
-    header('Location: ' . $_ENV['APP_URL'] . '/products');
+    header('Location: ' . UrlHelper::url('/products'));
     exit;
 }
 
@@ -23,7 +26,7 @@ $isLowStock = $product->is_active && $product->stock > 0 && $product->stock <= 5
                     <span class="ml-2">Detalles del Producto</span>
                 </div>
                 <div class="card-header-icon">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-small">
+                    <a href="<?php echo UrlHelper::url('/products'); ?>" class="button is-small">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
@@ -54,8 +57,8 @@ $isLowStock = $product->is_active && $product->stock > 0 && $product->stock <= 5
                     <div class="column is-5">
                         <div class="box has-text-centered" style="background-color: #fafafa;">
                             <?php if ($product->image_prod): ?>
-                                <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
-                                     alt="<?php echo htmlspecialchars($product->name); ?>"
+                                <img src="<?= UrlHelper::url('/uploads/products/') . urlencode($product->image_prod) ?>" 
+                                     alt="<?= htmlspecialchars($product->name ?? 'Producto', ENT_QUOTES, 'UTF-8') ?>"
                                      style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px;">
                             <?php else: ?>
                                 <div style="width: 100%; height: 250px; background-color: #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
@@ -128,7 +131,7 @@ $isLowStock = $product->is_active && $product->stock > 0 && $product->stock <= 5
                         <!-- Botones de acción (solo para Admin) -->
                         <?php if ($_SESSION['role'] === 'Admin'): ?>
                             <div class="buttons">
-                                <a href="<?php echo $_ENV['APP_URL']; ?>/products/edit?id=<?php echo $product->id; ?>" 
+                                <a href="<?php echo UrlHelper::url('/products/edit', ['id' => $product->id]); ?>" 
                                    class="button is-warning">
                                     <i class="fas fa-edit"></i> Actualizar Producto
                                 </a>
@@ -139,7 +142,7 @@ $isLowStock = $product->is_active && $product->stock > 0 && $product->stock <= 5
                             </div>
                         <?php else: ?>
                             <div class="buttons">
-                                <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-light">
+                                <a href="<?php echo UrlHelper::url('/products'); ?>" class="button is-light">
                                     <i class="fas fa-arrow-left"></i> Volver al listado
                                 </a>
                             </div>
@@ -152,10 +155,11 @@ $isLowStock = $product->is_active && $product->stock > 0 && $product->stock <= 5
 </div>
 
 <script>
-function confirmDelete(id) {
-    if (confirm('¿Está seguro que desea eliminar este producto?\n\nNota: No se podrá eliminar si tiene ventas asociadas.')) {
-        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/products/delete?id=' + id;
-    }
+    const baseDeleteUrl = "<?= UrlHelper::url('/products/delete') ?>";
+    function confirmDelete(id) {
+        if (confirm('¿Está seguro que desea eliminar este producto?\n\nNota: No se podrá eliminar si tiene ventas asociadas.')) {
+            window.location.href = `${baseDeleteUrl}?id=${id}`;
+        }
 }
 </script>
 

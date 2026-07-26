@@ -1,7 +1,10 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 if (!isset($product)) {
         $_SESSION['error_message'] = 'No se encontraron datos del producto';
-        header('Location: ' . $_ENV['APP_URL'] . '/products');
+        header('Location: ' . UrlHelper::url('/products'));
         exit;
 }
 ?>
@@ -18,7 +21,7 @@ if (!isset($product)) {
                         </div>
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="customLink-a">
+                                        <a href="<?php echo UrlHelper::url('/products'); ?>" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>
@@ -28,7 +31,7 @@ if (!isset($product)) {
     
         <div class="card-content">
                 <form 
-                        action="<?php echo $_ENV['APP_URL']; ?>/products/update" 
+                        action="<?php echo UrlHelper::url('/products/update'); ?>" 
                         method="POST" 
                         enctype="multipart/form-data" 
                         id="productForm"
@@ -172,8 +175,8 @@ if (!isset($product)) {
                                                 <div class="box has-text-centered" style="background-color: #fafafa;">
                                                         <?php if ($product->image_prod): ?>
                                                                 <img 
-                                                                        src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
-                                                                        alt="<?php echo htmlspecialchars($product->name); ?>"
+                                                                        src="<?= UrlHelper::url('/uploads/products/') . urlencode($product->image_prod) ?>" 
+                                                                        alt="<?= htmlspecialchars($product->name ?? 'Producto', ENT_QUOTES, 'UTF-8') ?>"
                                                                         style="max-width: 150px; max-height: 150px; border-radius: 8px;"
                                                                 >
                                                                 <p class="help">
@@ -236,7 +239,7 @@ if (!isset($product)) {
                                                         </button>
                                                 </div>
                                                 <div class="control">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-light">
+                                                        <a href="<?php echo UrlHelper::url('/products"'); ?> class="button is-light">
                                                                 Cancelar
                                                         </a>
                                                 </div>

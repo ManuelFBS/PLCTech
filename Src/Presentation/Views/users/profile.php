@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4" style="max-width: 600px; margin: 0 auto;">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -13,7 +19,7 @@
         
         <div class="card-content">
                 <!-- Datos del usuario -->
-                <div class="box" style="background-color: #fafafa;">
+                <div class="box" style="background-color: dark;">
                         <h4 class="title is-6">
                                 <i class="fas fa-user"></i> Datos del Usuario
                         </h4>
@@ -38,7 +44,7 @@
                 </div>
                 
                 <!-- Formulario cambiar username -->
-                <form action="<?php echo $_ENV['APP_URL']; ?>/users/update-username" method="POST" class="mt-4">
+                <form action="<?php echo UrlHelper::url('/users/update-username'); ?>" method="POST" class="mt-4">
                         <div class="box" style="background-color: #f5f5f5;">
                                 <h4 class="title is-6">
                                         <i class="fas fa-user-edit"></i> Cambiar Nombre de Usuario
@@ -76,7 +82,7 @@
                 </form>
                 
                 <!-- Formulario cambiar contraseña -->
-                <form action="<?php echo $_ENV['APP_URL']; ?>/users/update-password" method="POST" class="mt-4">
+                <form action="<?php echo UrlHelper::url('/users/update-password'); ?>" method="POST" class="mt-4">
                         <div class="box" style="background-color: #f5f5f5;">
                                 <h4 class="title is-6">
                                         <i class="fas fa-key"></i> Cambiar Contraseña

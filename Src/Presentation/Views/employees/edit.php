@@ -1,9 +1,11 @@
 <?php
 
+use \PLCTech\Helpers\UrlHelper;
+
 // * Verificar que la variable $employee existe...
 if (!isset($employee) || !$employee) {
         $_SESSION['error_message'] = 'No se encontraron datos del empleado';
-        header('Location: ' . $_ENV['APP_URL'] . '/employees');
+        header('Location: ' . UrlHelper::url('/employees'));
         exit;
 }
 
@@ -21,7 +23,7 @@ if (!isset($employee) || !$employee) {
                         </div>
                         <div class="level-right">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="customLink-a">
+                                        <a href="<?php echo UrlHelper::url('/employees'); ?>" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>
@@ -30,7 +32,7 @@ if (!isset($employee) || !$employee) {
         </div>
     
         <div class="card-content">
-                <form action="<?php echo $_ENV['APP_URL']; ?>/employees/update" method="POST" id="employeeForm">
+                <form action="<?php echo UrlHelper::url('/employees/update'); ?>" method="POST" id="employeeForm">
                         <input type="hidden" name="id" value="<?php echo $employee->id; ?>">
                 
                         <div class="columns is-multiline">
@@ -135,7 +137,7 @@ if (!isset($employee) || !$employee) {
                                                         </button>
                                                 </div>
                                                 <div class="control">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="button is-light">
+                                                        <a href="<?php echo UrlHelper::url('/employees'); ?>" class="button is-light">
                                                                 Cancelar
                                                         </a>
                                                 </div>

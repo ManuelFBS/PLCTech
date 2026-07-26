@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +19,7 @@
     <nav class="navbar is-primary has-shadow" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>">
+                <a class="navbar-item" href="<?php echo UrlHelper::url('/dashboard'); ?>">
                     <i class="fas fa-microchip"></i>
                     <strong style="margin-left: 10px;"><?php echo $_ENV['APP_NAME']; ?></strong>
                 </a>
@@ -31,7 +37,7 @@
                     <!-- INICIO / DASHBOARD (Visible para usuarios logueados)                               -->
                     <!-- ========================================================== -->
                     <div class="navbar-item">
-                        <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/dashboard">
+                        <a class="navbar-item" href="<?php echo UrlHelper::url('/dashboard'); ?>">
                             <i class="fas fa-home"></i> Inicio
                         </a>
                     </div>
@@ -40,7 +46,7 @@
                     <!-- CATÁLOGO (Visible para TODOS los roles)                    -->
                     <!-- ========================================================== -->
                     <div class="navbar-item">
-                        <a class="navbar-item has-text-weight-bold" href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" 
+                        <a class="navbar-item has-text-weight-bold" href="<?php echo UrlHelper::url('/products/catalog'); ?>" 
                            style="color: #00d1b2; border-bottom: 2px solid #00d1b2;">
                             <i class="fas fa-store"></i> Catálogo
                         </a>
@@ -55,10 +61,10 @@
                                 <i class="fas fa-users"></i> Empleados
                             </a>
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/employees/create">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/employees/create'); ?>">
                                     <i class="fas fa-plus"></i> Nuevo
                                 </a>
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/employees">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/employees'); ?>">
                                     <i class="fas fa-list"></i> Listado de empleados
                                 </a>
                                 <hr class="navbar-divider">
@@ -88,11 +94,11 @@
                             </a>
                             <div class="navbar-dropdown">
                                 
-                                    <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers/create">
+                                    <a class="navbar-item" href="<?php echo UrlHelper::url('/customers/create'); ?>">
                                         <i class="fas fa-plus"></i> Nuevo
                                     </a>
                                 
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/customers">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/customers'); ?>">
                                     <i class="fas fa-list"></i> Listado de clientes
                                 </a>
                             </div>
@@ -108,10 +114,10 @@
                                 <i class="fas fa-user-lock"></i> Usuarios
                             </a>
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/users/create">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/users/create'); ?>">
                                     <i class="fas fa-plus"></i> Nuevo
                                 </a>
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/users">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/users'); ?>">
                                     <i class="fas fa-list"></i> Listado de usuarios
                                 </a>
                             </div>
@@ -128,11 +134,11 @@
                             </a>
                             <div class="navbar-dropdown">
                                 <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                    <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/products/create">
+                                    <a class="navbar-item" href="<?php echo UrlHelper::url('/products/create'); ?>">
                                         <i class="fas fa-plus"></i> Nuevo
                                     </a>
                                 <?php endif; ?>
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/products">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/products'); ?>">
                                     <i class="fas fa-list"></i> Listado de productos
                                 </a>
                                 <hr class="navbar-divider">
@@ -162,11 +168,11 @@
                             </a>
                             <div class="navbar-dropdown">
                                 <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
-                                    <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/purchases/create">
+                                    <a class="navbar-item" href="<?php echo UrlHelper::url('/purchases/create'); ?>">
                                         <i class="fas fa-plus"></i> Nueva venta
                                     </a>
                                 <?php endif; ?>
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/purchases">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/purchases'); ?>">
                                     <i class="fas fa-list"></i> Listado de ventas
                                 </a>
                             </div>
@@ -178,7 +184,7 @@
                     <!-- ========================================================== -->
                     <?php if ($_SESSION['role'] === 'Customer'): ?>
                         <div class="navbar-item">
-                            <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/purchases/customer">
+                            <a class="navbar-item" href="<?php echo UrlHelper::url('/purchases/customer'); ?>">
                                 <i class="fas fa-history"></i> Mis compras
                             </a>
                         </div>
@@ -198,21 +204,21 @@
                             ?>
                         </a>
                         <div class="navbar-dropdown is-right">
-                            <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/profile">
+                            <a class="navbar-item" href="<?php echo UrlHelper::url('/profile'); ?>">
                                 <i class="fas fa-id-card"></i> Mi cuenta
                             </a>
                             
                             <!-- Carrito (solo para clientes) -->
                             <?php if ($_SESSION['role'] === 'Customer'): ?>
                                 <hr class="navbar-divider">
-                                <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/cart">
+                                <a class="navbar-item" href="<?php echo UrlHelper::url('/cart'); ?>">
                                     <i class="fas fa-shopping-cart"></i> Mi carrito
                                     <span class="tag is-info is-small ml-2" id="cartBadge">0</span>
                                 </a>
                             <?php endif; ?>
                             
                             <hr class="navbar-divider">
-                            <a class="navbar-item" href="<?php echo $_ENV['APP_URL']; ?>/logout">
+                            <a class="navbar-item" href="<?php echo UrlHelper::url('/logout'); ?>">
                                 <i class="fas fa-sign-out-alt"></i> Salir
                             </a>
                         </div>

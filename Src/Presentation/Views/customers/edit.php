@@ -1,7 +1,9 @@
 <?php
+use \PLCTech\Helpers\UrlHelper;
+
 if (!isset($customer)) {
         $_SESSION['error_message'] = 'No se encontraron datos del cliente';
-        header('Location: ' . $_ENV['APP_URL'] . '/customers');
+        header('Location: ' . UrlHelper::url('/customers'));
         exit;
 }
 ?>
@@ -19,7 +21,7 @@ if (!isset($customer)) {
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
                                         <a 
-                                                href="<?php echo $_ENV['APP_URL']; ?>/customers" 
+                                                href="<?php echo UrlHelper::url('/customers'); ?>" 
                                                 class="customLink-a"
                                         >
                                                 <i class="fas fa-arrow-left"></i> Volver
@@ -30,7 +32,7 @@ if (!isset($customer)) {
         </div>
         
         <div class="card-content">
-                <form action="<?php echo $_ENV['APP_URL']; ?>/customers/update" method="POST">
+                <form action="<?php echo UrlHelper::url('/customers/update'); ?>" method="POST">
                         <input type="hidden" name="id" value="<?php echo $customer->id; ?>">
                     
                         <div class="columns is-multiline">
@@ -129,7 +131,7 @@ if (!isset($customer)) {
                                                 </div>
                                                 <div class="control">
                                                         <a 
-                                                                href="<?php echo $_ENV['APP_URL']; ?>/customers" 
+                                                                href="<?php echo UrlHelper::url('/customers'); ?>" 
                                                                 class="button is-light"
                                                         >
                                                                 Cancelar

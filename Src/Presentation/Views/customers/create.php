@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -11,7 +17,7 @@
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
                                         <a 
-                                                href="<?php echo $_ENV['APP_URL']; ?>/customers" 
+                                                href="<?php UrlHelper::url('/customers'); ?>" 
                                                 class="customLink-a"
                                         >
                                                 <i class="fas fa-arrow-left"></i> Volver
@@ -22,7 +28,10 @@
         </div>
         
         <div class="card-content">
-                <form action="<?php echo $_ENV['APP_URL']; ?>/customers/store" method="POST">
+                <form 
+                        action="<?php echo UrlHelper::url('/customers/store'); ?>" 
+                        method="POST"
+                >
                         <div class="columns is-multiline">
                                 <div class="column is-6">
                                         <div class="field">
@@ -120,7 +129,7 @@
                                                 
                                                 <!-- Botones de acción -->
                                                 <div style="display: flex; gap: 12px; justify-content: flex-end; border-top: 2px solid #c8e6c9; padding-top: 15px;">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers" class="button is-success">
+                                                        <a href="<?php echo UrlHelper::url('/customers'); ?>" class="button is-success">
                                                                 <i class="fas fa-list"></i> Ir al listado
                                                         </a>
                                                         <button onclick="clearCustomerSession()" class="button is-light">
@@ -178,7 +187,7 @@
                                                 }
 
                                                 function clearCustomerSession() {
-                                                        fetch('<?php echo $_ENV['APP_URL']; ?>/customers/clear-user-data', {
+                                                        fetch("<?php echo UrlHelper::url('/customers/clear-user-data'); ?>", {
                                                                 method: 'POST',
                                                                 headers: { 'Content-Type': 'application/json' }
                                                         }).then(() => {
@@ -258,7 +267,7 @@
                                                         </button>
                                                 </div>
                                                 <div class="control">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers" class="button is-light">
+                                                        <a href="<?php echo UrlHelper::url('/customers'); ?>" class="button is-light">
                                                                 Cancelar
                                                         </a>
                                                 </div>

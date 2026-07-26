@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -10,7 +16,7 @@
                         </div>
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="customLink-a">
+                                        <a href="<?php echo UrlHelper::url('/employees'); ?>" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>
@@ -20,7 +26,7 @@
     
         <div class="card-content">
                 <form 
-                        action="<?php echo $_ENV['APP_URL']; ?>/employees/store" 
+                        action="<?php echo UrlHelper::url('/employees/store'); ?>" 
                         method="POST" 
                         id="employeeForm"
                 >
@@ -155,7 +161,7 @@
                                                         </button>
                                                 </div>
                                                 <div class="control">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="button is-light">
+                                                        <a href="<?php echo UrlHelper::url('/employees'); ?>" class="button is-light">
                                                                 Cancelar
                                                         </a>
                                                 </div>

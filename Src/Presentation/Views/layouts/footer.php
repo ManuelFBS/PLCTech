@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 </div> <!-- Cierra .container -->
     </div> <!-- Cierra el div de contenido -->
     <div style="margin-top: 100px;">
@@ -13,7 +19,11 @@
     </div>
     
     <script>
-        // Cerrar mensajes automáticamente
+        // * Definir URLs base al inicio del script...
+        const baseUrl = "<?= UrlHelper::url('/employees') ?>";
+        const baseDeleteUrl = "<?= UrlHelper::url('/employees/delete') ?>";
+
+        // * Cerrar mensajes automáticamente...
         setTimeout(function() {
             document.querySelectorAll('.notification').forEach(function(notification) {
                 notification.style.transition = 'opacity 0.3s';
@@ -24,7 +34,7 @@
             });
         }, 4000);
         
-        // Funcionalidad del navbar burger
+        // * Funcionalidad del navbar burger...
         document.addEventListener('DOMContentLoaded', function() {
             const navbarBurger = document.querySelector('.navbar-burger');
             const navbarMenu = document.querySelector('#navbarMenu');
@@ -40,21 +50,23 @@
         function searchEmployee() {
             const searchTerm = document.getElementById('searchEmployee')?.value;
             if (searchTerm) {
-                window.location.href = '<?php echo $_ENV['APP_URL']; ?>/employees?search=' + encodeURIComponent(searchTerm);
+                window.location.href = baseUrl + '?search=' + encodeURIComponent(searchTerm);
             } else {
-                window.location.href = '<?php echo $_ENV['APP_URL']; ?>/employees';
+                window.location.href = baseUrl;
             }
         }
         
-        // Eliminar scroll innecesario - forzar que no haya espacio extra
+        // * Eliminar scroll innecesario - forzar que no haya espacio extra...
         window.addEventListener('load', function() {
             document.body.style.margin = '0';
             document.body.style.padding = '0';
             document.documentElement.style.margin = '0';
             document.documentElement.style.padding = '0';
             
-            // Si el contenido no llena la pantalla, no fuerza altura
-            var contentDiv = document.querySelector('.main-content') || document.querySelector('body > div:not(.navbar)');
+            // > Si el contenido no llena la pantalla, no fuerza altura...
+            var contentDiv = 
+                document.querySelector('.main-content') || 
+                    document.querySelector('body > div:not(.navbar)');
             if (contentDiv) {
                 contentDiv.style.minHeight = 'auto';
             }

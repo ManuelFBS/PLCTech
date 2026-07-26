@@ -8,6 +8,7 @@ use PLCTech\Infrastructure\Auth\JWTHandler;
 use PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
+use \PLCTech\Helpers\PathHelper;
 
 class AuthController
 {
@@ -35,7 +36,7 @@ class AuthController
         {
                 // > Si ya está logueado, redirigir al home...
                 if (isset($_SESSION['user_id'])) {
-                        header('Location: ' . $_ENV['APP_URL']);
+                        header('Location: ' . PathHelper::getBaseUrl() . '/dashboard');
                         exit;
                 }
 
@@ -45,7 +46,7 @@ class AuthController
         public function login(): void
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                        header('Location: ' . $_ENV['APP_URL'] . '/login');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/login');
                         exit;
                 }
 
@@ -56,19 +57,18 @@ class AuthController
                         $result = $this->loginUseCase->execute($username, $password);
 
                         if ($result) {
-                                // $_SESSION['success_message'] = '¡Bienvenido ' . $result['user']['username'] . '!';
                                 $_SESSION['success_message'] =
                                         '¡Bienvenido '
                                         . $result['user']['full_name']
                                         . '!';
-                                header('Location: ' . $_ENV['APP_URL']);
+                                header('Location: ' . PathHelper::getBaseUrl() . '/dashboard');
                         } else {
                                 $_SESSION['error_message'] = 'Credenciales inválidas';
-                                header('Location: ' . $_ENV['APP_URL'] . '/login');
+                                header('Location: ' . PathHelper::getBaseUrl() . '/login');
                         }
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
-                        header('Location: ' . $_ENV['APP_URL'] . '/login');
+                        header('Location: ' . PathHelper::getBaseUrl() . '/login');
                 }
                 exit;
         }
@@ -77,7 +77,11 @@ class AuthController
         {
                 $this->logoutUseCase->execute();
                 $_SESSION['success_message'] = 'Has cerrado sesión correctamente';
-                header('Location: ' . $_ENV['APP_URL'] . '/login');
+
+                // > ============================================================
+                // > REDIRIGIR A LANDING PAGE (/) EN LUGAR DE /login
+                // > ============================================================
+                header('Location: ' . PathHelper::getBaseUrl() . '/');
                 exit;
         }
 }

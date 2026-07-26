@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
     <div class="card-header p-4" style="background-color: dark;">
         <div class="level">
@@ -10,7 +16,7 @@
             </div>
             <div class="level-right" style="margin-left: 300px;">
                 <div class="level-item">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/create" class="anchor-a">
+                    <a href="<?php echo UrlHelper::url('/purchases/create'); ?>" class="anchor-a">
                         <i class="fas fa-plus"></i> Nueva Venta
                     </a>
                 </div>
@@ -91,11 +97,11 @@
                                 </td>
                                 <td>
                                     <div class="buttons are-small">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/show?id=<?php echo $purchase->id; ?>" 
+                                        <a href="<?php echo UrlHelper::url('/purchases/show', ['id' => $purchase->id]); ?>" 
                                            class="button is-info" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/invoice?id=<?php echo $purchase->id; ?>" 
+                                        <a href="<?php echo UrlHelper::url('/purchases/invoice', ['id' => $purchase->id]); ?>" 
                                            class="button is-primary" title="Ver factura">
                                             <i class="fas fa-file-invoice"></i>
                                         </a>
@@ -167,7 +173,7 @@
         if (cancelId) {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '<?php echo $_ENV['APP_URL']; ?>/purchases/cancel?id=' + cancelId;
+            form.action = '<?php echo UrlHelper::url(''); ?>/purchases/cancel?id=' + cancelId;
             
             const input = document.createElement('input');
             input.type = 'hidden';

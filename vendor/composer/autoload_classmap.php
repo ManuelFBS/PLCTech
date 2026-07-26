@@ -115,6 +115,7 @@ return array(
     'PLCTech\\Domain\\ValueObjects\\DNI' => $baseDir . '/src/Domain/ValueObjects/DNI.php',
     'PLCTech\\Domain\\ValueObjects\\Email' => $baseDir . '/src/Domain/ValueObjects/Email.php',
     'PLCTech\\Helpers\\PathHelper' => $baseDir . '/src/Helpers/PathHelper.php',
+    'PLCTech\\Helpers\\UrlHelper' => $baseDir . '/src/Helpers/UrlHelper.php',
     'PLCTech\\Infrastructure\\Auth\\JWTHandler' => $baseDir . '/src/Infrastructure/Auth/JWTHandler.php',
     'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLCartRepository' => $baseDir . '/src/Infrastructure/Database/Repositories/MySQLCartRepository.php',
     'PLCTech\\Infrastructure\\Database\\Repositories\\MySQLCategoryRepository' => $baseDir . '/src/Infrastructure/Database/Repositories/MySQLCategoryRepository.php',

@@ -1,4 +1,6 @@
 <?php
+use \PLCTech\Helpers\UrlHelper;
+
 if (!isset($cart) || empty($cart)) {
         ?>
                 <div class="card mt-4">
@@ -7,7 +9,7 @@ if (!isset($cart) || empty($cart)) {
                                 <h3 class="title is-4 mt-3">Tu carrito está vacío</h3>
                                 <p class="subtitle is-6">Explora nuestro catálogo y agrega productos</p>
                                 <a 
-                                        href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" 
+                                        href="<?php echo UrlHelper::url('/products/catalog'); ?>" 
                                         class="button is-primary"
                                 >
                                         <i class="fas fa-store"></i> Ir al catálogo
@@ -97,7 +99,7 @@ $total = $total ?? 0;
     
         <div class="column is-4">
                 <div class="card">
-                        <div class="card-header" style="background-color: #f5f5f5;">
+                        <div class="card-header" style="background-color: dark;">
                                 <div class="card-header-title">
                                         <i class="fas fa-receipt"></i> Resumen
                                 </div>
@@ -122,7 +124,7 @@ $total = $total ?? 0;
                                 
                                 <hr>
                                 
-                                <form action="<?php echo $_ENV['APP_URL']; ?>/purchases/checkout" method="POST">
+                                <form action="<?php echo UrlHelper::url('/purchases/checkout'); ?>" method="POST">
                                         <div class="field">
                                                 <label class="label">Método de pago</label>
                                                 <div class="control">
@@ -152,7 +154,7 @@ $total = $total ?? 0;
                                         </button>
                                 </form>
                                 
-                                <a href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" class="button is-light is-fullwidth mt-2">
+                                <a href="<?php echo UrlHelper::url('/products/catalog'); ?>" class="button is-light is-fullwidth mt-2">
                                         <i class="fas fa-store"></i> Seguir comprando
                                 </a>
                         </div>
@@ -163,7 +165,7 @@ $total = $total ?? 0;
 <script>
         function clearCart() {
                 if (confirm('¿Está seguro que desea vaciar el carrito?')) {
-                        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/cart/clear';
+                        window.location.href = "<?php echo UrlHelper::url('/cart/clear'); ?>";
                 }
         }
 </script>

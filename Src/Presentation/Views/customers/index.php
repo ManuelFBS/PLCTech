@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -10,7 +16,7 @@
                         </div>
                         <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers/create" class="anchor-a">
+                                        <a href="<?php echo UrlHelper::url('/customers/create'); ?>" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Cliente
                                         </a>
                                 </div>
@@ -53,7 +59,7 @@
                                                             <td>
                                                                     <div class="buttons are-small">
                                                                             <a 
-                                                                                    href="<?php echo $_ENV['APP_URL']; ?>/customers/edit?id=<?php echo $customer->id; ?>" 
+                                                                                    href="<?php echo UrlHelper::url('/customers/edit', ['id' => $customer->id]); ?>" 
                                                                                     class="button is-info" title="Editar"
                                                                             >
                                                                                     <i class="fas fa-edit"></i>
@@ -77,13 +83,14 @@
 </div>
 
 <script>
+        const baseDeleteUrl = "<?= UrlHelper::url('/customers/delete') ?>";
         function confirmDelete(id) {
                 if (
                             confirm(
                                     '¿Está seguro que desea eliminar este cliente?\n\nNota: No se podrá eliminar si tiene un usuario asociado.'
                             )
                     ) {
-                            window.location.href = '<?php echo $_ENV['APP_URL']; ?>/customers/delete?id=' + id;
+                            window.location.href = `${baseDeleteUrl}?id=${id}`;
                 }
         }
 </script>

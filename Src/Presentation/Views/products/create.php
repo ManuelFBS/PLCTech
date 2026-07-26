@@ -1,4 +1,7 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 // * Verificar que la variable $categories existe...
 if (!isset($categories) || empty($categories)) {
         // > Si no existe, obtenerlas directamente usando el repositorio...
@@ -20,7 +23,7 @@ if (!isset($categories) || empty($categories)) {
                         </div>
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="customLink-a">
+                                        <a href="<?php echo UrlHelper::url('/products'); ?>" class="customLink-a">
                                                 <i class="fas fa-arrow-left"></i> Volver
                                         </a>
                                 </div>
@@ -30,7 +33,7 @@ if (!isset($categories) || empty($categories)) {
         
         <div class="card-content">
                 <form 
-                        action="<?php echo $_ENV['APP_URL']; ?>/products/store" 
+                        action="<?php echo UrlHelper::url('/products/store'); ?>" 
                         method="POST" 
                         enctype="multipart/form-data" 
                         id="productForm"
@@ -180,7 +183,7 @@ if (!isset($categories) || empty($categories)) {
                                                         </button>
                                                 </div>
                                                 <div class="control">
-                                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products" class="button is-light">
+                                                        <a href="<?php echo UrlHelper::url('/products'); ?>" class="button is-light">
                                                                 Cancelar
                                                         </a>
                                                 </div>

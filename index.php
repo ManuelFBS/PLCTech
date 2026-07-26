@@ -4,14 +4,24 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use PLCTech\Presentation\Controllers\AuthController;
+use PLCTech\Presentation\Controllers\CartController;
 use PLCTech\Presentation\Controllers\CustomerController;
 use PLCTech\Presentation\Controllers\EmployeeController;
 use PLCTech\Presentation\Controllers\HomeController;
+use PLCTech\Presentation\Controllers\ProductController;
+use PLCTech\Presentation\Controllers\PurchaseController;
 use PLCTech\Presentation\Controllers\UserController;
 use PLCTech\Presentation\Middleware\AuthMiddleware;
 use PLCTech\Presentation\Middleware\RoleMiddleware;
 
 session_start();
+
+// * ============================================================
+// * DETECTAR RUTA BASE AUTOMÁTICAMENTE
+// * ============================================================
+$scriptName = $_SERVER['SCRIPT_NAME'];
+$scriptDir = dirname($scriptName);
+$base_path = ($scriptDir === '/' || $scriptDir === '\\' ? '' : $scriptDir);
 
 // * Cargar variables de entorno...
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -19,14 +29,9 @@ $dotenv->load();
 
 // * Obtener la URL solicitada...
 $request_uri = $_SERVER['REQUEST_URI'];
-$base_path = '/Projects/PLCTech';
 $path = str_replace($base_path, '', $request_uri);
 $path = strtok($path, '?');
 $method = $_SERVER['REQUEST_METHOD'];
-
-// * Enrutamiento básico...
-$routes = require __DIR__ . '/src/routes.php';
-$route_found = false;
 
 // * ============================================================
 // * RUTAS PÚBLICAS (NO requieren autenticación)
@@ -48,6 +53,10 @@ if (!in_array($path, $publicRoutes)) {
                 exit;
         }
 }
+
+// * Enrutamiento básico...
+$routes = require __DIR__ . '/src/routes.php';
+$route_found = false;
 
 // * Buscar la ruta...
 foreach ($routes as $route => $config) {

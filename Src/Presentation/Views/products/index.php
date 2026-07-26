@@ -1,3 +1,9 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <div class="card mt-4">
         <div class="card-header p-4" style="background-color: dark;">
                 <div class="level">
@@ -10,7 +16,7 @@
                         </div>
                         <div class="level-right" style="margin-left: 100px;">
                                 <div class="level-item">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/products/create" class="anchor-a">
+                                        <a href="<?php echo UrlHelper::url('/products/create'); ?>" class="anchor-a">
                                                 <i class="fas fa-plus"></i> Nuevo Producto
                                         </a>
                                 </div>
@@ -44,12 +50,12 @@
                                                         <td style="padding-top: 22px;"><?php echo $product->id; ?></td>
                                                         <td class="has-text-centered">
                                                                 <?php if ($product->image_prod): ?>
-                                                                        <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $product->image_prod; ?>" 
-                                                                        alt="<?php echo htmlspecialchars($product->name); ?>"
+                                                                        <img src="<?= UrlHelper::url('/uploads/products/') . urlencode($product->image_prod) ?>" 
+                                                                        alt="<?= htmlspecialchars($product->name ?? 'Producto', ENT_QUOTES, 'UTF-8') ?>"
                                                                         class="imageFix">
                                                                 <?php else: ?>
                                                                         <div class="no-Image">
-                                                                        <i class="fas fa-image has-text-grey-light"></i>
+                                                                                <i class="fas fa-image has-text-grey-light"></i>
                                                                         </div>
                                                                 <?php endif; ?>
                                                         </td>
@@ -91,12 +97,12 @@
                                                         </td>
                                                         <td>
                                                         <div class="buttons are-small">
-                                                                <a href="<?php echo $_ENV['APP_URL']; ?>/products/show?id=<?php echo $product->id; ?>" 
+                                                                <a href="<?php echo UrlHelper::url('/products/show', ['id' => $product->id]); ?>" 
                                                                 class="button is-info centered-row" title="Ver detalles">
                                                                 <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                                                <a href="<?php echo $_ENV['APP_URL']; ?>/products/edit?id=<?php echo $product->id; ?>" 
+                                                                <a href="<?php echo UrlHelper::url('/products/edit', ['id' => $product->id]); ?>" 
                                                                 class="button is-warning centered-row" title="Editar">
                                                                         <i class="fas fa-edit"></i>
                                                                 </a>
@@ -117,9 +123,11 @@
 </div>
 
 <script>
+        const baseDeleteUrl = "<?= UrlHelper::url('/products/delete') ?>";
+
         function confirmDelete(id) {
                 if (confirm('¿Está seguro que desea eliminar este producto?\n\nNota: No se podrá eliminar si tiene ventas asociadas.')) {
-                        window.location.href = '<?php echo $_ENV['APP_URL']; ?>/products/delete?id=' + id;
+                        window.location.href = `${baseDeleteUrl}?id=${id}`;
                 }
         }
 </script>

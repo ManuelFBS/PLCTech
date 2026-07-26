@@ -1,5 +1,8 @@
 <?php
 // ~ Continuación del layout...
+
+use \PLCTech\Helpers\UrlHelper;
+
 ?>
 
 <div class="hero is-light mt-5" style="border-radius: 10px;">
@@ -31,7 +34,7 @@ echo htmlspecialchars($displayName);
                                 <i class="fas fa-users fa-3x has-text-primary"></i>
                                 <h3 class="title is-5 mt-3">Empleados</h3>
                                 <p class="subtitle is-6">Gestión completa</p>
-                                <a href="<?php echo $_ENV['APP_URL']; ?>/employees" class="button is-primary is-small">
+                                <a href="<?php echo UrlHelper::url('/employees'); ?>" class="button is-primary is-small">
                                         Ver empleados
                                 </a>
                         </div>
@@ -46,7 +49,7 @@ echo htmlspecialchars($displayName);
                                         <i class="fas fa-user-friends fa-3x has-text-info"></i>
                                         <h3 class="title is-5 mt-3">Clientes</h3>
                                         <p class="subtitle is-6">Base de datos</p>
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers" class="button is-info is-small">
+                                        <a href="<?php echo UrlHelper::url('/customers'); ?>" class="button is-info is-small">
                                                 Ver clientes
                                         </a>
                                 </div>
@@ -60,7 +63,7 @@ echo htmlspecialchars($displayName);
                             <i class="fas fa-boxes fa-3x has-text-success"></i>
                             <h3 class="title is-5 mt-3">Productos</h3>
                             <p class="subtitle is-6">Catálogo</p>
-                            <a href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" class="button is-success is-small">
+                            <a href="<?php echo UrlHelper::url('/products/catalog'); ?>" class="button is-success is-small">
                                     Ver productos
                             </a>
                         </div>
@@ -74,7 +77,7 @@ echo htmlspecialchars($displayName);
                                         <i class="fas fa-shopping-cart fa-3x has-text-warning"></i>
                                         <h3 class="title is-5 mt-3">Ventas</h3>
                                         <p class="subtitle is-6">Registros</p>
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="button is-warning is-small">
+                                        <a href="<?php echo UrlHelper::url('/purchases'); ?>" class="button is-warning is-small">
                                                 Ver ventas
                                         </a>
                                 </div>

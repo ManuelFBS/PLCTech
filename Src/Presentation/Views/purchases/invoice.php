@@ -1,8 +1,11 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 if (!isset($purchase) || !isset($customer) || !isset($items) || !isset($company)) {
-        $_SESSION['error_message'] = 'No se encontraron datos de la factura';
-        header('Location: ' . $_ENV['APP_URL'] . '/purchases');
-        exit;
+    $_SESSION['error_message'] = 'No se encontraron datos de la factura';
+    header('Location: ' . UrlHelper::url('/purchases'));
+    exit;
 }
 ?>
 
@@ -109,10 +112,10 @@ if (!isset($purchase) || !isset($customer) || !isset($items) || !isset($company)
                     <td class="has-text-right">
                         <?php
                         $methodLabels = [
-                                'cash' => 'Efectivo',
-                                'card' => 'Tarjeta',
-                                'transfer' => 'Transferencia',
-                                'online' => 'Online'
+                            'cash' => 'Efectivo',
+                            'card' => 'Tarjeta',
+                            'transfer' => 'Transferencia',
+                            'online' => 'Online'
                         ];
                         echo $methodLabels[$purchase['payment_method']] ?? $purchase['payment_method'];
                         ?>
@@ -155,7 +158,7 @@ if (!isset($purchase) || !isset($customer) || !isset($items) || !isset($company)
     <button class="button is-light" onclick="window.print()">
         <i class="fas fa-print"></i> Imprimir / PDF
     </button>
-    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="button is-light">
+    <a href="<?php echo UrlHelper::url('/purchases'); ?>" class="button is-light">
         <i class="fas fa-arrow-left"></i> Volver
     </a>
 </div>

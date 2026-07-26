@@ -1,12 +1,15 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 // * Verificar que la variable $purchases existe y tiene datos...
 $hasPurchases = isset($purchases) && !empty($purchases);
 
 // * Verificación de seguridad...
 if (!isset($purchases)) {
-        // > Si la variable no existe, mostrar error controlado...
-        $purchases = [];
-        $_SESSION['error_message'] = 'No se pudieron cargar las compras';
+    // > Si la variable no existe, mostrar error controlado...
+    $purchases = [];
+    $_SESSION['error_message'] = 'No se pudieron cargar las compras';
 }
 ?>
 
@@ -28,7 +31,7 @@ if (!isset($purchases)) {
             <div class="notification is-warning is-light has-text-centered">
                 <i class="fas fa-info-circle"></i> No has realizado compras aún
                 <br>
-                <a href="<?php echo $_ENV['APP_URL']; ?>/products/catalog" class="button is-primary mt-3">
+                <a href="<?php echo UrlHelper::url('/products/catalog'); ?>" class="button is-primary mt-3">
                     <i class="fas fa-store"></i> Ir al catálogo
                 </a>
             </div>
@@ -59,14 +62,14 @@ if (!isset($purchases)) {
                                 </td>
                                 <td>
                                     <?php
-                $methodLabels = [
-                        'cash' => 'Efectivo',
-                        'card' => 'Tarjeta',
-                        'transfer' => 'Transferencia',
-                        'online' => 'Online'
-                ];
-                echo $methodLabels[$purchase->payment_method] ?? $purchase->payment_method;
-                ?>
+                                    $methodLabels = [
+                                        'cash' => 'Efectivo',
+                                        'card' => 'Tarjeta',
+                                        'transfer' => 'Transferencia',
+                                        'online' => 'Online'
+                                    ];
+                                    echo $methodLabels[$purchase->payment_method] ?? $purchase->payment_method;
+                                    ?>
                                 </td>
                                 <td>
                                     <?php if ($purchase->status === 'cancelled'): ?>
@@ -81,7 +84,7 @@ if (!isset($purchases)) {
                                 </td>
                                 <td>
                                     <div class="buttons are-small">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/invoice?id=<?php echo $purchase->id; ?>" 
+                                        <a href="<?php echo UrlHelper::url('/purchases/invoice', ['id' => $purchase->id]); ?>" 
                                            class="button is-primary" title="Ver factura">
                                             <i class="fas fa-file-invoice"></i> Ver factura
                                         </a>

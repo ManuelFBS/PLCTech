@@ -1,14 +1,17 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 if (!isset($cart) || empty($cart)) {
-        $_SESSION['error_message'] = 'El carrito está vacío';
-        header('Location: ' . $_ENV['APP_URL'] . '/products/catalog');
-        exit;
+    $_SESSION['error_message'] = 'El carrito está vacío';
+    header('Location: ' . UrlHelper::url('/products/catalog'));
+    exit;
 }
 
 if (!isset($customer)) {
-        $_SESSION['error_message'] = 'Debe iniciar sesión para realizar una compra';
-        header('Location: ' . $_ENV['APP_URL'] . '/login');
-        exit;
+    $_SESSION['error_message'] = 'Debe iniciar sesión para realizar una compra';
+    header('Location: ' . UrlHelper::url('/login'));
+    exit;
 }
 ?>
 
@@ -35,19 +38,19 @@ if (!isset($customer)) {
                         </thead>
                         <tbody>
                             <?php
-$subtotal = 0;
-foreach ($cart as $item):
-        $itemSubtotal = $item['price'] * $item['quantity'];
-        $subtotal += $itemSubtotal;
-        ?>
+                            $subtotal = 0;
+                            foreach ($cart as $item):
+                                $itemSubtotal = $item['price'] * $item['quantity'];
+                                $subtotal += $itemSubtotal;
+                                ?>
                                 <tr>
                                     <td>
                                         <?php if ($item['image_prod']): ?>
-                                            <img src="<?php echo $_ENV['APP_URL']; ?>/uploads/products/<?php echo $item['image_prod']; ?>" 
-                                                 alt="<?php echo htmlspecialchars($item['name']); ?>"
+                                            <img src="<?= UrlHelper::url('/uploads/products/') . urldecode($item['image_prod']) ?>" 
+                                                 alt="<?= htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8') ?>"
                                                  style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; vertical-align: middle;">
                                         <?php endif; ?>
-                                        <?php echo htmlspecialchars($item['name']); ?>
+                                        <?= htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8') ?>
                                     </td>
                                     <td class="has-text-right"><?php echo $item['quantity']; ?></td>
                                     <td class="has-text-right">$<?php echo number_format($item['price'], 2); ?></td>
@@ -87,7 +90,7 @@ foreach ($cart as $item):
                 </div>
             </div>
             <div class="card-content">
-                <form action="<?php echo $_ENV['APP_URL']; ?>/purchases/checkout" method="POST">
+                <form action="<?php echo UrlHelper::url('/purchases/checkout'); ?>" method="POST">
                     <!-- Datos del cliente -->
                     <div class="field">
                         <label class="label">
@@ -148,7 +151,7 @@ foreach ($cart as $item):
                         <button type="submit" class="button is-success is-fullwidth">
                             <i class="fas fa-check"></i> Confirmar compra
                         </button>
-                        <a href="<?php echo $_ENV['APP_URL']; ?>/cart" class="button is-light is-fullwidth">
+                        <a href="<?php echo UrlHelper::url('/cart'); ?>" class="button is-light is-fullwidth">
                             <i class="fas fa-arrow-left"></i> Volver al carrito
                         </a>
                     </div>

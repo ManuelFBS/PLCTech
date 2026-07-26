@@ -1,4 +1,7 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 // * Verificar que las variables existan...
 if (!isset($customers) || empty($customers)) {
     require_once __DIR__ . '/../../Infrastructure/Database/Repositories/MySQLCustomerRepository.php';
@@ -25,7 +28,7 @@ if (!isset($products) || empty($products)) {
             </div>
             <div class="level-right">
                 <div class="level-item" style="margin-left: 300px;">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="customLink-a">
+                    <a href="<?php echo UrlHelper::url('/purchases'); ?>" class="customLink-a">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
@@ -34,7 +37,7 @@ if (!isset($products) || empty($products)) {
     </div>
     
     <div class="card-content">
-        <form action="<?php echo $_ENV['APP_URL']; ?>/purchases/store" method="POST" id="purchaseForm">
+        <form action="<?php echo UrlHelper::url('/purchases/store'); ?>" method="POST" id="purchaseForm">
             
             <!-- ========================================================== -->
             <!-- SECCIÓN: BUSCAR CLIENTE POR DNI                            -->
@@ -205,7 +208,7 @@ if (!isset($products) || empty($products)) {
                     </button>
                 </div>
                 <div class="control">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="button is-light">
+                    <a href="<?php echo UrlHelper::url('/purchases'); ?>" class="button is-light">
                         Cancelar
                     </a>
                 </div>
@@ -244,8 +247,8 @@ if (!isset($products) || empty($products)) {
             </div>
         `;
         
-        const url = '<?php echo $_ENV['APP_URL']; ?>/customers/search?dni=' + encodeURIComponent(dni);
-        
+        const url = `<?= UrlHelper::url('/customers/search') ?>?dni=${encodeURIComponent(dni)}`;
+
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -275,7 +278,7 @@ if (!isset($products) || empty($products)) {
                         <div class="notification is-warning is-light" style="padding: 10px 15px;">
                             <i class="fas fa-exclamation-triangle has-text-warning"></i>
                             No se encontró cliente con DNI: <strong>${dni}</strong>
-                            <a href="<?php echo $_ENV['APP_URL']; ?>/customers/create" 
+                            <a href="<?php echo UrlHelper::url('/customers/create'); ?>" 
                                class="button is-primary is-small ml-2">
                                 <i class="fas fa-plus"></i> Registrar Cliente
                             </a>

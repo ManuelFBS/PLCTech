@@ -1,8 +1,11 @@
 <?php
+
+use \PLCTech\Helpers\UrlHelper;
+
 if (!isset($purchase)) {
-        $_SESSION['error_message'] = 'No se encontraron datos de la venta';
-        header('Location: ' . $_ENV['APP_URL'] . '/purchases');
-        exit;
+    $_SESSION['error_message'] = 'No se encontraron datos de la venta';
+    header('Location: ' . UrlHelper::url('/purchases'));
+    exit;
 }
 ?>
 
@@ -18,10 +21,10 @@ if (!isset($purchase)) {
             </div>
             <div class="level-right">
                 <div class="level-item">
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases" class="button is-light">
+                    <a href="<?php echo UrlHelper::url('/purchases'); ?>" class="button is-light">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
-                    <a href="<?php echo $_ENV['APP_URL']; ?>/purchases/invoice?id=<?php echo $purchase->id; ?>" 
+                    <a href="<?php echo UrlHelper::url('/purchases/invoice', ['id' => $purchase->id]); ?>" 
                        class="button is-primary ml-2">
                         <i class="fas fa-file-pdf"></i> Factura
                     </a>
@@ -64,10 +67,10 @@ if (!isset($purchase)) {
                             <td>
                                 <?php
                                 $methodLabels = [
-                                        'cash' => 'Efectivo',
-                                        'card' => 'Tarjeta',
-                                        'transfer' => 'Transferencia',
-                                        'online' => 'Online'
+                                    'cash' => 'Efectivo',
+                                    'card' => 'Tarjeta',
+                                    'transfer' => 'Transferencia',
+                                    'online' => 'Online'
                                 ];
                                 echo $methodLabels[$purchase->payment_method] ?? $purchase->payment_method;
                                 ?>
@@ -129,9 +132,9 @@ if (!isset($purchase)) {
                             <tr>
                                 <td>
                                     <?php
-                // Intentar obtener nombre del producto
-                echo 'Producto ID: ' . $item['product_id'];
-                ?>
+                                    // Intentar obtener nombre del producto
+                                    echo 'Producto ID: ' . $item['product_id'];
+                                    ?>
                                 </td>
                                 <td class="has-text-right"><?php echo $item['quantity']; ?></td>
                                 <td class="has-text-right">$<?php echo number_format($item['unit_price'], 2); ?></td>
@@ -217,10 +220,12 @@ if (!isset($purchase)) {
     }
     
     function executeCancel() {
+        const baseCancelUrl  = "<?= UrlHelper::url('/purchases/cancel') ?>"
+
         if (cancelId) {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '<?php echo $_ENV['APP_URL']; ?>/purchases/cancel?id=' + cancelId;
+            form.action = `${baseCancelUrl}?id=${cancelId}`;
             
             const input = document.createElement('input');
             input.type = 'hidden';

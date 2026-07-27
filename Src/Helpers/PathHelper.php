@@ -25,14 +25,11 @@ class PathHelper
                 }
 
                 // > Detectar automáticamente...
-                $protocol =
-                        isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
-                                ? 'https'
-                                : 'http';
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
                 $host = $_SERVER['HTTP_HOST'];
                 $scriptName = $_SERVER['SCRIPT_NAME'];
                 $scriptDir = dirname($scriptName);
-                $basePath = ($scriptDir === '/' || $scriptDir === '\\') ? '' : $scriptDir;
+                $basePath = ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : $scriptDir;
 
                 return $protocol . '://' . $host . $basePath;
         }

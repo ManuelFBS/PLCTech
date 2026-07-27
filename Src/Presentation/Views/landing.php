@@ -1,11 +1,17 @@
+<?php
+
+use \PLCTech\Helpers\UrlHelper;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
         <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>PLC Tech Pulse - Bienvenido</title>
-                <link rel="stylesheet" href="<?php echo $_ENV['APP_URL']; ?>/CSS/bulma.min.css">
-                <link rel="stylesheet" href="<?php echo $_ENV['APP_URL']; ?>/CSS/styles.css">
+                <link rel="stylesheet" href="<?= UrlHelper::url('/CSS/bulma.min.css') ?>">
+                <link rel="stylesheet" href="<?= UrlHelper::url('/CSS/styles.css') ?>">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                         .hero {
@@ -139,10 +145,10 @@
 
                                 <!-- Botones -->
                                 <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/login" class="btn-primary">
+                                        <a href="<?= UrlHelper::url('/login') ?>" class="btn-primary">
                                                 <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                                         </a>
-                                        <a href="<?php echo $_ENV['APP_URL']; ?>/customers/create" class="btn-secondary">
+                                        <a href="<?= UrlHelper::url('/customers/create') ?>" class="btn-secondary">
                                                 <i class="fas fa-user-plus"></i> Crear Cuenta
                                         </a>
                                 </div>

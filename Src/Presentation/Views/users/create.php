@@ -17,7 +17,7 @@ use \PLCTech\Helpers\UrlHelper;
                         <div class="level-right">
                                 <div class="level-item" style="margin-left: 300px;">
                                         <a 
-                                                href="<?php echo UrlHelper::url('/users'); ?>" 
+                                                href="<?= UrlHelper::url('/users') ?>" 
                                                 class="customLink-a"
                                         >
                                                 <i class="fas fa-arrow-left"></i> Volver
@@ -28,7 +28,7 @@ use \PLCTech\Helpers\UrlHelper;
         </div>
     
         <div class="card-content">
-                <form action="<?php echo UrlHelper::url('/users/store'); ?>" method="POST">
+                <form action="<?= UrlHelper::url('/users/store') ?>" method="POST">
                         <div class="columns is-multiline">
                                 <div class="column is-6">
                                         <div class="field">
@@ -117,7 +117,7 @@ use \PLCTech\Helpers\UrlHelper;
                                                 </div>
                                                 <div class="control">
                                                         <a 
-                                                                href="<?php echo UrlHelper::url('/users'); ?>" 
+                                                                href="<?= UrlHelper::url('/users') ?>" 
                                                                 class="button is-light"
                                                         >
                                                                 Cancelar

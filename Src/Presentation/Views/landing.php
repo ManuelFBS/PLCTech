@@ -148,7 +148,7 @@ use \PLCTech\Helpers\UrlHelper;
                                         <a href="<?= UrlHelper::url('/login') ?>" class="btn-primary">
                                                 <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                                         </a>
-                                        <a href="<?= UrlHelper::url('/customers/create') ?>" class="btn-secondary">
+                                        <a href="<?= UrlHelper::url('/register') ?>" class="btn-secondary">
                                                 <i class="fas fa-user-plus"></i> Crear Cuenta
                                         </a>
                                 </div>

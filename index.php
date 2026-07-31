@@ -28,13 +28,8 @@ $dotenv->load();
 // * Obtener la ruta del script actual...
 $scriptName = $_SERVER['SCRIPT_NAME'];
 $scriptDir = dirname($scriptName);
-
-// * Determinar la ruta base...
-// * Si el script está en la raíz del dominio, $base_path = ''...
-// * Si está en una subcarpeta, $base_path = '/subcarpeta'...
 $base_path = ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : $scriptDir;
 
-// * Si la APP_URL está definida en .env, usarla para determinar la base path...
 if (isset($_ENV['APP_URL']) && !empty($_ENV['APP_URL'])) {
         $parsedUrl = parse_url($_ENV['APP_URL']);
         if (isset($parsedUrl['path']) && $parsedUrl['path'] !== '/') {
@@ -53,7 +48,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 // * ============================================================
 // * RUTAS PÚBLICAS (NO requieren autenticación)
 // * ============================================================
-$publicRoutes = ['/', '/login', '/do-login'];
+$publicRoutes = ['/', '/login', '/do-login', '/register'];
 
 // * ============================================================
 // * CARGAR RUTAS
@@ -83,7 +78,11 @@ if (!in_array($path, $publicRoutes)) {
 $route_found = false;
 
 foreach ($routes as $route => $config) {
-        if ($route === $path && $method === $config['method']) {
+        // ? ============================================================
+        // ? PERMITIR MÉTODOS SEPARADOS POR PIPE (GET|POST)
+        // ? ============================================================
+        $methods = explode('|', $config['method']);
+        if ($route === $path && in_array($method, $methods)) {
                 $controller_class = $config['controller'];
                 $action = $config['action'];
 

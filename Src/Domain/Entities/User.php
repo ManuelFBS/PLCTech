@@ -135,6 +135,8 @@ class User
 
         public function verifyPassword(string $plain_password): bool
         {
-                return password_verify($plain_password, $this->password);
+                $result = password_verify($plain_password, $this->password);
+
+                return $result;
         }
 }

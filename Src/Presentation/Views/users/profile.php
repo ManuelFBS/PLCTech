@@ -44,7 +44,7 @@ use \PLCTech\Helpers\UrlHelper;
                 </div>
                 
                 <!-- Formulario cambiar username -->
-                <form action="<?php echo UrlHelper::url('/users/update-username'); ?>" method="POST" class="mt-4">
+                <form action="<?= UrlHelper::url('/users/update-username') ?>" method="POST" class="mt-4">
                         <div class="box" style="background-color: #f5f5f5;">
                                 <h4 class="title is-6">
                                         <i class="fas fa-user-edit"></i> Cambiar Nombre de Usuario
@@ -82,7 +82,7 @@ use \PLCTech\Helpers\UrlHelper;
                 </form>
                 
                 <!-- Formulario cambiar contraseña -->
-                <form action="<?php echo UrlHelper::url('/users/update-password'); ?>" method="POST" class="mt-4">
+                <form action="<?= UrlHelper::url('/users/update-password') ?>" method="POST" class="mt-4">
                         <div class="box" style="background-color: #f5f5f5;">
                                 <h4 class="title is-6">
                                         <i class="fas fa-key"></i> Cambiar Contraseña

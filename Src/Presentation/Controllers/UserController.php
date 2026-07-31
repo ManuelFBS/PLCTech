@@ -21,6 +21,8 @@ class UserController
         private UpdateUserUseCase $updateUserUseCase;
         private DeleteUserUseCase $deleteUserUseCase;
         private MySQLUserRepository $userRepository;
+        private MySQLEmployeeRepository $employeeRepository;
+        private MySQLCustomerRepository $customerRepository;
 
         public function __construct()
         {
@@ -28,8 +30,18 @@ class UserController
                 $employeeRepository = new MySQLEmployeeRepository();
                 $customerRepository = new MySQLCustomerRepository();
 
+                // > Asignar a propiedades...
+                $this->userRepository = $userRepository;
+                $this->employeeRepository = $employeeRepository;
+                $this->customerRepository = $customerRepository;
+
                 $this->listUsersUseCase = new ListUsersUseCase($userRepository);
-                $this->createUserUseCase = new CreateUserUseCase($userRepository, $employeeRepository, $customerRepository);
+                $this->createUserUseCase =
+                        new CreateUserUseCase(
+                                $userRepository,
+                                $employeeRepository,
+                                $customerRepository
+                        );
                 $this->getUserUseCase = new GetUserUseCase($userRepository);
                 $this->updateUserUseCase = new UpdateUserUseCase($userRepository);
                 $this->deleteUserUseCase = new DeleteUserUseCase($userRepository);
@@ -188,14 +200,14 @@ class UserController
 
                 try {
                         $userId = $_SESSION['user_id'] ?? 0;
-                        $newUserName = trim($_POST['new_username'] ?? '');
-                        $currentPassword = $_POST['current_password '] ?? '';
+                        $newUsername = trim($_POST['new_username'] ?? '');
+                        $currentPassword = $_POST['current_password'] ?? '';
 
-                        if (empty($newUserName)) {
+                        if (empty($newUsername)) {
                                 throw new \Exception('El nuevo nombre de usuario no puede estar vacío');
                         }
 
-                        if (strlen($newUserName) < 3) {
+                        if (strlen($newUsername) < 3) {
                                 throw new \Exception('El nombre de usuario debe tener al menos 3 caracteres');
                         }
 
@@ -206,23 +218,25 @@ class UserController
                         }
 
                         // > Verificar contraseña actual...
-                        if (!$user->verifyPassword($currentPassword)) {
+                        $passwordVerified = $user->verifyPassword($currentPassword);
+
+                        if (!$passwordVerified) {
                                 throw new \Exception('Contraseña actual incorrecta');
                         }
 
                         // > Verificar que el nuevo username no esté en uso...
-                        $existingUser = $this->userRepository->findByUsername($newUserName);
+                        $existingUser = $this->userRepository->findByUsername($newUsername);
                         if ($existingUser && $existingUser->getId() !== $userId) {
                                 throw new \Exception('El nombre de usuario ya está en uso');
                         }
 
-                        // > Actualizar username (usando el DTO)...
+                        // > Actualizar username...
                         $userDTO = new UserDTO([
                                 'dni' => $user->getDni(),
-                                'user' => $newUserName,
+                                'user' => $newUsername,
                                 'email' => $user->getEmail(),
                                 'role' => $user->getRole(),
-                                'password' => $user->getPassword(),
+                                'password' => $user->getPassword(),  // ? Mantener la misma contraseña
                                 'is_active' => $user->isActive(),
                                 'employee_id' => $user->getEmployeeId(),
                                 'customer_id' => $user->getCustomerId()
@@ -231,7 +245,7 @@ class UserController
                         $this->updateUserUseCase->execute($userId, $userDTO);
 
                         // > Actualizar sesión...
-                        $_SESSION['username'] = $newUserName;
+                        $_SESSION['username'] = $newUsername;
 
                         $_SESSION['success_message'] = 'Nombre de usuario actualizado exitosamente';
                 } catch (\Exception $e) {
@@ -277,7 +291,9 @@ class UserController
                         }
 
                         // > Verificar contraseña actual...
-                        if (!$user->verifyPassword($currentPassword)) {
+                        $passwordVerified = $user->verifyPassword($currentPassword);
+
+                        if (!$passwordVerified) {
                                 throw new \Exception('Contraseña actual incorrecta');
                         }
 
@@ -287,7 +303,7 @@ class UserController
                                 'user' => $user->getUser(),
                                 'email' => $user->getEmail(),
                                 'role' => $user->getRole(),
-                                'password' => $newPassword,  // Se hasheará en el UseCase
+                                'password' => $newPassword,  // ? Se hasheará en el UseCase
                                 'is_active' => $user->isActive(),
                                 'employee_id' => $user->getEmployeeId(),
                                 'customer_id' => $user->getCustomerId()

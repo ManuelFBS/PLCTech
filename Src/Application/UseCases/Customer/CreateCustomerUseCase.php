@@ -21,8 +21,10 @@ class CreateCustomerUseCase
                 $this->userRepository = $userRepository;
         }
 
-        public function execute(CustomerDTO $customerDTO): array
-        {
+        public function execute(
+                CustomerDTO $customerDTO,
+                ?string $plainPassword = null
+        ): array {
                 // > Validar DNI único...
                 if ($this->customerRepository->findByDni($customerDTO->dni)) {
                         throw new \Exception('Ya existe un cliente con ese DNI');
@@ -80,17 +82,27 @@ class CreateCustomerUseCase
                         $username = $username . rand(100, 999);
                 }
 
-                // > Generar contraseña temporal (solo caracteres alfanuméricos)...
-                $cleanName = $cleanSpecialChars(str_replace(' ', '', $customerDTO->full_name));
-                $tempPassword = $customerDTO->dni . substr($cleanName, 0, 4);
-                $tempPassword = preg_replace('/[^a-zA-Z0-9]/', '', $tempPassword);
+                // >s ============================================================
+                // > USAR LA CONTRASEÑA DEL FORMULARIO O GENERAR UNA TEMPORAL
+                // > ============================================================
+                $tempPassword = null;
+                if (!empty($plainPassword)) {
+                        // ? Usar la contraseña proporcionada por el usuario...
+                        $passwordToHash = $plainPassword;
+                } else {
+                        // > Generar contraseña temporal (solo caracteres alfanuméricos)...
+                        $cleanName = $cleanSpecialChars(str_replace(' ', '', $customerDTO->full_name));
+                        $tempPassword = $customerDTO->dni . substr($cleanName, 0, 4);
+                        $tempPassword = preg_replace('/[^a-zA-Z0-9]/', '', $tempPassword);
 
-                // > Asegurar longitud mínima...
-                if (strlen($tempPassword) < 6) {
-                        $tempPassword = $tempPassword . 'Abc123';
+                        // > Asegurar longitud mínima...
+                        if (strlen($tempPassword) < 6) {
+                                $tempPassword = $tempPassword . 'Abc123';
+                        }
+                        $passwordToHash = $tempPassword;
                 }
 
-                $hashedPassword = password_hash($tempPassword, PASSWORD_DEFAULT);
+                $hashedPassword = password_hash($passwordToHash, PASSWORD_DEFAULT);
 
                 // > Crear usuario con rol Customer...
                 $user = new User(
@@ -106,6 +118,10 @@ class CreateCustomerUseCase
                 );
 
                 $this->userRepository->save($user);
+
+                if (empty($tempPassword)) {
+                        $tempPassword = '************';
+                }
 
                 return [
                         'success' => true,

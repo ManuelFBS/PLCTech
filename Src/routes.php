@@ -81,6 +81,15 @@ return [
                 'role' => 'Admin'
         ],
         // * ============================================================
+        // * REGISTRO DE USUARIOS (Público)
+        // * ============================================================
+        '/register' => [
+                'method' => 'GET|POST',
+                'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
+                'action' => 'register',
+                'role' => null
+        ],
+        // * ============================================================
         // * EMPLOYEES (Solo Admin)
         // * ============================================================
         '/employees' => [

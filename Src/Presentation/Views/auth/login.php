@@ -42,11 +42,22 @@ use \PLCTech\Helpers\UrlHelper;
                                         
                                         <!-- Mensajes flash -->
                                         <?php if (isset($_SESSION['error_message'])): ?>
-                                        <div class="notification is-danger is-light">
-                                                <button class="delete" onclick="this.parentElement.remove()"></button>
-                                                <i class="fas fa-exclamation-triangle"></i> <?php echo $_SESSION['error_message'];
-        unset($_SESSION['error_message']); ?>
-                                        </div>
+                                                <div class="notification is-danger is-light">
+                                                        <button class="delete" onclick="this.parentElement.remove()"></button>
+                                                        <i class="fas fa-exclamation-triangle"></i> 
+                                                        <?php
+                                                        $errorMsg = $_SESSION['error_message'];
+                                                        unset($_SESSION['error_message']);
+                                                        echo $errorMsg;
+                                                        ?>
+                                                        <br>
+                                                        <small>
+                                                                <i class="fas fa-key"></i> 
+                                                                <a href="<?= UrlHelper::url('/forgot-password') ?>" class="has-text-danger">
+                                                                        ¿Olvidaste tu contraseña? Haz clic aquí para recuperarla.
+                                                                </a>
+                                                        </small>
+                                                </div>
                                         <?php endif; ?>
                                         
                                         <?php if (isset($_SESSION['success_message'])): ?>
@@ -88,6 +99,15 @@ use \PLCTech\Helpers\UrlHelper;
                                                                         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                                                                 </button>
                                                         </div>
+                                                </div>
+
+                                                <!-- ========================================================== -->
+                                                <!-- NUEVO: Enlace "¿Olvidaste tu contraseña?"                  -->
+                                                <!-- ========================================================== -->
+                                                <div class="has-text-centered mt-3">
+                                                        <a href="<?= UrlHelper::url('/forgot-password') ?>" class="is-size-7">
+                                                                <i class="fas fa-key"></i> ¿Olvidaste tu contraseña?
+                                                        </a>
                                                 </div>
                                         </form>
                                         

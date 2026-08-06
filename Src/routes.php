@@ -20,6 +20,33 @@ return [
                 'action' => 'logout'
         ],
         // * ============================================================
+        // * RECUPERACIÓN DE CONTRASEÑA (Público)
+        // * ============================================================
+        '/forgot-password' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
+                'action' => 'showForgotPassword',
+                'role' => null
+        ],
+        '/forgot-password/post' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
+                'action' => 'forgotPassword',
+                'role' => null
+        ],
+        '/reset-password' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
+                'action' => 'showResetPassword',
+                'role' => null
+        ],
+        '/reset-password/post' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
+                'action' => 'resetPassword',
+                'role' => null
+        ],
+        // * ============================================================
         // * HOME -- LANDING PAGE (Pública - Sin autenticación)
         // * ============================================================
         '/' => [

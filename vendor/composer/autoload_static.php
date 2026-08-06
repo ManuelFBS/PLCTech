@@ -24,6 +24,7 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
             'PlcTech\\' => 8,
             'PhpOption\\' => 10,
             'PLCTech\\Config\\' => 15,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' =>
         array (
@@ -63,6 +64,10 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'PLCTech\\Config\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Config',
+        ),
+        'PHPMailer\\PHPMailer\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'GrahamCampbell\\ResultType\\' =>
         array (
@@ -133,6 +138,13 @@ class ComposerStaticInitea60df7cfe1fb21a76ba74dbe4b8f36d
         'GrahamCampbell\\ResultType\\Error' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Error.php',
         'GrahamCampbell\\ResultType\\Result' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Result.php',
         'GrahamCampbell\\ResultType\\Success' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Success.php',
+        'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
+        'PHPMailer\\PHPMailer\\Exception' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/Exception.php',
+        'PHPMailer\\PHPMailer\\OAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuth.php',
+        'PHPMailer\\PHPMailer\\OAuthTokenProvider' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuthTokenProvider.php',
+        'PHPMailer\\PHPMailer\\PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/PHPMailer.php',
+        'PHPMailer\\PHPMailer\\POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/POP3.php',
+        'PHPMailer\\PHPMailer\\SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/SMTP.php',
         'PLCTech\\Application\\DTOs\\CartDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/CartDTO.php',
         'PLCTech\\Application\\DTOs\\CustomerDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/CustomerDTO.php',
         'PLCTech\\Application\\DTOs\\EmployeeDTO' => __DIR__ . '/../..' . '/src/Application/DTOs/EmployeeDTO.php',

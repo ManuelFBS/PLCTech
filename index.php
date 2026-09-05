@@ -48,8 +48,19 @@ $method = $_SERVER['REQUEST_METHOD'];
 // * ============================================================
 // * RUTAS PÚBLICAS (NO requieren autenticación)
 // * ============================================================
+// $publicRoutes = [
+//         '/',
+//         '/login',
+//         '/do-login',
+//         '/register',
+//         '/forgot-password',
+//         '/forgot-password-post',
+//         '/reset-password',
+//         '/reset-password-post'
+// ];
 $publicRoutes = [
-        '/', '/login',
+        '/',
+        '/login',
         '/do-login',
         '/register',
         '/forgot-password',

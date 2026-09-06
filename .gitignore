@@ -1,3 +1,5 @@
+node_modules
+
 #Environment
 .env
 
@@ -12,3 +14,9 @@ hash_password.php
 check_files.php
 debug_db.php
 debug_usecase.php
+
+#Formatter
+.prettierrc
+
+#Logs
+logs

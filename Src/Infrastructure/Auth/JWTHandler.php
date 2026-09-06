@@ -14,7 +14,8 @@ class JWTHandler
 
         public function __construct()
         {
-                $this->secret = $_ENV['JWT_SECRET'] ?? 'default_secret_key_change_me';
+                $this->secret =
+                        $_ENV['JWT_SECRET'] ?? 'default_secret_key_change_me';
                 $this->expiry = (int) ($_ENV['SESSION_LIFETIME'] ?? 7200);
         }
 
@@ -27,7 +28,7 @@ class JWTHandler
                 $tokenPayload = [
                         'iat' => $issueAt,
                         'exp' => $expire,
-                        'data' => $payload
+                        'data' => $payload,
                 ];
 
                 return JWT::encode($tokenPayload, $this->secret, 'HS256');
@@ -37,14 +38,17 @@ class JWTHandler
         public function validate(string $token): ?array
         {
                 try {
-                        $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
+                        $decoded = JWT::decode(
+                                $token,
+                                new Key($this->secret, 'HS256'),
+                        );
                         return (array) $decoded->data;
                 } catch (ExpiredException $e) {
-                        return null;  // > Token expirado...
+                        return null; // > Token expirado...
                 } catch (SignatureInvalidException $e) {
-                        return null;  // > Firma inválida...
+                        return null; // > Firma inválida...
                 } catch (\Exception $e) {
-                        return null;  // > Otro error...
+                        return null; // > Otro error...
                 }
         }
 
@@ -85,7 +89,10 @@ class JWTHandler
                 }
 
                 try {
-                        $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
+                        $decoded = JWT::decode(
+                                $token,
+                                new Key($this->secret, 'HS256'),
+                        );
                         $currentTime = time();
                         $expiryTime = $decoded->exp;
 
@@ -93,8 +100,10 @@ class JWTHandler
                         $timeLeft = $expiryTime - $currentTime;
                         $totalLifetime = $this->expiry;
 
-                        if ($timeLeft < ($totalLifetime * 0.2)) {
-                                $newToken = $this->generate((array) $decoded->data);
+                        if ($timeLeft < $totalLifetime * 0.2) {
+                                $newToken = $this->generate(
+                                        (array) $decoded->data,
+                                );
                                 $_SESSION['token'] = $newToken;
                                 return $newToken;
                         }

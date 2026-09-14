@@ -3,7 +3,7 @@
         'name' => 'plctech/app',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'aa4ddb72d6e1d0f1c185a3e83b74064ff8600d51',
+        'reference' => '4566e8b50516275c4d463fa03cede393d0fec6bb',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -28,6 +28,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v7.1.1',
+            'version' => '7.1.1.0',
+            'reference' => '1bc1716a507a65e039d4ac9d9adebbbd0d346e15',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'phpoption/phpoption' => array(
             'pretty_version' => '1.9.5',
             'version' => '1.9.5.0',
@@ -40,7 +49,7 @@
         'plctech/app' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'aa4ddb72d6e1d0f1c185a3e83b74064ff8600d51',
+            'reference' => '4566e8b50516275c4d463fa03cede393d0fec6bb',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

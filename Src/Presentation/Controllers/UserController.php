@@ -12,6 +12,7 @@ use PLCTech\Helpers\PathHelper;
 use PLCTech\Infrastructure\Database\Repositories\MySQLCustomerRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLEmployeeRepository;
 use PLCTech\Infrastructure\Database\Repositories\MySQLUserRepository;
+use PLCTech\Infrastructure\Auth\JWTHandler;
 
 class UserController
 {
@@ -36,12 +37,11 @@ class UserController
                 $this->customerRepository = $customerRepository;
 
                 $this->listUsersUseCase = new ListUsersUseCase($userRepository);
-                $this->createUserUseCase =
-                        new CreateUserUseCase(
-                                $userRepository,
-                                $employeeRepository,
-                                $customerRepository
-                        );
+                $this->createUserUseCase = new CreateUserUseCase(
+                        $userRepository,
+                        $employeeRepository,
+                        $customerRepository,
+                );
                 $this->getUserUseCase = new GetUserUseCase($userRepository);
                 $this->updateUserUseCase = new UpdateUserUseCase($userRepository);
                 $this->deleteUserUseCase = new DeleteUserUseCase($userRepository);
@@ -71,7 +71,7 @@ class UserController
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                        exit;
+                        exit();
                 }
         }
 
@@ -79,7 +79,7 @@ class UserController
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                        exit;
+                        exit();
                 }
 
                 try {
@@ -91,7 +91,7 @@ class UserController
                                 'password' => $_POST['password'] ?? '',
                                 'is_active' => isset($_POST['is_active']) ? true : false,
                                 'employee_id' => null,
-                                'customer_id' => null
+                                'customer_id' => null,
                         ]);
 
                         $result = $this->createUserUseCase->execute($userDTO);
@@ -101,7 +101,7 @@ class UserController
                 }
 
                 header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                exit;
+                exit();
         }
 
         public function edit(): void
@@ -123,7 +123,7 @@ class UserController
                 } catch (\Exception $e) {
                         $_SESSION['error_message'] = $e->getMessage();
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                        exit;
+                        exit();
                 }
         }
 
@@ -131,7 +131,7 @@ class UserController
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                        exit;
+                        exit();
                 }
 
                 $id = $_POST['id'] ?? 0;
@@ -145,7 +145,7 @@ class UserController
                                 'password' => $_POST['password'] ?? '',
                                 'is_active' => isset($_POST['is_active']) ? true : false,
                                 'employee_id' => null,
-                                'customer_id' => null
+                                'customer_id' => null,
                         ]);
 
                         $result = $this->updateUserUseCase->execute((int) $id, $userDTO);
@@ -155,7 +155,7 @@ class UserController
                 }
 
                 header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                exit;
+                exit();
         }
 
         public function delete(): void
@@ -170,7 +170,7 @@ class UserController
                 }
 
                 header('Location: ' . PathHelper::getBaseUrl() . '/users');
-                exit;
+                exit();
         }
 
         // * ============================================================
@@ -195,7 +195,7 @@ class UserController
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         header('Location: ' . PathHelper::getBaseUrl() . '/profile');
-                        exit;
+                        exit();
                 }
 
                 try {
@@ -204,11 +204,21 @@ class UserController
                         $currentPassword = $_POST['current_password'] ?? '';
 
                         if (empty($newUsername)) {
-                                throw new \Exception('El nuevo nombre de usuario no puede estar vacío');
+                                throw new \Exception(
+                                        'El nuevo nombre de usuario no puede estar vacío',
+                                );
                         }
 
                         if (strlen($newUsername) < 3) {
-                                throw new \Exception('El nombre de usuario debe tener al menos 3 caracteres');
+                                throw new \Exception(
+                                        'El nombre de usuario debe tener al menos 3 caracteres',
+                                );
+                        }
+
+                        if (strlen($newUsername) > 15) {
+                                throw new \Exception(
+                                        'El nombre de usuario no puede tener más de 15 caracteres',
+                                );
                         }
 
                         // > Verificar que el usuario existe...
@@ -236,16 +246,29 @@ class UserController
                                 'user' => $newUsername,
                                 'email' => $user->getEmail(),
                                 'role' => $user->getRole(),
-                                'password' => $user->getPassword(),  // ? Mantener la misma contraseña
+                                'password' => $user->getPassword(), // ? Mantener la misma contraseña
                                 'is_active' => $user->isActive(),
                                 'employee_id' => $user->getEmployeeId(),
-                                'customer_id' => $user->getCustomerId()
+                                'customer_id' => $user->getCustomerId(),
                         ]);
 
                         $this->updateUserUseCase->execute($userId, $userDTO);
 
-                        // > Actualizar sesión...
+                        // > ============================================================
+                        // > ACTUALIZAR LA SESIÓN CON EL NUEVO USERNAME
+                        // > ============================================================
                         $_SESSION['username'] = $newUsername;
+
+                        // > Se regenera el token JWT con el nuevo username...
+                        $jwtHandler = new \PLCTech\Infrastructure\Auth\JWTHandler();
+                        $newToken = $jwtHandler->generate([
+                                'user_id' => $userId,
+                                'username' => $newUsername,
+                                'full_name' => $_SESSION['full_name'] ?? $newUsername,
+                                'role' => $_SESSION['role'] ?? $user->getRole(),
+                                'email' => $user->getEmail(),
+                        ]);
+                        $_SESSION['token'] = $newToken;
 
                         $_SESSION['success_message'] = 'Nombre de usuario actualizado exitosamente';
                 } catch (\Exception $e) {
@@ -253,7 +276,7 @@ class UserController
                 }
 
                 header('Location: ' . PathHelper::getBaseUrl() . '/profile');
-                exit;
+                exit();
         }
 
         // * ============================================================
@@ -263,7 +286,7 @@ class UserController
         {
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         header('Location: ' . PathHelper::getBaseUrl() . '/profile');
-                        exit;
+                        exit();
                 }
 
                 try {
@@ -277,7 +300,9 @@ class UserController
                         }
 
                         if (strlen($newPassword) < 8) {
-                                throw new \Exception('La contraseña debe tener al menos 8 caracteres');
+                                throw new \Exception(
+                                        'La contraseña debe tener al menos 8 caracteres',
+                                );
                         }
 
                         if ($newPassword !== $confirmPassword) {
@@ -303,10 +328,10 @@ class UserController
                                 'user' => $user->getUser(),
                                 'email' => $user->getEmail(),
                                 'role' => $user->getRole(),
-                                'password' => $newPassword,  // ? Se hasheará en el UseCase
+                                'password' => $newPassword, // ? Se hasheará en el UseCase
                                 'is_active' => $user->isActive(),
                                 'employee_id' => $user->getEmployeeId(),
-                                'customer_id' => $user->getCustomerId()
+                                'customer_id' => $user->getCustomerId(),
                         ]);
 
                         $this->updateUserUseCase->execute($userId, $userDTO);
@@ -317,6 +342,6 @@ class UserController
                 }
 
                 header('Location: ' . PathHelper::getBaseUrl() . '/profile');
-                exit;
+                exit();
         }
 }

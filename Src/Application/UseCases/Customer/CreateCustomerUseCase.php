@@ -15,16 +15,14 @@ class CreateCustomerUseCase
 
         public function __construct(
                 CustomerRepositoryInterface $customerRepository,
-                UserRepositoryInterface $userRepository
+                UserRepositoryInterface $userRepository,
         ) {
                 $this->customerRepository = $customerRepository;
                 $this->userRepository = $userRepository;
         }
 
-        public function execute(
-                CustomerDTO $customerDTO,
-                ?string $plainPassword = null
-        ): array {
+        public function execute(CustomerDTO $customerDTO, ?string $plainPassword = null): array
+        {
                 // > Validar DNI único...
                 if ($this->customerRepository->findByDni($customerDTO->dni)) {
                         throw new \Exception('Ya existe un cliente con ese DNI');
@@ -47,7 +45,7 @@ class CreateCustomerUseCase
                         $customerDTO->full_name,
                         $customerDTO->birthdate,
                         $customerDTO->email,
-                        $customerDTO->phone_number
+                        $customerDTO->phone_number,
                 );
 
                 // > Guardar...
@@ -59,30 +57,60 @@ class CreateCustomerUseCase
 
                 // > Función para limpiar caracteres especiales...
                 $cleanSpecialChars = function ($string) {
-                        $unwanted_array = array(
-                                'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
-                                'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
-                                'ñ' => 'n', 'Ñ' => 'N',
-                                'ü' => 'u', 'Ü' => 'U',
-                                'à' => 'a', 'è' => 'e', 'ì' => 'i', 'ò' => 'o', 'ù' => 'u',
-                                'À' => 'A', 'È' => 'E', 'Ì' => 'I', 'Ò' => 'O', 'Ù' => 'U'
-                        );
+                        $unwanted_array = [
+                                'á' => 'a',
+                                'é' => 'e',
+                                'í' => 'i',
+                                'ó' => 'o',
+                                'ú' => 'u',
+                                'Á' => 'A',
+                                'É' => 'E',
+                                'Í' => 'I',
+                                'Ó' => 'O',
+                                'Ú' => 'U',
+                                'ñ' => 'n',
+                                'Ñ' => 'N',
+                                'ü' => 'u',
+                                'Ü' => 'U',
+                                'à' => 'a',
+                                'è' => 'e',
+                                'ì' => 'i',
+                                'ò' => 'o',
+                                'ù' => 'u',
+                                'À' => 'A',
+                                'È' => 'E',
+                                'Ì' => 'I',
+                                'Ò' => 'O',
+                                'Ù' => 'U',
+                        ];
 
                         return strtr($string, $unwanted_array);
                 };
 
+                // > ============================================================
+                // > GENERAR USERNAME CON LONGITUD MÁXIMA
+                // > ============================================================
                 // > Generar nombre de usuario...
                 $username = explode('@', $customerDTO->email)[0];
                 $username = $cleanSpecialChars($username);
                 $username = preg_replace('/[^a-zA-Z0-9_]/', '', $username);
 
+                // > Limitar a 15 caracteres...
+                if (strlen($username) > 15) {
+                        $username = substr($username, 0, 15);
+                }
+
+                if (empty($username)) {
+                        $username = 'user' . rand(1000, 9999);
+                }
+
                 // > Verificar si el username ya existe...
                 $existingUser = $this->userRepository->findByUsername($username);
                 if ($existingUser) {
-                        $username = $username . rand(100, 999);
+                        $username = $username . rand(1000, 9999);
                 }
 
-                // >s ============================================================
+                // > ============================================================
                 // > USAR LA CONTRASEÑA DEL FORMULARIO O GENERAR UNA TEMPORAL
                 // > ============================================================
                 $tempPassword = null;
@@ -91,7 +119,9 @@ class CreateCustomerUseCase
                         $passwordToHash = $plainPassword;
                 } else {
                         // > Generar contraseña temporal (solo caracteres alfanuméricos)...
-                        $cleanName = $cleanSpecialChars(str_replace(' ', '', $customerDTO->full_name));
+                        $cleanName = $cleanSpecialChars(
+                                str_replace(' ', '', $customerDTO->full_name),
+                        );
                         $tempPassword = $customerDTO->dni . substr($cleanName, 0, 4);
                         $tempPassword = preg_replace('/[^a-zA-Z0-9]/', '', $tempPassword);
 
@@ -114,7 +144,7 @@ class CreateCustomerUseCase
                         $hashedPassword,
                         true,
                         null,
-                        $customerId
+                        $customerId,
                 );
 
                 $this->userRepository->save($user);

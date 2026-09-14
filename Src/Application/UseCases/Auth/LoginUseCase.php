@@ -18,7 +18,7 @@ class LoginUseCase
                 UserRepositoryInterface $userRepository,
                 EmployeeRepositoryInterface $employeeRepository,
                 CustomerRepositoryInterface $customerRepository,
-                JWTHandler $jwtHandler
+                JWTHandler $jwtHandler,
         ) {
                 $this->userRepository = $userRepository;
                 $this->employeeRepository = $employeeRepository;
@@ -92,7 +92,7 @@ class LoginUseCase
                         'username' => $user->getUser(),
                         'full_name' => $fullName,
                         'role' => $user->getRole(),
-                        'email' => $user->getEmail()
+                        'email' => $user->getEmail(),
                 ]);
 
                 // > Guardar en sesión...
@@ -110,9 +110,9 @@ class LoginUseCase
                                 'username' => $user->getUser(),
                                 'full_name' => $fullName,
                                 'email' => $user->getEmail(),
-                                'role' => $user->getRole()
+                                'role' => $user->getRole(),
                         ],
-                        'token' => $token
+                        'token' => $token,
                 ];
         }
 }

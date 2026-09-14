@@ -1,5 +1,7 @@
 <?php
 
+// ~ Manejador de JWT...
+
 namespace PLCTech\Infrastructure\Auth;
 
 use Firebase\JWT\ExpiredException;
@@ -14,8 +16,7 @@ class JWTHandler
 
         public function __construct()
         {
-                $this->secret =
-                        $_ENV['JWT_SECRET'] ?? 'default_secret_key_change_me';
+                $this->secret = $_ENV['JWT_SECRET'] ?? 'default_secret_key_change_me';
                 $this->expiry = (int) ($_ENV['SESSION_LIFETIME'] ?? 7200);
         }
 
@@ -38,10 +39,7 @@ class JWTHandler
         public function validate(string $token): ?array
         {
                 try {
-                        $decoded = JWT::decode(
-                                $token,
-                                new Key($this->secret, 'HS256'),
-                        );
+                        $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
                         return (array) $decoded->data;
                 } catch (ExpiredException $e) {
                         return null; // > Token expirado...
@@ -89,10 +87,7 @@ class JWTHandler
                 }
 
                 try {
-                        $decoded = JWT::decode(
-                                $token,
-                                new Key($this->secret, 'HS256'),
-                        );
+                        $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
                         $currentTime = time();
                         $expiryTime = $decoded->exp;
 
@@ -101,9 +96,7 @@ class JWTHandler
                         $totalLifetime = $this->expiry;
 
                         if ($timeLeft < $totalLifetime * 0.2) {
-                                $newToken = $this->generate(
-                                        (array) $decoded->data,
-                                );
+                                $newToken = $this->generate((array) $decoded->data);
                                 $_SESSION['token'] = $newToken;
                                 return $newToken;
                         }

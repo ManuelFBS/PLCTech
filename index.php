@@ -28,7 +28,10 @@ $dotenv->load();
 // * Obtener la ruta del script actual...
 $scriptName = $_SERVER['SCRIPT_NAME'];
 $scriptDir = dirname($scriptName);
-$base_path = ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : $scriptDir;
+$base_path =
+        $scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.'
+                ? ''
+                : $scriptDir;
 
 if (isset($_ENV['APP_URL']) && !empty($_ENV['APP_URL'])) {
         $parsedUrl = parse_url($_ENV['APP_URL']);
@@ -48,23 +51,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 // * ============================================================
 // * RUTAS PÚBLICAS (NO requieren autenticación)
 // * ============================================================
-// $publicRoutes = [
-//         '/',
-//         '/login',
-//         '/do-login',
-//         '/register',
-//         '/forgot-password',
-//         '/forgot-password-post',
-//         '/reset-password',
-//         '/reset-password-post'
-// ];
 $publicRoutes = [
         '/',
         '/login',
         '/do-login',
         '/register',
         '/forgot-password',
-        '/reset-password'
+        '/reset-password',
 ];
 
 // * ============================================================
@@ -78,14 +71,14 @@ $routes = require __DIR__ . '/src/routes.php';
 if (!in_array($path, $publicRoutes)) {
         if (!AuthMiddleware::check()) {
                 header('Location: ' . rtrim($base_path, '/') . '/login');
-                exit;
+                exit();
         }
 
         $required_role = $routes[$path]['role'] ?? null;
         if ($required_role && !RoleMiddleware::hasRole($required_role)) {
                 http_response_code(403);
                 echo 'Acceso denegado: No tienes permisos suficientes.';
-                exit;
+                exit();
         }
 }
 

@@ -12,19 +12,19 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'showLogin',
-                'role' => null
+                'role' => null,
         ],
         '/do-login' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'login',
-                'role' => null
+                'role' => null,
         ],
         '/logout' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'logout',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         // > ============================================================
         // > REGISTRO DE USUARIOS (Público)
@@ -33,7 +33,7 @@ return [
                 'method' => 'GET|POST',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'register',
-                'role' => null
+                'role' => null,
         ],
         // > ============================================================
         // > RECUPERACIÓN DE CONTRASEÑA (Público)
@@ -42,13 +42,13 @@ return [
                 'method' => 'GET|POST',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'forgotPassword',
-                'role' => null
+                'role' => null,
         ],
         '/reset-password' => [
                 'method' => 'GET|POST',
                 'controller' => \PLCTech\Presentation\Controllers\AuthController::class,
                 'action' => 'resetPassword',
-                'role' => null
+                'role' => null,
         ],
         // > ============================================================
         // > HOME / DASHBOARD
@@ -57,13 +57,13 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\HomeController::class,
                 'action' => 'landing',
-                'role' => null
+                'role' => null,
         ],
         '/dashboard' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\HomeController::class,
                 'action' => 'index',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         // > ============================================================
         // > PROFILE (Mi Cuenta)
@@ -72,19 +72,19 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'profile',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         '/users/update-username' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'updateUsername',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         '/users/update-password' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'updatePassword',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         // > ============================================================
         // > EMPLOYEES (Solo Admin)
@@ -93,37 +93,37 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
                 'action' => 'index',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/employees/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
                 'action' => 'create',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/employees/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
                 'action' => 'store',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/employees/edit' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
                 'action' => 'edit',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/employees/update' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
                 'action' => 'update',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/employees/delete' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\EmployeeController::class,
                 'action' => 'delete',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         // > ============================================================
         // > CUSTOMERS (Admin y Employee)
@@ -132,49 +132,49 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'index',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/customers/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'create',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/customers/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'store',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/customers/edit' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'edit',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/customers/update' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'update',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/customers/delete' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'delete',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/customers/search' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'searchByDni',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/customers/clear-user-data' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\CustomerController::class,
                 'action' => 'clearUserData',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         // > ============================================================
         // > USERS (Solo Admin)
@@ -183,37 +183,37 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'index',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/users/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'create',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/users/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'store',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/users/edit' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'edit',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/users/update' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'update',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/users/delete' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\UserController::class,
                 'action' => 'delete',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         // > ============================================================
         // > PRODUCTS (Admin y Employee)
@@ -222,49 +222,88 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'catalog',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         '/products' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'index',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/products/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'create',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/products/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'store',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/products/show' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'show',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         '/products/edit' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'edit',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/products/update' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'update',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/products/delete' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\ProductController::class,
                 'action' => 'delete',
-                'role' => 'Admin'
+                'role' => 'Admin',
+        ],
+        // ============================================================
+        // CATEGORIES (Categorías) - Solo Admin
+        // ============================================================
+        '/categories' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CategoryController::class,
+                'action' => 'index',
+                'role' => 'Admin',
+        ],
+        '/categories/create' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CategoryController::class,
+                'action' => 'create',
+                'role' => 'Admin',
+        ],
+        '/categories/store' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\CategoryController::class,
+                'action' => 'store',
+                'role' => 'Admin',
+        ],
+        '/categories/edit' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CategoryController::class,
+                'action' => 'edit',
+                'role' => 'Admin',
+        ],
+        '/categories/update' => [
+                'method' => 'POST',
+                'controller' => \PLCTech\Presentation\Controllers\CategoryController::class,
+                'action' => 'update',
+                'role' => 'Admin',
+        ],
+        '/categories/delete' => [
+                'method' => 'GET',
+                'controller' => \PLCTech\Presentation\Controllers\CategoryController::class,
+                'action' => 'delete',
+                'role' => 'Admin',
         ],
         // > ============================================================
         // > PURCHASES (Ventas)
@@ -273,49 +312,49 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'index',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/purchases/create' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'create',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/purchases/store' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'store',
-                'role' => 'Admin|Employee'
+                'role' => 'Admin|Employee',
         ],
         '/purchases/show' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'show',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         '/purchases/invoice' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'invoice',
-                'role' => 'Admin|Employee|Customer'
+                'role' => 'Admin|Employee|Customer',
         ],
         '/purchases/cancel' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'cancel',
-                'role' => 'Admin'
+                'role' => 'Admin',
         ],
         '/purchases/customer' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'customerPurchases',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
         '/purchases/checkout' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\PurchaseController::class,
                 'action' => 'checkout',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
         // > ============================================================
         // > CART (Carrito de compras)
@@ -324,30 +363,30 @@ return [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CartController::class,
                 'action' => 'index',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
         '/cart/add' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\CartController::class,
                 'action' => 'add',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
         '/cart/update' => [
                 'method' => 'POST',
                 'controller' => \PLCTech\Presentation\Controllers\CartController::class,
                 'action' => 'update',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
         '/cart/remove' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CartController::class,
                 'action' => 'remove',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
         '/cart/clear' => [
                 'method' => 'GET',
                 'controller' => \PLCTech\Presentation\Controllers\CartController::class,
                 'action' => 'clear',
-                'role' => 'Customer'
+                'role' => 'Customer',
         ],
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace PlcTech\Application\DTOs;
+namespace PLCTech\Application\DTOs;
 
 class CategoryDTO
 {

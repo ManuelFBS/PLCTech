@@ -1,8 +1,6 @@
 <?php
 
-use \PLCTech\Helpers\UrlHelper;
-
-?>
+use PLCTech\Helpers\UrlHelper; ?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -19,9 +17,13 @@ use \PLCTech\Helpers\UrlHelper;
     <nav class="navbar is-primary has-shadow" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="<?= UrlHelper::url('/dashboard') ?>">
+                <a class="navbar-item has-tooltip" href="<?= UrlHelper::url(
+                        '/dashboard',
+                ) ?>" title="Ir al inicio">
                     <i class="fas fa-microchip"></i>
-                    <strong style="margin-left: 10px;"><?php echo $_ENV['APP_NAME']; ?></strong>
+                    <strong style="margin-left: 10px;"><?php echo $_ENV[
+                            'APP_NAME'
+                    ]; ?></strong>
                 </a>
                 
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
@@ -36,18 +38,21 @@ use \PLCTech\Helpers\UrlHelper;
                     <!-- ========================================================== -->
                     <!-- INICIO / DASHBOARD (Visible para usuarios logueados)                               -->
                     <!-- ========================================================== -->
-                    <div class="navbar-item">
-                        <a class="navbar-item" href="<?= UrlHelper::url('/dashboard') ?>">
+                    <!-- <div class="navbar-item">
+                        <a class="navbar-item" href="<?= UrlHelper::url(
+                                '/dashboard',
+                        ) ?>">
                             <i class="fas fa-home"></i> Inicio
                         </a>
-                    </div>
+                    </div> -->
 
                     <!-- ========================================================== -->
                     <!-- CATÁLOGO (Visible para TODOS los roles)                    -->
                     <!-- ========================================================== -->
                     <div class="navbar-item">
-                        <a class="navbar-item has-text-weight-bold" href="<?= UrlHelper::url('/products/catalog') ?>" 
-                           style="color: #00d1b2; border-bottom: 2px solid #00d1b2;">
+                        <a class="navbar-item" href="<?= UrlHelper::url(
+                                '/products/catalog',
+                        ) ?>" class="navbar-link">
                             <i class="fas fa-store"></i> Catálogo
                         </a>
                     </div>
@@ -61,10 +66,14 @@ use \PLCTech\Helpers\UrlHelper;
                                 <i class="fas fa-users"></i> Empleados
                             </a>
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="<?= UrlHelper::url('/employees/create') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/employees/create',
+                                ) ?>">
                                     <i class="fas fa-plus"></i> Nuevo
                                 </a>
-                                <a class="navbar-item" href="<?= UrlHelper::url('/employees') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/employees',
+                                ) ?>">
                                     <i class="fas fa-list"></i> Listado de empleados
                                 </a>
                                 <hr class="navbar-divider">
@@ -87,18 +96,25 @@ use \PLCTech\Helpers\UrlHelper;
                     <!-- ========================================================== -->
                     <!-- CLIENTES (SOLO ADMIN y EMPLOYEE) - NO para Customer        -->
                     <!-- ========================================================== -->
-                    <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
+                    <?php if (
+                            $_SESSION['role'] === 'Admin' ||
+                            $_SESSION['role'] === 'Employee'
+                    ): ?>
                         <div class="navbar-item has-dropdown is-hoverable">
                             <a class="navbar-link">
                                 <i class="fas fa-user-friends"></i> Clientes
                             </a>
                             <div class="navbar-dropdown">
                                 
-                                    <a class="navbar-item" href="<?= UrlHelper::url('/customers/create') ?>">
+                                    <a class="navbar-item" href="<?= UrlHelper::url(
+                                            '/customers/create',
+                                    ) ?>">
                                         <i class="fas fa-plus"></i> Nuevo
                                     </a>
                                 
-                                <a class="navbar-item" href="<?= UrlHelper::url('/customers') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/customers',
+                                ) ?>">
                                     <i class="fas fa-list"></i> Listado de clientes
                                 </a>
                             </div>
@@ -114,10 +130,14 @@ use \PLCTech\Helpers\UrlHelper;
                                 <i class="fas fa-user-lock"></i> Usuarios
                             </a>
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="<?= UrlHelper::url('/users/create') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/users/create',
+                                ) ?>">
                                     <i class="fas fa-plus"></i> Nuevo
                                 </a>
-                                <a class="navbar-item" href="<?= UrlHelper::url('/users') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/users',
+                                ) ?>">
                                     <i class="fas fa-list"></i> Listado de usuarios
                                 </a>
                             </div>
@@ -127,18 +147,25 @@ use \PLCTech\Helpers\UrlHelper;
                     <!-- ========================================================== -->
                     <!-- PRODUCTOS (ADMIN y EMPLOYEE) - NO para Customer            -->
                     <!-- ========================================================== -->
-                    <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
+                    <?php if (
+                            $_SESSION['role'] === 'Admin' ||
+                            $_SESSION['role'] === 'Employee'
+                    ): ?>
                         <div class="navbar-item has-dropdown is-hoverable">
                             <a class="navbar-link">
                                 <i class="fas fa-boxes"></i> Productos
                             </a>
                             <div class="navbar-dropdown">
                                 <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                    <a class="navbar-item" href="<?= UrlHelper::url('/products/create') ?>">
+                                    <a class="navbar-item" href="<?= UrlHelper::url(
+                                            '/products/create',
+                                    ) ?>">
                                         <i class="fas fa-plus"></i> Nuevo
                                     </a>
                                 <?php endif; ?>
-                                <a class="navbar-item" href="<?= UrlHelper::url('/products') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/products',
+                                ) ?>">
                                     <i class="fas fa-list"></i> Listado de productos
                                 </a>
                                 <hr class="navbar-divider">
@@ -157,22 +184,55 @@ use \PLCTech\Helpers\UrlHelper;
                             </div>
                         </div>
                     <?php endif; ?>
+
+                    <!-- ========================================================== -->
+                    <!-- CATEGORÍAS (SOLO ADMIN)                                    -->
+                    <!-- ========================================================== -->
+                    <?php if ($_SESSION['role'] === 'Admin'): ?>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                <i class="fas fa-tags"></i> Categorías
+                            </a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" href="<?= \PLCTech\Helpers\UrlHelper::url(
+                                        '/categories/create',
+                                ) ?>">
+                                    <i class="fas fa-plus"></i> Nueva
+                                </a>
+                                <a class="navbar-item" href="<?= \PLCTech\Helpers\UrlHelper::url(
+                                        '/categories',
+                                ) ?>">
+                                    <i class="fas fa-list"></i> Listado de categorías
+                                </a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     
                     <!-- ========================================================== -->
                     <!-- VENTAS (ADMIN y EMPLOYEE) - NO para Customer               -->
                     <!-- ========================================================== -->
-                    <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
+                    <?php if (
+                            $_SESSION['role'] === 'Admin' ||
+                            $_SESSION['role'] === 'Employee'
+                    ): ?>
                         <div class="navbar-item has-dropdown is-hoverable">
                             <a class="navbar-link">
                                 <i class="fas fa-shopping-cart"></i> Ventas
                             </a>
                             <div class="navbar-dropdown">
-                                <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Employee'): ?>
-                                    <a class="navbar-item" href="<?= UrlHelper::url('/purchases/create') ?>">
+                                <?php if (
+                                        $_SESSION['role'] === 'Admin' ||
+                                        $_SESSION['role'] === 'Employee'
+                                ): ?>
+                                    <a class="navbar-item" href="<?= UrlHelper::url(
+                                            '/purchases/create',
+                                    ) ?>">
                                         <i class="fas fa-plus"></i> Nueva venta
                                     </a>
                                 <?php endif; ?>
-                                <a class="navbar-item" href="<?= UrlHelper::url('/purchases') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/purchases',
+                                ) ?>">
                                     <i class="fas fa-list"></i> Listado de ventas
                                 </a>
                             </div>
@@ -184,7 +244,9 @@ use \PLCTech\Helpers\UrlHelper;
                     <!-- ========================================================== -->
                     <?php if ($_SESSION['role'] === 'Customer'): ?>
                         <div class="navbar-item">
-                            <a class="navbar-item" href="<?= UrlHelper::url('/purchases/customer') ?>">
+                            <a class="navbar-item" href="<?= UrlHelper::url(
+                                    '/purchases/customer',
+                            ) ?>">
                                 <i class="fas fa-history"></i> Mis compras
                             </a>
                         </div>
@@ -199,26 +261,34 @@ use \PLCTech\Helpers\UrlHelper;
                         <a class="navbar-link">
                             <i class="fas fa-user-circle"></i>
                             <?php
-                            $displayName = $_SESSION['full_name'] ?? $_SESSION['username'];
+                            $displayName =
+                                    $_SESSION['full_name'] ??
+                                    $_SESSION['username'];
                             echo htmlspecialchars($displayName);
                             ?>
                         </a>
                         <div class="navbar-dropdown is-right">
-                            <a class="navbar-item" href="<?= UrlHelper::url('/profile') ?>">
+                            <a class="navbar-item" href="<?= UrlHelper::url(
+                                    '/profile',
+                            ) ?>">
                                 <i class="fas fa-id-card"></i> Mi cuenta
                             </a>
                             
                             <!-- Carrito (solo para clientes) -->
                             <?php if ($_SESSION['role'] === 'Customer'): ?>
                                 <hr class="navbar-divider">
-                                <a class="navbar-item" href="<?= UrlHelper::url('/cart') ?>">
+                                <a class="navbar-item" href="<?= UrlHelper::url(
+                                        '/cart',
+                                ) ?>">
                                     <i class="fas fa-shopping-cart"></i> Mi carrito
                                     <span class="tag is-info is-small ml-2" id="cartBadge">0</span>
                                 </a>
                             <?php endif; ?>
                             
                             <hr class="navbar-divider">
-                            <a class="navbar-item" href="<?= UrlHelper::url('/logout') ?>">
+                            <a class="navbar-item" href="<?= UrlHelper::url(
+                                    '/logout',
+                            ) ?>">
                                 <i class="fas fa-sign-out-alt"></i> Salir
                             </a>
                         </div>
@@ -235,23 +305,29 @@ use \PLCTech\Helpers\UrlHelper;
                 <?php if (isset($_SESSION['success_message'])): ?>
                     <div class="notification is-success is-light">
                         <button class="delete" onclick="this.parentElement.remove()"></button>
-                        <i class="fas fa-check-circle"></i> <?php echo $_SESSION['success_message'];
-    unset($_SESSION['success_message']); ?>
+                        <i class="fas fa-check-circle"></i> <?php
+                        echo $_SESSION['success_message'];
+                        unset($_SESSION['success_message']);
+                        ?>
                     </div>
                 <?php endif; ?>
                 
                 <?php if (isset($_SESSION['error_message'])): ?>
                     <div class="notification is-danger is-light">
                         <button class="delete" onclick="this.parentElement.remove()"></button>
-                        <i class="fas fa-exclamation-triangle"></i> <?php echo $_SESSION['error_message'];
-    unset($_SESSION['error_message']); ?>
+                        <i class="fas fa-exclamation-triangle"></i> <?php
+                        echo $_SESSION['error_message'];
+                        unset($_SESSION['error_message']);
+                        ?>
                     </div>
                 <?php endif; ?>
                 
                 <?php if (isset($_SESSION['info_message'])): ?>
                     <div class="notification is-info is-light">
                         <button class="delete" onclick="this.parentElement.remove()"></button>
-                        <i class="fas fa-info-circle"></i> <?php echo $_SESSION['info_message'];
-    unset($_SESSION['info_message']); ?>
+                        <i class="fas fa-info-circle"></i> <?php
+                        echo $_SESSION['info_message'];
+                        unset($_SESSION['info_message']);
+                        ?>
                     </div>
                 <?php endif; ?>

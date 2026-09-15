@@ -13,7 +13,7 @@ class Category
                 ?int $id,
                 string $name,
                 ?string $description = null,
-                string $created_at = ''
+                string $created_at = '',
         ) {
                 $this->id = $id;
                 $this->name = $name;
@@ -21,7 +21,7 @@ class Category
                 $this->created_at = $created_at;
         }
 
-        // Getters
+        // * Getters...
         public function getId(): ?int
         {
                 return $this->id;

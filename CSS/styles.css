@@ -1,49 +1,50 @@
 /* Estilos básicos */
 .main-content {
-    padding: 1rem 0;
+        padding: 1rem 0;
 }
 
 .footer {
-    padding: 0.5rem 1rem;
-    background-color: black;
-    margin-top: 5;
+        padding: 0.5rem 1rem;
+        background-color: black;
+        margin-top: 5;
 }
 
 /* Sin flexbox, sin altura forzada */
 body {
-    margin: 0;
-    padding: 0;
+        margin: 0;
+        padding: 0;
 }
 
 /* Estilos existentes que funcionan */
 .navbar-brand img {
-    max-height: 3rem;
+        max-height: 3rem;
 }
 
 .has-shadow {
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 .table-container {
-    overflow-x: auto;
+        overflow-x: auto;
 }
 
 .buttons .button {
-    margin: 0 2px;
+        margin: 0 2px;
 }
 
 .notification {
-    margin-bottom: 1rem;
+        margin-bottom: 1rem;
 }
 
-.navbar-item i, .navbar-link i {
-    margin-right: 5px;
+.navbar-item i,
+.navbar-link i {
+        margin-right: 5px;
 }
 
 /** Otros */
 .dashboard-esp {
-    margin-left: 0px !important;
-    background-color: #555555 !important;
+        margin-left: 0px !important;
+        background-color: #555555 !important;
 }
 
 /** Tarjetas del dashboard */
@@ -58,26 +59,26 @@ body {
 
 /** Card Headers */
 .anchor-a {
-    background-color: transparent !important; 
-    color: rgb(204, 201, 197) !important;
-    height: 34px;
-    width: 170px;
-    border-radius: 6px;
-    padding-top: 5px;
-    padding-left: 17px;
-    margin-top: 5px;
+        background-color: transparent !important;
+        color: rgb(204, 201, 197) !important;
+        height: 34px;
+        width: 170px;
+        border-radius: 6px;
+        padding-top: 5px;
+        padding-left: 17px;
+        margin-top: 5px;
 }
 
 .anchor-a:hover {
-    background-color: #49b375 !important; 
-    color: #ffffff !important;
+        background-color: #49b375 !important;
+        color: #ffffff !important;
 }
 
 .hr-div {
-    border: none !important; 
-    height:2px !important; 
-    background-color:rgb(64, 62, 62) !important; 
-    margin: 5px 25px 5px 25px !important;
+        border: none !important;
+        height: 2px !important;
+        background-color: rgb(64, 62, 62) !important;
+        margin: 5px 25px 5px 25px !important;
 }
 
 /* 
@@ -85,51 +86,50 @@ body {
 * las columnas en las tablas de los listados.
 */
 .imageFix {
-    width: 50px !important; 
-    height: 50px !important; 
-    object-fit: cover !important; 
-    border-radius: 6px !important;
+        width: 50px !important;
+        height: 50px !important;
+        object-fit: cover !important;
+        border-radius: 6px !important;
 }
 
 .no-Image {
-    width: 50px !important; 
-    height: 50px !important; 
-    background-color: #f0f0f0 !important; 
-    border-radius: 6px !important; 
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important;
+        width: 50px !important;
+        height: 50px !important;
+        background-color: #f0f0f0 !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
 }
 
 .centered-row {
-    margin-top: 15px !important;
+        margin-top: 15px !important;
 }
 
 .price-column {
-    background-color: transparent !important;
-    font-size: medium;
-    font-weight: 700;
-    margin-top: 10px !important;
-    padding-left: 0px;
-    color: #48bb78 !important;
+        background-color: transparent !important;
+        font-size: medium;
+        font-weight: 700;
+        margin-top: 10px !important;
+        padding-left: 0px;
+        color: #48bb78 !important;
 }
 
 .out-of-stock-column {
-    background-color: #2d3748; 
-    color: #e2e8f0; 
-    font-weight: bold;
+        background-color: #2d3748;
+        color: #e2e8f0;
+        font-weight: bold;
 }
 
 .stock-column-low {
-    background-color: #ffd700;
-    color: #000000; 
-    font-weight: bold;
-
+        background-color: #ffd700;
+        color: #000000;
+        font-weight: bold;
 }
 .stock-column-normal {
-    background-color: #2f855a !important;
-    color: #ffffff !important; 
-    font-weight: bold !important;
+        background-color: #2f855a !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
 }
 
 /*
@@ -137,38 +137,38 @@ body {
 */
 /*> Estado normal del enlace */
 .customLink-a {
-    margin-top: 2px !important;
-    color: azure !important;
-    text-decoration: none;
-    padding: 4px 12px; /* Espacio interno para que el borde no quede pegado al texto */
-    border: 1px solid transparent; /* Borde invisible para evitar que el texto salte */
-    border-radius: 4px; /* Bordes ligeramente suavizados */
-    transition: border-color 0.2s ease; /* Transición suave solo para el color del borde */
+        margin-top: 2px !important;
+        color: azure !important;
+        text-decoration: none;
+        padding: 4px 12px; /* Espacio interno para que el borde no quede pegado al texto */
+        border: 1px solid transparent; /* Borde invisible para evitar que el texto salte */
+        border-radius: 4px; /* Bordes ligeramente suavizados */
+        transition: border-color 0.2s ease; /* Transición suave solo para el color del borde */
 }
 
 /*> Estado al pasar el mouse (Hover) */
 .customLink-a:hover {
-    border-color: #4a5568 !important; /* El borde se vuelve gris medio */
-    background-color: transparent !important; /* Asegura que el fondo se mantenga transparente */
+        border-color: #4a5568 !important; /* El borde se vuelve gris medio */
+        background-color: transparent !important; /* Asegura que el fondo se mantenga transparente */
 }
 
 /*> Ajuste para el campo de búsqueda y la lupa */
 .field.has-addons .control .input.is-medium {
-    height: 40px;
+        height: 40px;
 }
 
 .field.has-addons .control .button.is-medium {
-    height: 40px;
-    border-radius: 0 4px 4px 0;
+        height: 40px;
+        border-radius: 0 4px 4px 0;
 }
 
 /*> Asegurar que la lupa tenga la misma altura que el input */
 .field.has-addons .control:last-child .button {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
 }
 
 .field.has-addons .control:first-child .input {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
 }
